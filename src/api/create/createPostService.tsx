@@ -2,7 +2,6 @@ import axios from "axios";
 import { port } from "../../utils/env";
 import { handleError } from "../handleError";
 
-
 const onCreateListing = async (data: any, token: string) => {
     try {
         const respone = await axios.request({
@@ -21,4 +20,5 @@ const onCreateListing = async (data: any, token: string) => {
         return handleError(error)
     };
 };
+
 export { onCreateListing }

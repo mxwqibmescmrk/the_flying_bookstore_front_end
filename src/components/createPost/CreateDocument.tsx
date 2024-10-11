@@ -22,12 +22,12 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Image from "next/image";
 import NoImage from "./../../assets/images/noimg.png";
 import { Accordion, AccordionSummary } from "./AccordionCustom";
-import { IPostState } from "../../app/(manager)/manager-post/add-post/page";
 import { useAuthStore } from "../../hooks/user";
 import { useStoreAlert } from "../../hooks/alert";
 import Link from "next/link";
 import { handleError } from "../../api/handleError";
 import { onCreateCopy, uploadFileService } from "../../api/create/createDocumentService";
+import { IPostState } from "../../types/params";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",

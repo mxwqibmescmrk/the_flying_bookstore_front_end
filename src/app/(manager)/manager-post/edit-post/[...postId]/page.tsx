@@ -4,15 +4,11 @@ import { Typography } from "@mui/material";
 import CreateBook from "@/components/createPost/CreateBook";
 import CreateDocument from "@/components/createPost/CreateDocument";
 import CreatePost from "@/components/createPost/CreatePost";
-import { IParamsEditListing } from "../../../../../types/params";
+import { IParamsEditListing, IPostState } from "../../../../../types/params";
 import { getBookDetailService } from "../../../../../api/bookListService";
 import { useStoreStep } from "../../../../../hooks/step";
 import { useStoreAlert } from "../../../../../hooks/alert";
-export interface IPostState {
-  bookId: number | string | undefined;
-  copyId: string | undefined;
-  postId: string | undefined;
-}
+
 const EditPost = ({ params }: IParamsEditListing) => {
   const [post, setPost] = useState<IPostState>({
     bookId: undefined,
@@ -45,10 +41,10 @@ const EditPost = ({ params }: IParamsEditListing) => {
   return (
     <>
       <Typography variant="h4" sx={{ mb: 2 }}>
-        Sửa bài đăng
+        Sửa bài đăng #{post.postId}
       </Typography>
 
-      <CreateBook updateBookId={updateBookId} />
+      <CreateBook post={post} updateBookId={updateBookId} />
       <CreateDocument
         bookId={post.bookId}
         updateDocumentId={updateDocumentId}

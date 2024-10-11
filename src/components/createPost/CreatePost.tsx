@@ -18,12 +18,12 @@ import { Accordion, AccordionSummary } from "./AccordionCustom";
 import { InputListing } from "./InputListing";
 import axios from "axios";
 import { useAuthStore } from "../../hooks/user";
-import { IPostState } from "../../app/(manager)/manager-post/add-post/page";
 import { useStoreAlert } from "../../hooks/alert";
 import { useRouter } from "next/navigation";
 import { onCreateListing } from "../../api/create/createPostService";
 import { handleError } from "../../api/handleError";
 import Link from "next/link";
+import { IPostState } from "../../types/params";
 enum EAllowType {
   AllowAll = "allowAll",
   AllowRent = "allowRent",
