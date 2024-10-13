@@ -1,9 +1,11 @@
 "use client";
 import {
   Alert,
+  Box,
   Button,
   Grid,
   IconButton,
+  Stack,
   Typography,
 } from "@mui/material";
 import RateModel from "./RateModel";
@@ -43,7 +45,7 @@ const OrderFooter = ({
     open: false,
     order,
   });
-  const {token} = useAuthStore()
+  const { token } = useAuthStore()
   const { callAlert } = useStoreAlert();
   const handleClickOpenRateModal = () => {
     setRateModal((state) => ({ ...state, open: true }));
@@ -83,8 +85,8 @@ const OrderFooter = ({
     status: number,
     alertMessage: string
   ): Promise<void> => {
-    if (!order?.leaseOrder?.id || !token ) return;
-    return await updateStatusOrder(statusMessage, order?.leaseOrder?.id,token).then(
+    if (!order?.leaseOrder?.id || !token) return;
+    return await updateStatusOrder(statusMessage, order?.leaseOrder?.id, token).then(
       () => {
         callAlert(`${alertMessage} thành công`);
         changeStatus(null, status);
@@ -95,7 +97,6 @@ const OrderFooter = ({
     <IconButton
       color="error"
       aria-label="delete"
-      sx={{ ml: 2 }}
       onClick={() => setCancelModal((state) => ({ ...state, open: true }))}
     >
       <CiTrash />
@@ -109,58 +110,84 @@ const OrderFooter = ({
           message = `Đã nhận lại sách`;
           return (
             <Button
-              variant="contained"
+              variant="contained" sx={{textTransform:"capitalize"}}
               onClick={() => callUpdateStatus("RETURNED", 4, message)}
             >
               {message}
             </Button>
           );
         default:
-          return <></>;
+          // return <></>;
       }
     }
     switch (order?.leaseOrder?.status) {
       case "PAYMENT_SUCCESS":
         message = `Đã nhận được hàng`;
         return (
-          <Button
-            variant="contained"
-            onClick={() => callUpdateStatus("DELIVERED", 2, message)}
-          >
-            {message}
-          </Button>
+          <Stack direction={"row"} justifyContent={"space-between"}>
+            <Button
+              variant="contained"
+                      sx={{textTransform:"capitalize"}}
+              onClick={() => callUpdateStatus("DELIVERED", 2, message)}
+            >
+              {message}
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{textTransform:"capitalize"}}
+              onClick={() => { }}
+            >
+              Mua sách
+            </Button>
+          </Stack>
         );
       case "ORDERED_PAYMENT_PENDING":
         if (order?.leaseOrder?.paymentMethod == "COD") return cancelButton;
         message = `Đã trả tiền`;
         return (
-          <>
+          <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
             <Button
               variant="contained"
+              sx={{textTransform:"capitalize"}}
               onClick={() => callUpdateStatus("USER_PAID", 1, message)}
             >
               {message}
             </Button>
+            <Button
+              variant="outlined"
+              sx={{textTransform:"capitalize"}}
+              onClick={() => { }}
+            >
+              Mua sách
+            </Button>
             {cancelButton}
-          </>
+          </Stack>
         );
       case "DELIVERED":
         message = `Đã trả sách`;
         return (
-          <>
+          <Stack direction={"row"} justifyContent={"space-between"}>
             <Button
               variant="contained"
+              sx={{textTransform:"capitalize"}}
               onClick={() => callUpdateStatus("RETURNING", 2, message)}
             >
               {message}
             </Button>
-          </>
+            <Button
+              variant="outlined"
+              sx={{textTransform:"capitalize"}}
+              onClick={() => { }}
+            >
+              Mua sách
+            </Button>
+          </Stack>
         );
       case "RETURNED":
         return (
           <>
-            <Button variant="contained" onClick={handleClickOpenRateModal}>
-              Đánh giá đơn hàng
+            <Button variant="contained" sx={{textTransform:"capitalize"}} onClick={handleClickOpenRateModal}>
+              Đánh giá
             </Button>
           </>
         );
@@ -170,7 +197,7 @@ const OrderFooter = ({
         return (
           <>
             <Button
-              variant="contained"
+              variant="contained" sx={{textTransform:"capitalize"}}
               onClick={() => callUpdateStatus("RETURNING", 2, message)}
             >
               {message}
@@ -190,7 +217,7 @@ const OrderFooter = ({
         justifyItems="center"
         alignItems="center"
       >
-        <Grid item xs={6}  mb={1}>
+        <Grid item xs={6} mb={1}>
           {renderAlert()}
         </Grid>
         <Grid item xs={3} mb={1}>

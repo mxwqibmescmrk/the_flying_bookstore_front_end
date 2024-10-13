@@ -18,7 +18,8 @@ const BookCardCarousel = ({ book }: { book: IListing }) => {
         height={230}
       />
       <h4 className="text-xl font-semibold py-3">{book?.book?.title || "Không có tiêu đề"}</h4>
-      <p className="pb-3 text-sm text-secondary">{`${formatCurrency(book?.leaseRate)}/ngày` || "Không hợp lệ "}</p>
+      {book?.allowRent == 1 && (<p className="text-sm text-secondary">Thuê: {`${formatCurrency(book?.leaseRate)}/ngày` || "Không hợp lệ "}</p>)}
+      {book?.allowPurchase == 1 && (<p className="pb-3 text-sm text-gray-500">Mua: {`${formatCurrency(book?.price)}` || "Không hợp lệ "}</p>)}
       <Link href={`/detail/${book?.id}`}>
         <Button
           variant="contained"

@@ -34,7 +34,7 @@ const RentBook = ({ book }: IPropsBook) => {
   const renderRentAccordion = () => {
 
     // if(!book?.allow_rent){ TODO: chờ thảo confirm
-    if (book?.allow_rent) {
+    if (book?.allowRent) {
       return <></>;
     }
     return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
@@ -55,7 +55,7 @@ const RentBook = ({ book }: IPropsBook) => {
   }
   const renderPriceAccordion = () => {
     // if(!book?.allow_purchase){ TODO: chờ thảo confirm
-    if (book?.allow_purchase) {
+    if (book?.allowPurchase) {
       return <></>;
     }
     return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
