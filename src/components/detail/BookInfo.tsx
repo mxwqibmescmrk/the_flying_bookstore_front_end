@@ -1,30 +1,32 @@
-import Image from "next/image";
+'use client'
 import { Button, IconButton, Rating } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { TfiComments } from "react-icons/tfi";
 import { FaFacebook } from "react-icons/fa6";
 import { FaRegShareSquare } from "react-icons/fa";
 import BookGallery from "./BookGallery";
-import { AiFillThunderbolt } from "react-icons/ai";
 import { LuShieldCheck } from "react-icons/lu";
-import { AiOutlineThunderbolt } from "react-icons/ai";
 import { CiHashtag } from "react-icons/ci";
-import Quality from "./Quality";
 import { IListing } from "@/types/book";
 import {
   arrayToString,
   countAvarageReview,
   formatCurrency,
 } from "@/utils/helps";
-import Link from "next/link";
 import dayjs from "dayjs";
 import { useGenreStore } from "@/hooks/genre";
 import { ICategory } from "@/types/category";
 import { useRouter } from "next/navigation";
 import { useStoreSearch } from "@/hooks/search";
+import { useState } from "react";
+import ReadSampleDialog, { ISampleDialog } from "./ReadSample";
 
 const BookInfo = ({ book }: { book: IListing | undefined }) => {
   const listCategory = useGenreStore((state) => state.listGenre);
+  const [sampleDialog, setSampleDialog] = useState<ISampleDialog>({
+    open: true,
+    book: undefined,
+  })
   const { updateCategoryParam } = useStoreSearch();
   const router = useRouter();
   const getVietnameseNames = () => {
@@ -66,6 +68,12 @@ const BookInfo = ({ book }: { book: IListing | undefined }) => {
     <div className="flex gap-10 flex-row">
       <div className="xs:basic-0 md:basis-1/4  lg:basis-1/6 ">
         <BookGallery bookImg={book?.copy?.imageLink} />
+        <div className="flex">
+          <Button sx={{ mx: 'auto', mt: 1, textTransform: 'none' }}
+            onClick={() => setSampleDialog(state => ({ ...state, open: true }))}
+            variant="outlined"
+            color="info">Xem trước sách</Button>
+        </div>
       </div>
       <div className="flex-1">
         <h1 className="font-bold text-3xl text-primary">
@@ -158,6 +166,7 @@ const BookInfo = ({ book }: { book: IListing | undefined }) => {
           )}
         </div>
       </div>
+      <ReadSampleDialog sampleDialog={sampleDialog} setSampleDialog={setSampleDialog} />
     </div>
   );
 };
