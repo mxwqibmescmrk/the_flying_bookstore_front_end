@@ -10,8 +10,9 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/user";
 import { IUserLogin } from "@/types/user";
 
-import { getProfileService, handleFormSubmitService } from "@/api/auth/loginService";
+import {  handleFormSubmitService } from "@/api/auth/loginService";
 import { useStoreAlert } from "../../../../hooks/alert";
+import { getProfile } from "../../../../api/profile";
 
 
 const Login = () => {
@@ -19,10 +20,9 @@ const Login = () => {
   const { callAlert , callErrorAlert} = useStoreAlert();
   const router = useRouter();
   const { setToken } = useAuthStore();
-  const getProfile = async (token: string) => {
-    const data = await getProfileService(token);
+  const callApiProfile = async (token: string) => {
+    const data = await getProfile(token, setToken);
     if (data) {
-      setToken(token, data);
       callAlert("Đăng nhập thành công");
       router.push("/");
     }
@@ -35,7 +35,7 @@ const Login = () => {
       // Kiểm tra nếu service trả về dữ liệu hợp lệ
       if (typeof data !== 'string' && data.token) {
         // Đăng ký thành công, tiếp tục xử lý với token
-        await getProfile(data.token);
+        await callApiProfile(data.token);
         callAlert("Đăng nhập thành công");
       } else {
         // Trường hợp không có token trong response

@@ -5,7 +5,15 @@ import { IUser } from "../types/user";
 import { port } from "../utils/env";
 import { handleError } from "./handleError";
 
-export const getDetailOrder = async (orderId: number) => {
+export const getDetailBuyOrder = async (orderId: number) => {
+  return await axios
+    .request({ url: `${port}/api/SaleOrder/` + orderId })
+    .then((res) => res)
+    .catch((error) => {
+      return handleError(error);
+    });
+};
+export const getDetailRentOrder = async (orderId: number) => {
   return await axios
     .request({ url: `${port}/api/leaseOrder/` + orderId })
     .then((res) => res)
@@ -49,7 +57,7 @@ export const updateStatusOrder = async (status: IOrderStatus, id: number, token:
 export const getOrderWithStatusService = async (status: number, profile: IUser | null, isCustomer?: boolean) => {
   try {
     const response = await axios.request({
-      url: `${port}/api/leaseOrder/search/${isCustomer ?  `lessee` : `lessor`
+      url: `${port}/api/leaseOrder/search/${isCustomer ? `lessee` : `lessor`
         }/status/${profile?.id}`,
       params: {
         status,

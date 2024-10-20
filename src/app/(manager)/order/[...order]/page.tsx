@@ -2,7 +2,7 @@
 import { Typography } from "@mui/material";
 import Order from "../../../../components/checkout/Order";
 import { IOrder } from "../../../../types/order";
-import { getDetailOrder } from "../../../../api/order";
+import { getDetailRentOrder } from "../../../../api/order";
 import { useEffect, useState } from "react";
 import useApiCall from "../../../../hooks/useApiCall";
 import Loading from "../../../loading";
@@ -15,7 +15,7 @@ const Page = ({ params }: { params: { order: string } }) => {
     if (!params?.order) return;
     const fetchOrderDetail = async () => {
       await handleApiCall(
-        () => getDetailOrder(parseInt(params?.order)),
+        () => getDetailRentOrder(parseInt(params?.order)),
         (response: any) => setOrderDetail(response?.data as IOrder),
         "Lấy đơn hàng thành công",
       );

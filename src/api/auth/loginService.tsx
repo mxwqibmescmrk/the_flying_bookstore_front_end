@@ -3,20 +3,7 @@ import { IUserLogin } from "@/types/user";
 import { port } from "../../utils/env";
 import { handleError } from "../handleError";
 
-const getProfileService = async (token: string) => {
-  try {
-    const response = await axios.request({
-      url: `${port}/api/user/myInfo`,
-      headers: {
-        Authorization: `Bearer ${token}`,
 
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.log(error);
-  }
-};
 const handleFormSubmitService = async (formData: IUserLogin) => {
   try {
     const response = await axios.request({
@@ -33,4 +20,4 @@ const handleFormSubmitService = async (formData: IUserLogin) => {
   }
 };
 
-export { getProfileService, handleFormSubmitService }
+export { handleFormSubmitService }

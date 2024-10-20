@@ -5,7 +5,7 @@ import { BsFileText } from "react-icons/bs";
 import { PiCalendarCheck } from "react-icons/pi";
 import { LuFlag } from "react-icons/lu";
 import { CgCreditCard } from "react-icons/cg";
-import { IOrder } from "../../types/order";
+import { IRentOrder } from "../../types/order";
 import dayjs from "dayjs";
 import { renderPayment, renderStatus } from "./PaymentStatus";
 import { useStoreStep } from "../../hooks/step";
@@ -19,9 +19,8 @@ import { PiMoney } from "react-icons/pi";
 import { GiMoneyStack } from "react-icons/gi";
 import { TbSum } from "react-icons/tb";
 
-const Order = ({ orderDetail }: { orderDetail: IOrder }) => {
+const Order = ({ orderDetail }: { orderDetail: IRentOrder }) => {
   const { leaseOrder = null, lessor = null } = orderDetail
-  const { tabNum } = useStoreStep();
 
   if (!leaseOrder) return <>Không có đơn hàng</>
   const renderDurationRent = () => {
@@ -39,16 +38,16 @@ const Order = ({ orderDetail }: { orderDetail: IOrder }) => {
       children: <BsFileText className="total__icon" />
     },
     {
-      title: `Ngày đặt ${tabNum == 0 ? "thuê" : "mua"}`,
+      title: `Ngày đặt thuê`,
       description: dayjs(leaseOrder.createdDate).format("DD/MM/YYYY"),
       children: <PiCalendarCheck className="total__icon" />
     },
     {
-      title: `Người ${tabNum == 0 ? " cho thuê" : "bán"}`,
+      title: `Người cho thuê`,
       description: `${lessor?.lastName} ${lessor?.firstName}`,
       children: <GrUserManager className="total__icon" />
     },
-    ...(tabNum == 0 ? [{
+    {
       title: `Thời gian thuê`,
       description: ` ${dayjs(leaseOrder?.fromDate).format("DD/MM/YYYY")} - ${dayjs(leaseOrder?.toDate).format("DD/MM/YYYY")}`,
       children: <RiCalendarTodoLine className="total__icon" />
@@ -60,19 +59,11 @@ const Order = ({ orderDetail }: { orderDetail: IOrder }) => {
       title: `Số điện thoại người cho thuê`,
       description: formatPhoneNumber(lessor?.phoneNumber),
       children: <PiPhone className="total__icon" />
-    },] : [{
-      title: `Địa chỉ người bán`,
-      description: leaseOrder?.lessorAddress,
-      children: <RiMapPin2Line className="total__icon" />
-    }, {
-      title: `Số điện thoại người bán`,
-      description: formatPhoneNumber(lessor?.phoneNumber),
-      children: <PiPhone className="total__icon" />
-    },])
+    }
     ,
 
     {
-      title: `Số điện thoại người ${tabNum == 0 ? " cho thuê" : "bán"}`,
+      title: `Số điện thoại người cho thuê`,
       description: formatPhoneNumber(lessor?.phoneNumber),
       children: <PiPhone className="total__icon" />
     },
@@ -86,7 +77,7 @@ const Order = ({ orderDetail }: { orderDetail: IOrder }) => {
       description: renderPayment(leaseOrder.paymentMethod),
       children: <CgCreditCard className="total__icon" />
     },
-    ...(tabNum == 0 ? [{
+    {
       title: `Số ngày thuê`,
       description: renderDurationRent(),
       children: <RiCalendarTodoLine className="total__icon" />
@@ -98,11 +89,7 @@ const Order = ({ orderDetail }: { orderDetail: IOrder }) => {
       title: `Tiền cọc`,
       description: formatCurrency(orderDetail?.leaseOrder?.totalDeposit),
       children: <GiMoneyStack className="total__icon" />
-    }] : [{
-      title: `Giá bán`,
-      description: formatCurrency(orderDetail?.leaseOrder?.totalDeposit),
-      children: <PiMoney className="total__icon" />
-    }]),
+    },
   ]
   return (
     <>

@@ -7,7 +7,7 @@ import "./../../login/Login.scss";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { onSubmitService } from "@/api/auth/registerService";
+import { onRegisterService } from "@/api/auth/registerService";
 import { IUser } from "@/types/user";
 import { useStoreAlert } from "../../../../hooks/alert";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
@@ -43,7 +43,7 @@ const SignIn = () => {
         address: "" // Đảm bảo địa chỉ không để trống
       };
 
-      const response = await onSubmitService(req);
+      const response = await onRegisterService(req);
 
       if (typeof response !== 'string' && !!response) {
         callAlert("Đăng ký thành công");

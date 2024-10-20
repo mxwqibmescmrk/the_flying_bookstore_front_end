@@ -6,12 +6,12 @@ import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import Order from "./Order";
 import { useStoreOrder } from "../../hooks/order";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { IOrder, IOrderStatus } from "../../types/order";
+import { IOrderStatus, IRentOrder } from "../../types/order";
 import { renderPayment } from "./PaymentStatus";
 import { useUrl } from "nextjs-current-url";
 import { parseUrlParams } from "./parseUrlParams";
 import { IParamsVNpay } from "../../types/checkout";
-import { getDetailOrder, updateStatusOrder } from "../../api/order";
+import { getDetailRentOrder, updateStatusOrder } from "../../api/order";
 import { useAuthStore } from "../../hooks/user";
 import { useStoreAlert } from "../../hooks/alert";
 import { useStoreStep } from "../../hooks/step";
@@ -21,17 +21,17 @@ const Step2 = ({
 }: {
   handleNext: () => void;
 }) => {
-  const { order: orderId } = useStoreOrder();
-  const [orderDetail, setOrderDetail] = useState<IOrder>();
+  const { rentOrderId } = useStoreOrder();
+  const [orderDetail, setOrderDetail] = useState<IRentOrder>();
   const { href: currentUrl } = useUrl() ?? {};
   const { token } = useAuthStore()
   const { tabNum } = useStoreStep();
   const { callAlert, callErrorAlert } = useStoreAlert(state => state);
   const getOrder = async () => {
-    if (!orderId || !token) return;
+    if (!rentOrderId || !token) return;
     return await updateStatusOrder(
       "DELIVERED",
-      orderId,
+      rentOrderId,
       token
     ).then(() => {
       callAlert("Cập nhập đơn hàng thành công")
@@ -42,11 +42,11 @@ const Step2 = ({
     const getStatusOrder = async () => {
       if (!currentUrl || !token) return;
       const params: IParamsVNpay = parseUrlParams(currentUrl);
-      if (params.vnp_TransactionStatus == "00" && orderId) {
+      if (params.vnp_TransactionStatus == "00" && rentOrderId) {
         // gọi api thay đổi trạng thái đơn hàng ở đây
-        return await updateStatusOrder("PAYMENT_SUCCESS", orderId, token).then(async () => {
+        return await updateStatusOrder("PAYMENT_SUCCESS", rentOrderId, token).then(async () => {
           callAlert("Thanh toán thành công");
-          return await getDetailOrder(orderId).then((response) => {
+          return await getDetailRentOrder(rentOrderId).then((response) => {
             if (typeof response != "string") {
               setOrderDetail(response.data);
             } else {
@@ -57,13 +57,13 @@ const Step2 = ({
       }
     };
     getStatusOrder();
-  }, [callAlert, callErrorAlert, currentUrl, orderId, token]);
+  }, [callAlert, callErrorAlert, currentUrl, rentOrderId, token]);
 
   useEffect(() => {
     const getOrderApi = async () => {
-      if (!orderId) return;
+      if (!rentOrderId) return;
       try {
-        const response = await getDetailOrder(orderId);
+        const response = await getDetailRentOrder(rentOrderId);
         if (typeof response != "string") {
           setOrderDetail(response?.data);
         } else {
@@ -72,7 +72,7 @@ const Step2 = ({
       } catch (error) { }
     };
     getOrderApi();
-  }, [callErrorAlert, orderId]);
+  }, [callErrorAlert, rentOrderId]);
 
   const renderAlert = (status?: IOrderStatus | undefined) => {
     if (!status) return <></>;
