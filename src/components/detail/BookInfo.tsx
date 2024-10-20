@@ -24,7 +24,7 @@ import ReadSampleDialog, { ISampleDialog } from "./ReadSample";
 const BookInfo = ({ book }: { book: IListing | undefined }) => {
   const listCategory = useGenreStore((state) => state.listGenre);
   const [sampleDialog, setSampleDialog] = useState<ISampleDialog>({
-    open: true,
+    open: false,
     book: undefined,
   })
   const { updateCategoryParam } = useStoreSearch();
