@@ -10,33 +10,36 @@ import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/hooks/user";
 import { IUserLogin } from "@/types/user";
 
-import {  handleFormSubmitService } from "@/api/auth/loginService";
+import { handleFormSubmitService } from "@/api/auth/loginService";
 import { useStoreAlert } from "../../../../hooks/alert";
 import { getProfile } from "../../../../api/profile";
 
 
 const Login = () => {
   const [formData, setFormData] = useState({} as IUserLogin);
-  const { callAlert , callErrorAlert} = useStoreAlert();
+  const { callAlert, callErrorAlert } = useStoreAlert();
   const router = useRouter();
   const { setToken } = useAuthStore();
   const callApiProfile = async (token: string) => {
-    const data = await getProfile(token, setToken);
-    if (data) {
-      callAlert("Đăng nhập thành công");
-      router.push("/");
-    }
+    try {
+      const data = await getProfile(token, setToken);
+      if (data) {
+        callAlert("Đăng nhập thành công");
+        router.push("/");
+      }
+    } catch (error) {
+      callErrorAlert("Đăng nhập thất bại")
+    } 
   };
   const handleFormSubmit = async () => {
     try {
       // Gọi service để xử lý form submit
       const data = await handleFormSubmitService(formData);
-  
+
       // Kiểm tra nếu service trả về dữ liệu hợp lệ
       if (typeof data !== 'string' && data.token) {
         // Đăng ký thành công, tiếp tục xử lý với token
         await callApiProfile(data.token);
-        callAlert("Đăng nhập thành công");
       } else {
         // Trường hợp không có token trong response
         callErrorAlert(data);
@@ -73,7 +76,7 @@ const Login = () => {
       <div className="auth__right">
         <Image src={Background} alt="background" fill className="img" />
       </div>
-     
+
     </div>
   );
 };

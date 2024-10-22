@@ -22,8 +22,8 @@ const RentBook = ({ book }: IPropsBook) => {
   const { profile } = useAuthStore();
   const addToCart = useStoreCart((state) => state.addCartBuy);
   const { changeTabNum } = useStoreStep();
-  const handleAddToCartBuy = ()=>{
-    if (!book?.id) return; 
+  const handleAddToCartBuy = () => {
+    if (!book?.id) return;
     const submitCart: ICartBook = {
       bookId: book.id,
     };
@@ -58,7 +58,7 @@ const RentBook = ({ book }: IPropsBook) => {
     if (book?.allowPurchase) {
       return <></>;
     }
-    return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
+    return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel2-content"
@@ -82,7 +82,7 @@ const RentBook = ({ book }: IPropsBook) => {
           <Alert severity="info">
             Đây là sách của bạn, bạn không thể thêm vào giỏ hàng
           </Alert>
-        ):( <Button
+        ) : (<Button
           variant="contained"
           color="secondary"
           size="large"
@@ -93,7 +93,7 @@ const RentBook = ({ book }: IPropsBook) => {
         >
           Mua ngay
         </Button>)}
-       
+
       </AccordionDetails>
     </Accordion>);
   }
