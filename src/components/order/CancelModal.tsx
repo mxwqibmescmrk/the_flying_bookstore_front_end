@@ -8,7 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import { IOrder, IOrderStatus } from "../../types/order";
+import {  IOrderStatus, IRentOrder } from "../../types/order";
 import { useStoreAlert } from "../../hooks/alert";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -21,7 +21,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 interface IModal {
   open: boolean;
-  order: IOrder;
+  order: IRentOrder;
 }
 export default function CancelModal({
   cancelModal,

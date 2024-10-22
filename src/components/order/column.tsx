@@ -1,9 +1,9 @@
 import { GridActionsCellItem, GridActionsColDef, GridColDef, GridRenderCellParams, GridRowParams } from "@mui/x-data-grid";
-import { IOrder } from "../../types/order";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { CiCircleInfo } from "react-icons/ci";
 import theme from "../../utils/theme";
+import { IRentOrder } from "../../types/order";
 
 export type IRow = {
   id: number;
@@ -14,8 +14,7 @@ export type IRow = {
   total: number;
 
 };
-// Function to convert IOrder and ILeaseOrderDetail to IRow
-export function convertToRow(order: IOrder): IRow {
+export function convertToRow(order: IRentOrder): IRow {
   const { listing, leaseOrder } = order;
   const id = listing?.id || 0;
   const title = listing?.book.title || "";

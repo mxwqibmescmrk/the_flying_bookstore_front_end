@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import CustomTabPanel, { orderProps } from "../order/CustomTabPanel";
-import { IOrder, OrderType } from "../../types/order";
+import {  IRentOrder, OrderType } from "../../types/order";
 import { useAuthStore } from "../../hooks/user";
 import { useStoreAlert } from "../../hooks/alert";
 import { useRouter } from "next/navigation";
@@ -38,8 +38,8 @@ const ListOrderMain = ({ orderType }: { orderType: OrderType }) => {
   const { profile } = useAuthStore();
   const { tabNum } = useStoreStep()
   const { callAlert, callErrorAlert } = useStoreAlert();
-  const [listOrder, setListOrder] = useState<Array<IOrder>>();
-  const { handleApiCall, loading } = useApiCall<IOrder[]>();  // Sử dụng hook
+  const [listOrder, setListOrder] = useState<Array<IRentOrder>>();
+  const { handleApiCall, loading } = useApiCall<IRentOrder[]>();  // Sử dụng hook
   const router = useRouter();
 
   const handleChange = (_: any, newValue: number) => {

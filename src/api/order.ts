@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IOrder, IOrderStatus } from "../types/order";
+import {  IOrderStatus } from "../types/order";
 import { useAuthStore } from "@/hooks/user";
 import { IUser } from "../types/user";
 import { port } from "../utils/env";
