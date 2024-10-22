@@ -23,13 +23,15 @@ const Login = () => {
   const callApiProfile = async (token: string) => {
     try {
       const data = await getProfile(token, setToken);
-      if (data) {
+      if (typeof data != "string") {
         callAlert("Đăng nhập thành công");
         router.push("/");
+      } else {
+        callErrorAlert(data);
       }
     } catch (error) {
       callErrorAlert("Đăng nhập thất bại")
-    } 
+    }
   };
   const handleFormSubmit = async () => {
     try {

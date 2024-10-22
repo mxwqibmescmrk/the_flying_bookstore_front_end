@@ -3,6 +3,7 @@ import React from 'react'
 import BookImg from "./../../assets/images/loading-meo.gif";
 import { IListing } from '../../types/book';
 import Link from 'next/link';
+import { arrayToString } from '../../utils/helps';
 
 const BookDetailInfo = ({book}:{book?: IListing,}) => {
   return (
@@ -15,7 +16,7 @@ const BookDetailInfo = ({book}:{book?: IListing,}) => {
           {book?.book.title}
         </h4>
         </Link>
-        <p className="text-sm text-gray-500 ">{book?.book.authors}</p>
+        <p className="text-sm text-gray-500 ">{arrayToString(book?.book?.authors)}</p>
       </div>
       <div className="basis-2/12 flex items-center ">
         <p className="text-sm mr-3">Số lượng:</p>

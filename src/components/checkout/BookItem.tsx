@@ -2,7 +2,7 @@ import Image from "next/image";
 import BookImage from "@/assets/images/book loading.gif";
 import Link from "next/link";
 import { IBuyOrder, IRentOrder } from "../../types/order";
-import { formatCurrency } from "../../utils/helps";
+import { arrayToString, formatCurrency } from "../../utils/helps";
 import { useStoreStep } from "../../hooks/step";
 import { useEffect, useState } from "react";
 import { IListing } from "../../types/book";
@@ -53,7 +53,7 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
           <Link href={`/detail/${listing?.id}`}>
             <h5 className="text-lg font-semibold">{listing?.book.title}</h5>
           </Link>
-          <p className="text-sm text-gray-400">{listing?.book.authors}</p>
+          <p className="text-sm text-gray-400">{arrayToString(listing?.book?.authors)}</p>
         </div>
       </div>
       <div className="flex items-center ">
