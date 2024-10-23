@@ -29,8 +29,11 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
       makeRequest();
     }
   }, [callErrorAlert, orderDetail?.id, tabNum]);
-
-  if ((tabNum == 1 && !listing?.id) || (tabNum == 0 && !orderDetail?.id)) return <>Không có chi tiết đơn hàng</>
+  if(tabNum == 1){
+    if(!orderDetail?.id) return <>Không có chi tiết đơn hàng</>
+  } else if(tabNum == 0) {
+    if(!listing?.id) return <>Không có chi tiết đơn hàng</>
+  }
   return (
     <div className="hover:shadow-lg hover:shadow-indigo-500/50 ease-in-out duration-200 p-3 rounded-lg book flex justify-between align-center  mt-5 gap-5">
       <div className="flex">
@@ -68,7 +71,7 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
           </div>
         </div>
       ) : (
-        <div className="flex  justify-center">
+        <div className="flex flex-col justify-center">
           <div className="flex justify-between">
             <p className="text-sm mr-8">Giá thuê: </p>
             <p className="text-sm text-gray-400">{formatCurrency(leaseOrder?.leaseOrderDetails[0].leaseRate)}</p>
