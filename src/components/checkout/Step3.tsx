@@ -4,13 +4,13 @@ import Link from "next/link";
 import { Button } from "@mui/material";
 import { CiShoppingCart } from "react-icons/ci";
 import { useStoreOrder } from "../../hooks/order";
-import { IOrder } from "../../types/order";
 import { getDetailOrderService } from "@/api/checkoutService";
 import { useAuthStore } from "../../hooks/user";
+import { IRentOrder } from "../../types/order";
 
 const Step3 = () => {
-  const { order: orderId } = useStoreOrder();
-  const [orderDetail, setOrderDetail] = useState<IOrder>();
+  const { rentOrderId: orderId } = useStoreOrder();
+  const [orderDetail, setOrderDetail] = useState<IRentOrder>();
   const {  token } = useAuthStore();
   useEffect(() => {
     const getDetailOrder = async () => {

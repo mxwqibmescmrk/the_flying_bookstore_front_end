@@ -2,19 +2,25 @@ import { StateCreator, create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 interface IOrder {
-  order: number | null;
-  updateOrder: (arg: number | null) => void;
+  rentOrderId: number | null;
+  buyOrderId: number | null;
+  updateRentOrder: (arg: number | null) => void;
+  updateBuyOrder: (arg: number | null) => void;
   removeOrder: () =>void;
 }
 
 const orderSlice: StateCreator<IOrder, [["zustand/persist", unknown]]> = (
   set
 ) => ({
-  order: null,
-  updateOrder: (newOrder) => {
-    set({ order: newOrder });
+  rentOrderId: null,
+  buyOrderId:null,
+  updateRentOrder: (newOrderId) => {
+    set({ rentOrderId: newOrderId });
   },
-  removeOrder: () => set({order:null})
+  updateBuyOrder: (newOrderId) => {
+    set({ buyOrderId: newOrderId });
+  },
+  removeOrder: () => set({rentOrderId:null, buyOrderId:null})
 });
 export const useStoreOrder = create<IOrder>()(
   persist(orderSlice, {

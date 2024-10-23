@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useStoreOrder } from "../../hooks/order";
 import { getProfile, onSubmitProfile } from "../../api/profile";
 import { useStoreAlert } from "../../hooks/alert";
-import { onSubmitOrderService } from "@/api/checkoutService";
+import { onSubmitOrderBuyService, onSubmitOrderService } from "@/api/checkoutService";
 import InfoCheckout from "../cart/InfoCheckout";
 import CartItem from "../cart/CartItem";
 import { useStoreStep } from "../../hooks/step";
@@ -41,7 +41,7 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
   const { tabNum } = useStoreStep();
   const { callAlert, callErrorAlert } = useStoreAlert();
   const { profile, token, setToken } = useAuthStore();
-  const { updateOrder } = useStoreOrder();
+  const { updateRentOrder, updateBuyOrder } = useStoreOrder();
   const { cart } = useStoreCart();
   const router = useRouter();
   const [payType, setPayType] = useState<number>(0);
@@ -68,10 +68,25 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
   useEffect(() => {
     getProfile(token, setToken);
   }, [setToken, token]);
-
-  const onSubmitOrder = async () => {
+  const callApiBuyOrder = async () => {
     const data = getValues();
-
+    const convertValue = {
+      status: "ORDERED_PAYMENT_PENDING",
+      listingId: cart?.buy?.bookId,
+      buyerAddress: data.address,
+      paymentMethod: convertPaymentType(payType),
+    };
+    const response = await onSubmitOrderBuyService(convertValue, token);
+    if (typeof response != "string") {
+      callAlert("Tạo đơn hàng mua thành công");
+      updateBuyOrder(response?.id);
+      handleNext();
+    } else {
+      callErrorAlert(response)
+    }
+  }
+  const callApiRentOrder = async () => {
+    const data = getValues();
     const convertValue = {
       status: "ORDERED_PAYMENT_PENDING",
       listingId: cart?.rent?.bookId,
@@ -81,16 +96,24 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
       toDate: dayjs(cart?.rent?.dayRent.dateEnd).format("YYYY-MM-DD"),
       paymentMethod: convertPaymentType(payType),
     };
-
-    // const response = await onSubmitOrderService(convertValue, token); // TODO: có api thì nhớ revert lại
-    const response= demoRes.leaseOrder;
-    if (response) {
-      callAlert("Tạo đơn hàng thành công");
-      updateOrder(response?.id);
+    const response = await onSubmitOrderService(convertValue, token);
+    // const response= demoRes.leaseOrder;
+    if (typeof response != "string") {
+      callAlert("Tạo đơn hàng thuê thành công");
+      updateRentOrder(response?.id);
       handleNext();
       if (payType == 2) {
         // TODO: VNPay
       }
+    } else {
+      callErrorAlert(response)
+    }
+  }
+  const onSubmitOrder = async () => {
+    if (tabNum == 1) {
+      callApiBuyOrder()
+    } else {
+      callApiRentOrder()
     }
   };
   const beforeOnSubmitProfile = async (data: IFormCheckout) => {
@@ -127,14 +150,14 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
           </Link>
           <Box sx={{ flex: "1 1 auto" }} />
 
-           <Button
+          <Button
             size="large"
 
             variant="contained"
             onClick={onSubmitOrder}
           >
             Tạo đơn hàng
-          </Button> 
+          </Button>
         </Box>
       </form>
     </FormProvider>

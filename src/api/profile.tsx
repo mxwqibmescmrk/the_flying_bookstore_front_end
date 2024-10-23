@@ -4,10 +4,23 @@ import { IUser } from "../types/user";
 import { IFormCheckout } from "../types/form";
 import dayjs from "dayjs";
 import { port } from "../utils/env";
+import { handleError } from "./handleError";
+export const getUserInfo = async (
+  userId: number,
+) => {
+  try {
+    const response = await axios.request({
+      url: `${port}/api/user/${userId}`,
+    });
+    return response
+  } catch (error) {
+    return handleError(error)
+  }
+};
 export const getProfile = async (
   token: string | null,
   setToken: (arg: string, profile: IUser) => void
-): Promise<void> => {
+) => {
   try {
     const response = await axios.request({
       url: `${port}/api/user/myInfo`,
@@ -17,12 +30,16 @@ export const getProfile = async (
     });
     if (response?.data && token) {
       setToken(token, response?.data);
+      return response;
+    } else {
+      return "Lấy thông tin thất bại"
+
     }
   } catch (error) {
-    console.log(error);
+    return handleError(error)
   }
 };
-export const onSubmitProfile = async (data: IFormCheckout, profile: IUser | null,token: string | null) => {
+export const onSubmitProfile = async (data: IFormCheckout, profile: IUser | null, token: string | null) => {
   const { email, phoneNumber, firstName, lastName, birthDate, address } =
     data;
   let dataRes = JSON.stringify({
@@ -53,6 +70,6 @@ export const onSubmitProfile = async (data: IFormCheckout, profile: IUser | null
       return response.data
     })
     .catch((error) => {
-      console.log(error);
+      return handleError(error)
     });
 };

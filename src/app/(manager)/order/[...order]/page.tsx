@@ -1,22 +1,22 @@
 "use client";
 import { Typography } from "@mui/material";
 import Order from "../../../../components/checkout/Order";
-import { IOrder } from "../../../../types/order";
-import { getDetailOrder } from "../../../../api/order";
+import { IRentOrder } from "../../../../types/order";
+import { getDetailRentOrder } from "../../../../api/order";
 import { useEffect, useState } from "react";
 import useApiCall from "../../../../hooks/useApiCall";
 import Loading from "../../../loading";
 
 const Page = ({ params }: { params: { order: string } }) => {
-  const [orderDetail, setOrderDetail] = useState<IOrder | undefined>();
+  const [orderDetail, setOrderDetail] = useState<IRentOrder | undefined>();
   const { handleApiCall, loading } = useApiCall();
 
   useEffect(() => {
     if (!params?.order) return;
     const fetchOrderDetail = async () => {
       await handleApiCall(
-        () => getDetailOrder(parseInt(params?.order)),
-        (response: any) => setOrderDetail(response?.data as IOrder),
+        () => getDetailRentOrder(parseInt(params?.order)),
+        (response: any) => setOrderDetail(response?.data as IRentOrder),
         "Lấy đơn hàng thành công",
       );
     };

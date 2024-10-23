@@ -4,7 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { IRow, columnsOrderRent, columnsOrderSellBuy, convertToRow } from "./column";
 import NoData from "./NoData";
 import OrderFooter from "./OrderFooter";
-import { IOrder, OrderType } from "../../types/order";
+import {  IRentOrder, OrderType } from "../../types/order";
 import { useState } from "react";
 import theme from "../../utils/theme";
 import { useStoreStep } from "../../hooks/step";
@@ -14,7 +14,7 @@ const DetailOrder = ({
   changeStatus,
   orderType,
 }: {
-  order: IOrder;
+  order: IRentOrder;
   orderType: OrderType;
   changeStatus: (e: any, newValue: number) => void;
 }) => {

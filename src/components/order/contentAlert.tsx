@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { IOrder, IOrderStatus } from "../../types/order";
+import {  IOrderStatus, IRentOrder } from "../../types/order";
 import { formatCurrency } from "../../utils/helps";
 
 type IOrderStatusMessage = {
@@ -10,7 +10,7 @@ type IOrderStatusMessage = {
     [key in IOrderStatus]?: string;
   };
 };
-export let callContentAlert: (order: IOrder) => IOrderStatusMessage | null = (order: IOrder) => {
+export let callContentAlert: (order: IRentOrder) => IOrderStatusMessage | null = (order: IRentOrder) => {
   const dateEnd = dayjs(order?.leaseOrder?.toDate);
 
   const duration = dateEnd.diff(order?.leaseOrder?.fromDate, "day");

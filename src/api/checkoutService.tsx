@@ -2,6 +2,24 @@ import axios from "axios";
 import { port } from "../utils/env";
 import { handleError } from "./handleError";
 
+const onSubmitOrderBuyService = async (convertValue: any,  token: string | null) => {
+  try {
+    const response = await axios.request({
+      method: "post",
+      maxBodyLength: Infinity,
+      url: `${port}/api/SaleOrder/createSaleOrder`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: JSON.stringify(convertValue),
+    });
+    return response.data;
+  } catch (error:unknown) {
+    return handleError(error);
+  }
+}
+
 const onSubmitOrderService = async (convertValue: any,  token: string | null) => {
   try {
     const response = await axios.request({
@@ -16,7 +34,7 @@ const onSubmitOrderService = async (convertValue: any,  token: string | null) =>
     });
     return response.data;
   } catch (error:unknown) {
-    handleError(error);
+    return handleError(error);
   }
 }
 
@@ -34,4 +52,4 @@ const getDetailOrderService = async (orderId: number | null, token: string | nul
   };
 };
 
-export { onSubmitOrderService, getDetailOrderService }
+export { onSubmitOrderService, onSubmitOrderBuyService, getDetailOrderService }

@@ -28,14 +28,34 @@ export type IOrderStatus =
   | "PAID_OWNER"
   | "DEPOSIT_RETURNED";
 export type IPaymentMethod = "COD" | "BANK_TRANSFER" | "VNPAY";
+export interface IBuyOrder {
+  id?: number;
+  listingId?: number;
+  status?: IOrderStatus; 
+  sellerId?: number;
+  buyerId?: number;
+  sellerAddress?: string;
+  buyerAddress?: string;
+  receiveDate?: string | null;
+  totalPrice?: number;
+  totalChange?: number;
+  totalCompensate?: number;
+  totalPenaltyRate?: number | null;
+  paymentMethod?: IPaymentMethod; 
+  sellPaymentId?: number;
+  changePaymentId?: number;
+  compensatePaymentId?: number | null;
+  createdDate?: string;
+}
 
-export interface IOrder {
+export interface IRentOrder {
   leaseOrder?: ILeaseOrder;
   listing?: IListing;
   lessor?: IUser;
   lessee?: IUser;
   totalPenaltyFee?: number;
 }
+
 
 interface ILeaseOrder {
   id: number;

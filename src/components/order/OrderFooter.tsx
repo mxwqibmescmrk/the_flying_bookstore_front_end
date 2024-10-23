@@ -11,7 +11,7 @@ import {
 import RateModel from "./RateModel";
 import { useState } from "react";
 import { formatCurrency } from "../../utils/helps";
-import { IOrder, IOrderStatus, OrderType } from "../../types/order";
+import {  IOrderStatus, IRentOrder, OrderType } from "../../types/order";
 import { updateStatusOrder } from "../../api/order";
 import { useStoreAlert } from "../../hooks/alert";
 import { CiTrash } from "react-icons/ci";
@@ -27,14 +27,14 @@ require("dayjs/locale/vi");
 dayjs.locale("vi"); // use locale globally
 dayjs.extend(relativeTime);
 
-export type IRateModal = { open: boolean; order: IOrder };
+export type IRateModal = { open: boolean; order: IRentOrder };
 const OrderFooter = ({
   order,
   changeStatus,
   orderType,
 }: {
   orderType?: OrderType;
-  order: IOrder;
+  order: IRentOrder;
   changeStatus: (e: any, newValue: number) => void;
 }) => {
   const [rateModal, setRateModal] = useState<IRateModal>({

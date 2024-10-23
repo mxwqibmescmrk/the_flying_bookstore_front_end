@@ -2,7 +2,7 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../hooks/user";
-import { IOrder, OrderType } from "../../types/order";
+import {  IRentOrder, OrderType } from "../../types/order";
 import DetailOrder from "./DetailOrder";
 import { RxReload } from "react-icons/rx";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function ListOrder({
 
 }: {
   orderType: OrderType;
-  listOrder: Array<IOrder> | undefined;
+  listOrder: Array<IRentOrder> | undefined;
   reloadButton:()=> Promise<void>;
   reloadStatus: (_: any, newValue: number) => Promise<void>;
   loading: boolean;

@@ -3,7 +3,7 @@ import { IUser } from "@/types/user";
 import { port } from "../../utils/env";
 import { handleError } from "../handleError";
 
-const onSubmitService = async (data: IUser) => {
+const onRegisterService = async (data: IUser) => {
   try {
     const response = await axios.request({
       method: "POST",
@@ -27,4 +27,4 @@ const onSubmitService = async (data: IUser) => {
     return handleError(error);
   }
 };
-export { onSubmitService }
+export { onRegisterService }

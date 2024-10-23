@@ -1,11 +1,11 @@
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 import { CiLocationArrow1 } from "react-icons/ci";
-import { IOrder, OrderType } from "../../types/order";
+import {  IRentOrder, OrderType } from "../../types/order";
 import dayjs from "dayjs";
 import { renderStatus } from "../checkout/PaymentStatus";
 import { useStoreStep } from "../../hooks/step";
-const renderUserName = (order: IOrder, orderType: OrderType): string => {
+const renderUserName = (order: IRentOrder, orderType: OrderType): string => {
   switch (orderType) {
     case OrderType.Leasee:
       return `${order?.lessor?.lastName} ${order?.lessor?.firstName}`; // Nếu là khách hàng
@@ -31,7 +31,7 @@ export const HeaderOrder = ({
   order,
   orderType,
 }: {
-  order: IOrder;
+  order: IRentOrder;
   orderType: OrderType;
 }) => {
 
