@@ -30,7 +30,7 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
     }
   }, [callErrorAlert, orderDetail?.id, tabNum]);
 
-  if (!orderDetail.id && listing?.id) return <>Không có chi tiết đơn hàng</>
+  if ((tabNum == 1 && !listing?.id) || (tabNum == 0 && !orderDetail?.id)) return <>Không có chi tiết đơn hàng</>
   return (
     <div className="hover:shadow-lg hover:shadow-indigo-500/50 ease-in-out duration-200 p-3 rounded-lg book flex justify-between align-center  mt-5 gap-5">
       <div className="flex">

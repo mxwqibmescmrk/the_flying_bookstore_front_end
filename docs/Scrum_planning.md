@@ -144,6 +144,7 @@ Tổng cộng: **story points là 19** cho ba thành viên.
 Với 3 người, khối lượng công việc khoảng story points là 19  sẽ phù hợp với khả năng của chúng ta trong sprint này. Như vậy, chúng ta có thể tiếp tục phân công các task khác nếu cần thiết.”
 
 **Tôn Trọng Tín (Tech Lead)**:  đã rõ
+
 ---
 
 **Mai Thành Đạt (Scrum Master)**:  
