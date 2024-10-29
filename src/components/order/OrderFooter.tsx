@@ -11,8 +11,8 @@ import {
 import RateModel from "./RateModel";
 import { useState } from "react";
 import { formatCurrency } from "../../utils/helps";
-import {  IOrderStatus, IRentOrder, OrderType } from "../../types/order";
-import { updateStatusOrder } from "../../api/order";
+import {  IChangeToBuyOrder, IOrderStatus, IRentOrder, OrderType } from "../../types/order";
+import { changeToBuyOrder, updateStatusOrder } from "../../api/order";
 import { useStoreAlert } from "../../hooks/alert";
 import { CiTrash } from "react-icons/ci";
 import dayjs from "dayjs";
@@ -32,8 +32,10 @@ const OrderFooter = ({
   order,
   changeStatus,
   orderType,
+  reloadButton
 }: {
   orderType?: OrderType;
+  reloadButton:()=> Promise<void>;
   order: IRentOrder;
   changeStatus: (e: any, newValue: number) => void;
 }) => {
@@ -93,6 +95,32 @@ const OrderFooter = ({
       }
     );
   };
+  const callChangeToBuy= async (): Promise<void> => {
+    if (!order?.leaseOrder?.id || !token) return;
+    if(!order?.lessee?.address) return;
+    if(!order?.listing?.id) return;
+    const data:IChangeToBuyOrder = {
+      LeaseOrderId: order?.leaseOrder?.id.toString(),
+      buyerAddress: order?.lessee?.address,
+      listingId: order?.listing?.id,
+      paymentMethod: order?.leaseOrder?.paymentMethod
+    }
+    return await changeToBuyOrder(token, data).then(
+      () => {
+        callAlert(`Chuyển đơn hàng sang mua thành công`);
+        reloadButton();
+      }
+    );
+  };
+  const buyButton = (
+    <Button
+    variant="outlined"
+    sx={{textTransform:"capitalize"}}
+    onClick={callChangeToBuy}
+  >
+    Mua sách
+  </Button>
+  )
   const cancelButton = (
     <IconButton
       color="error"
@@ -122,23 +150,17 @@ const OrderFooter = ({
     }
     switch (order?.leaseOrder?.status) {
       case "PAYMENT_SUCCESS":
-        message = `Đã nhận được hàng`;
+        message = `Đã nhận được sách`;
         return (
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Button
               variant="contained"
-                      sx={{textTransform:"capitalize"}}
+                      sx={{textTransform:"capitalize", mr:1}}
               onClick={() => callUpdateStatus("DELIVERED", 2, message)}
             >
               {message}
             </Button>
-            <Button
-              variant="outlined"
-              sx={{textTransform:"capitalize"}}
-              onClick={() => { }}
-            >
-              Mua sách
-            </Button>
+            {buyButton}
           </Stack>
         );
       case "ORDERED_PAYMENT_PENDING":
@@ -148,18 +170,12 @@ const OrderFooter = ({
           <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
             <Button
               variant="contained"
-              sx={{textTransform:"capitalize"}}
+              sx={{textTransform:"capitalize", mr:1}}
               onClick={() => callUpdateStatus("USER_PAID", 1, message)}
             >
               {message}
             </Button>
-            <Button
-              variant="outlined"
-              sx={{textTransform:"capitalize"}}
-              onClick={() => { }}
-            >
-              Mua sách
-            </Button>
+            {buyButton}
             {cancelButton}
           </Stack>
         );
@@ -169,18 +185,12 @@ const OrderFooter = ({
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Button
               variant="contained"
-              sx={{textTransform:"capitalize"}}
+              sx={{textTransform:"capitalize", mr:1}}
               onClick={() => callUpdateStatus("RETURNING", 2, message)}
             >
               {message}
             </Button>
-            <Button
-              variant="outlined"
-              sx={{textTransform:"capitalize"}}
-              onClick={() => { }}
-            >
-              Mua sách
-            </Button>
+            {buyButton}
           </Stack>
         );
       case "RETURNED":

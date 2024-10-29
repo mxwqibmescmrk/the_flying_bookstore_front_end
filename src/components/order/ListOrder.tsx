@@ -85,6 +85,7 @@ export default function ListOrder({
             order={order}
             changeStatus={reloadStatus}
             orderType={orderType}
+            reloadButton={reloadButton}
           />
         </Grid>
       ))}

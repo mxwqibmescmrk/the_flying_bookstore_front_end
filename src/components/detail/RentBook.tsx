@@ -34,7 +34,7 @@ const RentBook = ({ book }: IPropsBook) => {
   const renderRentAccordion = () => {
 
     // if(!book?.allow_rent){ TODO: chờ thảo confirm
-    if (book?.allowRent) {
+    if (book?.copy?.allow_rent == 0) {
       return <></>;
     }
     return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
@@ -55,10 +55,10 @@ const RentBook = ({ book }: IPropsBook) => {
   }
   const renderPriceAccordion = () => {
     // if(!book?.allow_purchase){ TODO: chờ thảo confirm
-    if (book?.allowPurchase) {
+    if (book?.copy?.allow_purchase == 0) {
       return <></>;
     }
-    return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }}>
+    return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel2-content"
