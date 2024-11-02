@@ -60,6 +60,7 @@ export const changeToBuyOrder = async ( token: string, data: IChangeToBuyOrder) 
       headers: {
         Authorization: `Bearer ${token}`,
       },
+      method:"POST",
       data
     })
     .then((response) => {
