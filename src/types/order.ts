@@ -15,6 +15,12 @@ interface ILeaseOrderDetail {
   penaltyRate: number;
   title: string;
 }
+export interface IChangeToBuyOrder {
+  LeaseOrderId: string;
+  listingId: number;
+  buyerAddress: string;
+  paymentMethod: IPaymentMethod;
+}
 export type IOrderStatus =
   | "ORDERED_PAYMENT_PENDING"
   | "CANCELED"

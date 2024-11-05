@@ -27,7 +27,6 @@ const InfoCheckout = () => {
       try {
         const newBook = await getBookDetailService(bookId.toString());
         if (typeof newBook !== "string") {
-          console.log({newBook})
           setBook(newBook);
         } else {
           callErrorAlert(newBook);

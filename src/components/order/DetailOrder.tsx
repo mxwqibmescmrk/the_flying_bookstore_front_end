@@ -13,7 +13,9 @@ const DetailOrder = ({
   order,
   changeStatus,
   orderType,
+  reloadButton
 }: {
+  reloadButton:()=> Promise<void>;
   order: IRentOrder;
   orderType: OrderType;
   changeStatus: (e: any, newValue: number) => void;
@@ -48,7 +50,7 @@ const DetailOrder = ({
         hideFooter
 
       />
-      <OrderFooter changeStatus={changeStatus} order={order} orderType={orderType} />
+      <OrderFooter reloadButton={reloadButton} changeStatus={changeStatus} order={order} orderType={orderType} />
     </Box>
   );
 };
