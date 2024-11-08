@@ -12,14 +12,14 @@ import { IListing } from "../../../types/book";
 import { useStoreStep } from "../../../hooks/step";
 import { getBookDetailService } from "../../../api/bookListService";
 import { useStoreVoucher } from "../../../hooks/voucher";
-import { SearchIconWrapperVoucher, SearchVoucher, StyledInputBaseVoucher } from "./StyleVoucher";
-import { isValidVoucher, sortVouchersByPriority } from "./calculateVoucher";
+import { isValidVoucher, sortVouchersByPriority } from "../voucherSession/calculateVoucher";
+import { SearchIconWrapperVoucher, SearchVoucher, StyledInputBaseVoucher } from "../voucherSession/StyleVoucher";
 
-const ListVoucher = () => {
+const ListVoucherShop = () => {
   const [open, setOpen] = React.useState(false);
   const [listVoucher, setListVoucher] = useState<IVoucherSession[]>([])
   const [keyword, setKeyword] = useState<string>("");
-  const { voucher: voucherChoosen, chooseVoucher } = useStoreVoucher();
+  const { voucherShop: voucherChoosen, chooseVoucherShop: chooseVoucher } = useStoreVoucher();
   const handleClose = () => {
     setOpen(false);
   };
@@ -52,7 +52,7 @@ const ListVoucher = () => {
   const descriptionElementRef = React.useRef<HTMLElement>(null);
   useEffect(() => {
     const getSearchVoucher = async () => {
-      return await axios.get(`${port}/api/voucher-session/search?keyword=${keyword}`)
+      return await axios.get(`${port}/api/voucher-shop/search?keyword=${keyword}`)
         .then((response) => {
           if (response.status == 200) {
             setListVoucher(response.data);
@@ -123,9 +123,9 @@ const ListVoucher = () => {
 
   return (
     <>
-      <div className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white w-full mt-5">
+      <div className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white w-full">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-sm font-medium text-gray-800">Khuyến Mãi toàn sàn</h2>
+          <h2 className="text-sm font-medium text-gray-800">Khuyến Mãi của Shop</h2>
           <span className="text-sm text-gray-500">Có thể chọn 1</span>
         </div>
         {voucherChoose && (
@@ -155,7 +155,7 @@ const ListVoucher = () => {
         aria-labelledby="scroll-voucher"
         aria-describedby="scroll-voucher-descript"
       >
-        <DialogTitle id="scroll-voucher">The Flying Bookstore khuyến mãi</DialogTitle>
+        <DialogTitle id="scroll-voucher">{book?.user?.firstName} {book?.user?.lastName} khuyến mãi</DialogTitle>
         <Stack
           direction="row"
           spacing={1}
@@ -201,4 +201,4 @@ const ListVoucher = () => {
   )
 }
 
-export default ListVoucher
+export default ListVoucherShop
