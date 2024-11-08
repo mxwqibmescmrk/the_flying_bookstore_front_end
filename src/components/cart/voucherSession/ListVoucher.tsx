@@ -1,104 +1,113 @@
-import Image from "next/image"
-import LogoImage from "./../../../assets/images/logo.jpg";
 import { TbTicket } from "react-icons/tb";
-import { alpha, Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, InputBase, Stack, styled, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { port } from "../../../utils/env";
 import axios from "axios";
 import { IVoucherSession } from "../../../types/voucher";
 import { formatCurrency } from "../../../utils/helps";
 import dayjs from "dayjs";
+import { useStoreCart } from "../../../hooks/cart";
+import { useStoreAlert } from "../../../hooks/alert";
+import { IListing } from "../../../types/book";
+import { useStoreStep } from "../../../hooks/step";
+import { getBookDetailService } from "../../../api/bookListService";
+import { useStoreVoucher } from "../../../hooks/voucher";
+import { SearchIconWrapperVoucher, SearchVoucher, StyledInputBaseVoucher } from "./StyleVoucher";
+import { countDiscount } from "./calculateVoucher";
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
+const today = dayjs();
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
+const isValidVoucher = (voucher: IVoucherSession, price?: number) => {
+  const startDate = dayjs(voucher.startDate);
+  const endDate = dayjs(voucher.endDate);
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
-  },
-}));
-const renderCard = (voucher: IVoucherSession) => {
-  return (
-    <React.Fragment>
-      <CardContent sx={{ paddingBottom: 0 }}>
-        <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
-          {voucher.name}
-        </Typography>
-        <Typography variant="h6" component="div" color={"primary"}>
-          Giảm {voucher.voucherType == 1 ? voucher.discountPercentage + "%" : formatCurrency(voucher.discountAmount)}
-        </Typography>
-        <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>cho đơn hàng tối thiểu {formatCurrency(voucher.minValue)}</Typography>
-        <Typography variant="body2">
-          Mã: {voucher.code}
-        </Typography>
-      </CardContent>
-      <CardActions sx={{ paddingTop: 0 }}>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{
-            width: "100%",
-            padding: "0 8px 0 8px",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <Typography variant="body2">
-            HSD: {dayjs(voucher.endDate).format("DD-MM-YYYY")}
-          </Typography>
-          <Button size="small">Chọn</Button>
-        </Stack>
-      </CardActions>
-    </React.Fragment>
-  )
+  if (voucher?.minValue && price && price < voucher?.minValue) {
+    return false;
+  }
+  return today.isAfter(startDate) && today.isBefore(endDate.add(1, "day"));
 }
+
 const ListVoucher = () => {
   const [open, setOpen] = React.useState(true);
   const [listVoucher, setListVoucher] = useState<IVoucherSession[]>([])
-  const [keyword, setKeyword] = useState<string>();
+  const [keyword, setKeyword] = useState<string>("");
+  const { voucher: voucherChoosen, chooseVoucher } = useStoreVoucher();
   const handleClose = () => {
     setOpen(false);
   };
+  const voucherChoose = listVoucher.find(voucher => voucher.id == voucherChoosen?.id)
 
-  const descriptionElementRef = React.useRef<HTMLElement>(null);
+  const { tabNum } = useStoreStep();
+  const cart = useStoreCart(state => state.cart);
+  const { callErrorAlert } = useStoreAlert();
+  const [book, setBook] = useState<IListing>();
 
   useEffect(() => {
+    const callApiGetBookDetail = async () => {
+      const bookId = tabNum === 1 ? cart.buy?.bookId : cart.rent?.bookId;
+      if (!bookId)
+        return;
+      try {
+        const newBook = await getBookDetailService(bookId.toString());
+        if (typeof newBook !== "string") {
+          setBook(newBook);
+        } else {
+          callErrorAlert(newBook);
+        }
+      } catch (error) {
+        console.log({ error });
+      }
+    }
+    callApiGetBookDetail();
+  }, [callErrorAlert, cart.buy?.bookId, cart.rent?.bookId, tabNum])
+
+  const descriptionElementRef = React.useRef<HTMLElement>(null);
+  useEffect(() => {
+   
+    function sortVouchersByPriority(vouchers: IVoucherSession[], book: IListing|undefined): IVoucherSession[] {
+      return vouchers
+        .sort((a, b) => {
+          const discountA = countDiscount(book, a);
+          const discountB = countDiscount(book, b);
+          const aStartDate = dayjs(a.startDate);
+          const aEndDate = dayjs(a.endDate);
+          const bStartDate = dayjs(b.startDate);
+          const bEndDate = dayjs(b.endDate);
+
+          const isAExpired = today.isAfter(aStartDate) && today.isBefore(aEndDate.add(1,"day"));
+          const isBExpired = today.isAfter(bStartDate) && today.isBefore(bEndDate.add(1,"day"));
+      
+          // Ưu tiên voucher chưa hết hạn
+          if (isAExpired !== isBExpired) {
+            return isAExpired ? -1 : 1;
+          }
+      
+          // Ưu tiên giảm giá cao hơn
+          if (discountA !== discountB) {
+            return discountB - discountA;
+          }
+      
+          // Ưu tiên ngày kết thúc gần nhất
+          const endDateA = dayjs(a.endDate);
+          const endDateB = dayjs(b.endDate);
+          if (!endDateA.isSame(endDateB)) {
+            return endDateA.isBefore(endDateB) ? -1 : 1;
+          }
+      
+          return 0; // Giữ nguyên thứ tự nếu các tiêu chí đều giống nhau
+        });
+    }
     const getSearchVoucher = async () => {
-      return await axios.get(`${port}/api/voucher-session/search?name=${keyword}`)
+      return await axios.get(`${port}/api/voucher-session/search?keyword=${keyword}`)
         .then((response) => {
           if (response.status == 200) {
             setListVoucher(response.data);
+            const listSortVoucher = sortVouchersByPriority(response.data, book);
+            const firstVoucher = listSortVoucher[0];
+            if ( firstVoucher && !isValidVoucher(firstVoucher)) {
+              return;
+            }
+            chooseVoucher(firstVoucher);
           }
         })
         .catch((error) => {
@@ -106,7 +115,7 @@ const ListVoucher = () => {
         });
     }
     getSearchVoucher();
-  }, [keyword])
+  }, [book, keyword, chooseVoucher])
 
   useEffect(() => {
     if (open) {
@@ -116,6 +125,48 @@ const ListVoucher = () => {
       }
     }
   }, [open]);
+
+  const renderCard = (voucher: IVoucherSession) => {
+    return (
+      <>
+        <CardContent sx={{ paddingBottom: 0 }}>
+          <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+            {voucher.name}
+          </Typography>
+          <Typography variant="h6" component="div" color={"primary"}>
+            Giảm {voucher.voucherType == 1 ? voucher.discountPercentage + "%" : formatCurrency(voucher.discountAmount)}
+          </Typography>
+          <Typography sx={{ color: 'text.secondary', mb: 1.5 }}>cho đơn hàng tối thiểu {formatCurrency(voucher.minValue)}</Typography>
+          <Typography variant="body2">
+            Mã: {voucher.code}
+          </Typography>
+        </CardContent>
+        <CardActions sx={{ paddingTop: 0 }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              width: "100%",
+              padding: "0 8px 0 8px",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <Typography variant="body2">
+              HSD: {dayjs(voucher.startDate).format("DD/MM/YYYY")} - {dayjs(voucher.endDate).format("DD/MM/YYYY")}
+            </Typography>
+            {
+              !isValidVoucher(voucher, book?.price) ? (<Button size="small" variant="text" disabled > Không thỏa điều kiện</Button>) : voucherChoosen?.id === voucher.id ? (
+                <Button size="small" variant="outlined" onClick={() => chooseVoucher(undefined)}>Bỏ Chọn</Button>
+              ) : (
+                <Button size="small" variant="contained" onClick={() => chooseVoucher(voucher)}> Chọn</Button>
+              )}
+          </Stack>
+        </CardActions>
+      </>
+    )
+  }
+
   return (
     <>
       <div className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white w-full">
@@ -123,23 +174,21 @@ const ListVoucher = () => {
           <h2 className="text-sm font-medium text-gray-800">Khuyến Mãi toàn sàn</h2>
           <span className="text-sm text-gray-500">Có thể chọn 1</span>
         </div>
-        <div
-          className="flex items-center justify-between border border-blue-300 rounded-lg p-3 mb-3"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-500 flex items-center justify-center rounded-lg ">
-              <Image src={LogoImage} alt="icon" />
-            </div>
-            <div className="text-sm font-medium text-gray-800">
-              Giảm 10%
-            </div>
-          </div>
-          <button
-            className={`px-3 py-1 text-sm font-semibold rounded-lg bg-gray-200 text-gray-700`}
+        {voucherChoose && (
+          <div
+            className="flex items-center justify-between border border-blue-300 rounded-lg p-3 mb-3"
           >
-            Bỏ Chọn
-          </button>
-        </div>
+            <div className="">
+              <div className="text-lg font-medium text-gray-800">
+                Giảm {voucherChoose.voucherType == 1 ? voucherChoose.discountPercentage + "%" : formatCurrency(voucherChoose.discountAmount)}
+              </div>
+              <div className="text-sm font-light text-gray-400">
+                Cho đơn hàng từ {formatCurrency(voucherChoose.minValue)}
+              </div>
+            </div>
+            <Button size="small" variant="outlined" onClick={() => chooseVoucher(undefined)}>Bỏ Chọn</Button>
+          </div>
+        )}
 
         <button className="text-sm mt-2 text-primary flex items-center" onClick={() => setOpen(true)}>
           <TbTicket className="mr-2 text-lg" /> Chọn hoặc nhập mã khác
@@ -163,18 +212,17 @@ const ListVoucher = () => {
           }}
         >
 
-          <Search>
-            <SearchIconWrapper>
+          <SearchVoucher>
+            <SearchIconWrapperVoucher>
               <TbTicket />
-            </SearchIconWrapper>
-            <StyledInputBase
+            </SearchIconWrapperVoucher>
+            <StyledInputBaseVoucher
               value={keyword}
               onChange={(e) => setKeyword(e.target.value)}
-              placeholder="Tìm tên voucher..."
+              placeholder="Tìm tên hoặc mã voucher..."
               inputProps={{ 'aria-label': 'search' }}
             />
-          </Search>
-          <Button variant="outlined">Tìm</Button>
+          </SearchVoucher>
         </Stack>
 
         <DialogContent dividers={true}>
@@ -183,8 +231,11 @@ const ListVoucher = () => {
             ref={descriptionElementRef}
             tabIndex={-1}
           >
+            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+              Hiện tại bạn đang có {voucherChoosen ? 1 : 0} voucher. Bạn có thể chọn 1 voucher
+            </Typography>
             {listVoucher.map((item, index) => (
-              <Card variant="outlined" key={index} sx={{ my: 1 }} >{renderCard(item)}</Card>
+              <Card variant="elevation" key={index} raised={item.id == voucherChoosen} sx={{ my: 1 }} >{renderCard(item)}</Card>
             ))}
           </DialogContentText>
         </DialogContent>

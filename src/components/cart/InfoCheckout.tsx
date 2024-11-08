@@ -12,12 +12,28 @@ import { useStoreCart } from '../../hooks/cart'
 import { getBookDetailService } from '../../api/bookListService'
 import { useStoreAlert } from '../../hooks/alert'
 import { useStoreStep } from '../../hooks/step'
+import { useStoreVoucher } from '../../hooks/voucher'
+import { IVoucherSession } from '../../types/voucher'
+import { countDiscount } from './voucherSession/calculateVoucher'
+
+const calculateTotalPriceAfterVoucher = (book: IListing | undefined, voucher: IVoucherSession | undefined): number => {
+  if (book == undefined) return 0;
+  if (voucher == undefined) return book?.price || 0;
+
+  let price = (book?.price || 1)
+  let discount = countDiscount(book, voucher);
+
+  // Tính tổng tiền sau khi áp dụng voucher, đảm bảo không âm
+  const totalPrice = Math.max(price - discount, 0);
+
+  return totalPrice;
+}
 
 const InfoCheckout = () => {
   const { tabNum } = useStoreStep();
-  
+  const { voucher } = useStoreVoucher();
   const cart = useStoreCart(state => state.cart);
-  const {  callErrorAlert} = useStoreAlert();
+  const { callErrorAlert } = useStoreAlert();
   const [book, setBook] = useState<IListing>();
   useEffect(() => {
     const callApiGetBookDetail = async () => {
@@ -82,10 +98,18 @@ const InfoCheckout = () => {
         children: <TbSum className="total__icon" />
       },
     ] : [{
+      title: 'Khuyến mãi từ The Flying Bookstore',
+      description: formatCurrency(countDiscount(book, voucher)),
+      children: <TbSum className="total__icon" />
+    }, {
       title: 'Giá mua',
       description: formatCurrency(book?.price),
       children: <TbSum className="total__icon" />
-    }]),
+    }, {
+      title: 'Tổng cộng',
+      description: formatCurrency(calculateTotalPriceAfterVoucher(book, voucher)),
+      children: <TbSum className="total__icon" />
+    },]),
   ]
   return (
     <div className="total">

@@ -11,6 +11,7 @@ import CustomTabPanel from "../../components/order/CustomTabPanel";
 import CartItem from "../../components/cart/CartItem";
 import { useStoreStep } from "../../hooks/step";
 import ListVoucher from "../../components/cart/voucherSession/ListVoucher";
+import { IVoucherSession } from "../../types/voucher";
 
 const Cart = () => {
   const { changeTabNum, tabNum } = useStoreStep();
@@ -42,7 +43,7 @@ const Cart = () => {
           </div>
         </div>
         <div className="md:col-span-3">
-          <ListVoucher/>
+          <ListVoucher />
         </div>
       </div>)
   }

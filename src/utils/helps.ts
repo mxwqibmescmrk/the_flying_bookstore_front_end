@@ -15,7 +15,8 @@ const chunkArray = (array: Array<any>, chunkSize: number) => {
 const formatCurrency = (amount: number | undefined) => {
   if (!amount) return 0 + "đ";
   // Chuyển số tiền thành chuỗi và thêm dấu chấm phẩy giữa các hàng nghìn
-  const formattedAmount = amount
+  const roundedAmount = Math.round(amount);
+  const formattedAmount = roundedAmount
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
