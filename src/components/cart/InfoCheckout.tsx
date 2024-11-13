@@ -5,7 +5,7 @@ import { GrUserManager } from 'react-icons/gr'
 import { RiCalendarTodoLine, RiMapPin2Line } from 'react-icons/ri'
 import { PiMoney, PiPhone } from 'react-icons/pi'
 import { GiMoneyStack } from 'react-icons/gi'
-import { TbSum } from 'react-icons/tb'
+import { TbSum, TbTicket } from 'react-icons/tb'
 import dayjs from 'dayjs'
 import { formatCurrency, formatPhoneNumber } from '../../utils/helps'
 import { useStoreCart } from '../../hooks/cart'
@@ -15,6 +15,8 @@ import { useStoreStep } from '../../hooks/step'
 import { useStoreVoucher } from '../../hooks/voucher'
 import { IVoucherSession } from '../../types/voucher'
 import { countDiscount } from './voucherSession/calculateVoucher'
+import { IoPricetagsOutline, IoTicketOutline } from 'react-icons/io5'
+import { MdAttachMoney } from 'react-icons/md'
 
 const calculateTotalPriceAfterVoucher = (book: IListing | undefined, voucher: IVoucherSession | undefined, voucherShop: IVoucherSession | undefined): number => {
   if (book == undefined) return 0;
@@ -98,19 +100,25 @@ const InfoCheckout = () => {
         children: <TbSum className="total__icon" />
       },
     ] : [{
+      title: 'Giá gốc',
+      description: formatCurrency(book?.depositFee),
+      children: <MdAttachMoney className="total__icon" />
+    },
+    {
+      title: 'Giá giảm trực tiếp',
+      description: formatCurrency((book?.depositFee || book?.price || 0) - (book?.price || 0)),
+      children: <IoPricetagsOutline className="total__icon" />
+    },
+    {
+      title: 'Khuyến mãi từ người bán',
+      description: formatCurrency(countDiscount(book, voucherShop)),
+      children: <IoTicketOutline className="total__icon" />
+    }, {
       title: 'Khuyến mãi từ The Flying Bookstore',
       description: formatCurrency(countDiscount(book, voucher)),
-      children: <TbSum className="total__icon" />
+      children: <TbTicket className="total__icon" />
     }, {
-      title: 'Khuyến mãi từ shop',
-      description: formatCurrency(countDiscount(book, voucherShop)),
-      children: <TbSum className="total__icon" />
-    }, {
-      title: 'Giá mua',
-      description: formatCurrency(book?.price),
-      children: <TbSum className="total__icon" />
-    }, {
-      title: 'Tổng cộng',
+      title: 'Tổng tiền thanh toán',
       description: formatCurrency(calculateTotalPriceAfterVoucher(book, voucher, voucherShop)),
       children: <TbSum className="total__icon" />
     },]),

@@ -17,8 +17,15 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
 
   useEffect(() => {
     const makeRequest = async () => {
-      if (!orderDetail?.id) return;
-      const response = await getBookDetailService(orderDetail?.id?.toString());
+      if (!orderDetail?.id) return callErrorAlert("Không có chi tiết đơn hàng");
+      let response;
+      if (tabNum == 0) {
+        if(!orderDetail?.listing?.id) return callErrorAlert("Không có chi tiết sản phẩm mua")
+        response = await getBookDetailService(orderDetail?.listing?.id.toString());
+      } else{
+        if(!orderDetail?.listingId) return callErrorAlert("Không có chi tiết sản phẩm mua")
+        response = await getBookDetailService(orderDetail?.listingId?.toString());
+      }
       if (typeof response !== 'string') {
         setListing(response)
       } else {

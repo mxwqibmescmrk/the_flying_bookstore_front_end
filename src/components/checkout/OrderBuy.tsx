@@ -27,7 +27,7 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
   const { callErrorAlert } = useStoreAlert()
   useEffect(() => {
     const callApiGetSellerInfo = async () => {
-      if (!orderDetail?.sellerId) return;
+      if (!orderDetail?.sellerId) return callErrorAlert("Không nhận diện được người bán!");
       const response = await getUserInfo(orderDetail?.sellerId);
       if (typeof response != "string") {
         console.log({ response });
@@ -90,9 +90,13 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
       </h4>
       <div className="columns-2 gap-10 my-4">
         <div className="total">
-          {listOrderDetail.map(({ title, children, description }, index) => (<CartInfoItem key={index * 2} title={title} description={description} >{children}</CartInfoItem>))}
+          {listOrderDetail.map(({ title, children, description }, index) =>
+            (<CartInfoItem key={index * 2} title={title} description={description}>{children}</CartInfoItem>))
+          }
           <div className="border-t">
-            <CartInfoItem title={`Tổng cộng`} description={!!orderDetail?.totalPrice && formatCurrency(orderDetail?.totalPrice)} ><TbSum className="total__icon" /></CartInfoItem>
+            <CartInfoItem title={`Tổng cộng`} description={!!orderDetail?.totalPrice && formatCurrency(orderDetail?.totalPrice)} >
+              <TbSum className="total__icon" />
+            </CartInfoItem>
           </div>
         </div>
       </div >

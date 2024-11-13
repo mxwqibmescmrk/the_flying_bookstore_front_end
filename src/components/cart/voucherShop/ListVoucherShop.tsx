@@ -14,6 +14,7 @@ import { getBookDetailService } from "../../../api/bookListService";
 import { useStoreVoucher } from "../../../hooks/voucher";
 import { isValidVoucher, sortVouchersByPriority } from "../voucherSession/calculateVoucher";
 import { SearchIconWrapperVoucher, SearchVoucher, StyledInputBaseVoucher } from "../voucherSession/StyleVoucher";
+import { IoTicketOutline } from "react-icons/io5";
 
 const ListVoucherShop = () => {
   const [open, setOpen] = React.useState(false);
@@ -145,7 +146,7 @@ const ListVoucherShop = () => {
         )}
 
         <button className="text-sm mt-2 text-primary flex items-center" onClick={() => setOpen(true)}>
-          <TbTicket className="mr-2 text-lg" /> Chọn hoặc nhập mã khác
+          <IoTicketOutline className="mr-2 text-lg" />Chọn hoặc nhập mã khác
         </button>
       </div>
       <Dialog
