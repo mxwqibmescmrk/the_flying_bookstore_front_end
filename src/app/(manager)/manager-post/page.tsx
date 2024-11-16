@@ -44,7 +44,7 @@ const ManagerPost = () => {
     setModalDelete({ open: true, data });
   };
 
-  const handleChangeTabPost = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChangeTabPost : (event: React.SyntheticEvent, newValue: number) => void = (event, newValue)  => {
     setTabPost(newValue);
   };
 
@@ -92,9 +92,9 @@ const ManagerPost = () => {
       </Stack>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tabPost} onChange={handleChangeTabPost} aria-label="manage post">
-          <Tab value={0} label="Bài đăng bán và thuê" {...a11yProps(0)} />
-          <Tab value={1} label="Bài đăng chỉ thuê" {...a11yProps(1)} />
-          <Tab value={2} label="Bài đăng chỉ bán" {...a11yProps(2)} />
+          <Tab value={0} label="Bài đăng bán và thuê" {...a11yProps(0)} sx={{textTransform:"none"}}  />
+          <Tab value={1} label="Bài đăng chỉ thuê" {...a11yProps(1)} sx={{textTransform:"none"}} />
+          <Tab value={2} label="Bài đăng chỉ bán" {...a11yProps(2)} sx={{textTransform:"none"}} />
         </Tabs>
       </Box>
       <CustomTabPanel value={tabPost} index={0}>

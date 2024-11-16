@@ -6,10 +6,10 @@ const layout = ({children}:{children: React.ReactNode}) => {
     <Container maxWidth="xl" sx={{ my: 5 }}>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container gap={2}>
-          <Grid item xs={3}>
+          <Grid item xs={2}>
             <MenuProfile />
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={9}>
             {children}
           </Grid>
         </Grid>

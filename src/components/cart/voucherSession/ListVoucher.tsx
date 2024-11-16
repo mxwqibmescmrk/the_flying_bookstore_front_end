@@ -17,6 +17,7 @@ import { isValidVoucher, sortVouchersByPriority } from "./calculateVoucher";
 import Image from "next/image";
 import EmptyGift from "@/assets/images/empty gift all.png"
 import AvatarImage from "@/assets/images/logo.jpg";
+import getSearchVoucherSession from "../../../api/voucher/voucherSession";
 
 const ListVoucher = () => {
   const [open, setOpen] = React.useState(false);
@@ -55,9 +56,9 @@ const ListVoucher = () => {
   const descriptionElementRef = React.useRef<HTMLElement>(null);
   useEffect(() => {
     const getSearchVoucher = async () => {
-      return await axios.get(`${port}/api/voucher-session/search?keyword=${keyword}`)
+      return await getSearchVoucherSession(keyword)
         .then((response) => {
-          if (response.status == 200) {
+          if (typeof response !=="string") {
             setListVoucher(response.data);
             const listSortVoucher = sortVouchersByPriority(response.data, book);
             const firstVoucher = listSortVoucher[0];
@@ -65,6 +66,8 @@ const ListVoucher = () => {
               return;
             }
             chooseVoucher(firstVoucher);
+          }else{
+            callErrorAlert(response)
           }
         })
         .catch((error) => {
@@ -72,7 +75,7 @@ const ListVoucher = () => {
         });
     }
     getSearchVoucher();
-  }, [book, keyword, chooseVoucher])
+  }, [book, keyword, chooseVoucher, callErrorAlert])
 
   useEffect(() => {
     if (open) {
