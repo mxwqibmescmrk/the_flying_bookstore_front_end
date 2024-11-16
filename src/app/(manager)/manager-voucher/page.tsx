@@ -81,7 +81,7 @@ const ManagerVoucher = () => {
         <Typography variant="h4" gutterBottom>
           Quản lý voucher của tôi
         </Typography>
-        <Link href="/manager-post/add-post">
+        <Link href="/manager-voucher/add-voucher">
           <Button variant="contained">Thêm voucher</Button>
         </Link>
       </Stack>

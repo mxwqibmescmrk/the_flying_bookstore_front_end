@@ -1,18 +1,20 @@
 // src/form-component/FormInputText.tsx
 import { Controller, useFormContext } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import { IFormCheckout } from "@/types/form";
-import FormHelperText from "@mui/material/FormHelperText";
-import { IBook } from "../../types/book";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
+import { IFormCheckout, IFormVoucher } from "@/types/form";
+
+interface FormInputTextProps {
+  name: keyof IFormCheckout | keyof IFormVoucher;
+  label: string;
+  required?: boolean;
+  textFieldProps?: TextFieldProps;
+}
 export const FormInputText = ({
   name,
   label,
   required,
-}: {
-  required?: boolean;
-  name: keyof IFormCheckout; 
-  label: string;
-}) => {
+  ...textFieldProps
+}: FormInputTextProps) => {
   const { control } = useFormContext() ?? {};
   if (!control) return <></>;
 
@@ -30,9 +32,10 @@ export const FormInputText = ({
             error={!!error}
             fullWidth
             InputLabelProps={{ shrink: true }}
-            label={`${label} ${required ? "*":""}`}
+            label={`${label} ${required ? "*" : ""}`}
             variant="standard"
             {...field}
+            {...textFieldProps}
           />
         </>
       )}
