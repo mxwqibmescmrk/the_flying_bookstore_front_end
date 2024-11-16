@@ -17,10 +17,12 @@ import { formatCurrency, formatPhoneNumber } from "../../utils/helps";
 import CartInfoItem, { CartInfoItemProps } from "../cart/CartInfoItem";
 import { PiMoney } from "react-icons/pi";
 import { GiMoneyStack } from "react-icons/gi";
-import { TbSum } from "react-icons/tb";
+import { TbSum, TbTicket } from "react-icons/tb";
 import { getUserInfo } from "../../api/profile";
 import { useStoreAlert } from "../../hooks/alert";
 import { IUser } from "../../types/user";
+import { MdAttachMoney, MdOutlineAttachMoney } from "react-icons/md";
+import { IoTicketOutline } from "react-icons/io5";
 
 const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
   const [sellUser, setSellUser] = useState<IUser>();
@@ -47,7 +49,7 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
     },
     {
       title: `Ngày đặt mua`,
-      description: dayjs(orderDetail?.createdDate).format("DD/MM/YYYY"),
+      description: dayjs().format("DD/MM/YYYY"),//TODO: nhớ fix lại revert chỗ này
       children: <PiCalendarCheck className="total__icon" />
     },
     {
@@ -77,7 +79,16 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
     {
       title: `Giá bán`,
       description: formatCurrency(orderDetail?.totalPrice),
-      children: <PiMoney className="total__icon" />
+      children: <MdAttachMoney className="total__icon" />
+    },
+    {
+      title: 'Khuyến mãi từ người bán',
+      description: formatCurrency(10000),
+      children: <IoTicketOutline className="total__icon" />
+    }, {
+      title: 'Khuyến mãi từ The Flying Bookstore',
+      description: formatCurrency(20000),
+      children: <TbTicket className="total__icon" />
     },
   ]
   return (
@@ -94,7 +105,7 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
             (<CartInfoItem key={index * 2} title={title} description={description}>{children}</CartInfoItem>))
           }
           <div className="border-t">
-            <CartInfoItem title={`Tổng cộng`} description={!!orderDetail?.totalPrice && formatCurrency(orderDetail?.totalPrice)} >
+            <CartInfoItem title={`Tổng tiền thanh toán`} description={!!orderDetail?.totalPrice && formatCurrency(orderDetail?.totalPrice)} >
               <TbSum className="total__icon" />
             </CartInfoItem>
           </div>

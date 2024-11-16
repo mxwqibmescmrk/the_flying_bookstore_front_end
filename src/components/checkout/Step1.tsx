@@ -18,6 +18,8 @@ import { onSubmitOrderBuyService, onSubmitOrderService } from "@/api/checkoutSer
 import InfoCheckout from "../cart/InfoCheckout";
 import CartItem from "../cart/CartItem";
 import { useStoreStep } from "../../hooks/step";
+import ListVoucherShop from "../cart/voucherShop/ListVoucherShop";
+import ListVoucher from "../cart/voucherSession/ListVoucher";
 
 // const vnpay = new VNPay({
 //   tmnCode: process.env.TMN_CODE || "",
@@ -138,7 +140,10 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
           <div className="card">
             <h3 className="">Thông tin sản phẩm</h3>
             <CartItem isCheckout={true} />
-            <h3 className="mt-10">Thanh toán</h3>
+            <h3 className="mt-7">Mã giảm giá</h3>
+            <ListVoucherShop/>
+            <ListVoucher />
+            <h3 className="mt-7">Thanh toán</h3>
             <Pay payType={payType} setPayType={setPayType} />
           </div>
         </div>

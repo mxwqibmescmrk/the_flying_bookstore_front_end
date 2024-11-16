@@ -99,33 +99,38 @@ const InfoCheckout = () => {
         description: formatCurrency(cart?.rent?.total),
         children: <TbSum className="total__icon" />
       },
-    ] : [{
-      title: 'Giá gốc',
-      description: formatCurrency(book?.depositFee),
-      children: <MdAttachMoney className="total__icon" />
-    },
-    {
-      title: 'Giá giảm trực tiếp',
-      description: formatCurrency((book?.depositFee || book?.price || 0) - (book?.price || 0)),
-      children: <IoPricetagsOutline className="total__icon" />
-    },
-    {
-      title: 'Khuyến mãi từ người bán',
-      description: formatCurrency(countDiscount(book, voucherShop)),
-      children: <IoTicketOutline className="total__icon" />
-    }, {
-      title: 'Khuyến mãi từ The Flying Bookstore',
-      description: formatCurrency(countDiscount(book, voucher)),
-      children: <TbTicket className="total__icon" />
-    }, {
-      title: 'Tổng tiền thanh toán',
-      description: formatCurrency(calculateTotalPriceAfterVoucher(book, voucher, voucherShop)),
-      children: <TbSum className="total__icon" />
-    },]),
+    ] :
+      [
+        {
+          title: 'Giá gốc',
+          description: formatCurrency(book?.depositFee),
+          children: <MdAttachMoney className="total__icon" />
+        },
+        {
+          title: 'Giá giảm trực tiếp',
+          description: formatCurrency((book?.depositFee || book?.price || 0) - (book?.price || 0)),
+          children: <IoPricetagsOutline className="total__icon" />
+        },
+        {
+          title: 'Khuyến mãi từ người bán',
+          description: formatCurrency(countDiscount(book, voucherShop)),
+          children: <IoTicketOutline className="total__icon" />
+        }, {
+          title: 'Khuyến mãi từ The Flying Bookstore',
+          description: formatCurrency(countDiscount(book, voucher)),
+          children: <TbTicket className="total__icon" />
+        }
+      ]
+    ),
   ]
   return (
     <div className="total">
       {listUserInfo.map(({ children, description, title }, index) => (<CartInfoItem key={index * 2} title={title} description={description} >{children}</CartInfoItem>))}
+      <div className="border-t">
+        <CartInfoItem title={`Tổng tiền thanh toán`} description={formatCurrency(calculateTotalPriceAfterVoucher(book, voucher, voucherShop))} >
+          <TbSum className="total__icon" />
+        </CartInfoItem>
+      </div>
     </div>
   )
 }

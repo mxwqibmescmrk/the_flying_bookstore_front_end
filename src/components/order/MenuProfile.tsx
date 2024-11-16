@@ -16,6 +16,7 @@ import { OrderType } from "../../types/order";
 import { useRouter } from "next/navigation";
 import { useStoreStep } from "../../hooks/step";
 import Order from "../checkout/Order";
+import { IoTicketOutline } from "react-icons/io5";
 const sizeIcon = 22;
 type IMenuItem = {
   href: string,
@@ -52,6 +53,11 @@ const menuItems: IMenuItem[] = [
     icon: <PiBriefcaseLight size={sizeIcon} />,
     text: 'Đơn ' + OrderType.Sell,
     orderType: OrderType.Sell
+  },
+  {
+    href: '/manager-voucher',
+    icon: <IoTicketOutline size={sizeIcon} />,
+    text: 'Quản lý voucher',
   },
   {
     href: '/manager-post',

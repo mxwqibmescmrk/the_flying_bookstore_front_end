@@ -17,22 +17,26 @@ const steps = ["Điền thông tin", "Xuất đơn hàng", "Lấy hàng"];
 const Checkout = () => {
 
   const { changeStep, step, tabNum } = useStoreStep();
-  const { removeCartRent } = useStoreCart();
+  const { removeCartRent, removeCartBuy } = useStoreCart();
 
   const handleNext = () => {
     changeStep(step + 1);
-    removeCartRent();
+    if (tabNum == 1) {
+      removeCartBuy();
+    } else {
+      removeCartRent();
+    }
   };
 
   const chooseStep = () => {
     switch (step) {
       case 0:
-        return <Step1 handleNext={handleNext}/>;
+        return <Step1 handleNext={handleNext} />;
       case 1:
-        if(tabNum == 1){
+        if (tabNum == 1) {
           return <Step2Buy />;
-        }else {
-          return <Step2 handleNext={handleNext}/>;
+        } else {
+          return <Step2 handleNext={handleNext} />;
         }
       case 2:
         return <Step3 />;
@@ -52,7 +56,7 @@ const Checkout = () => {
             </Step>
           );
         })}
-      </Stepper> 
+      </Stepper>
       {chooseStep()}
     </>
   );

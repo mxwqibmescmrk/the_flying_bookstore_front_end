@@ -14,6 +14,9 @@ import { getBookDetailService } from "../../../api/bookListService";
 import { useStoreVoucher } from "../../../hooks/voucher";
 import { SearchIconWrapperVoucher, SearchVoucher, StyledInputBaseVoucher } from "./StyleVoucher";
 import { isValidVoucher, sortVouchersByPriority } from "./calculateVoucher";
+import Image from "next/image";
+import EmptyGift from "@/assets/images/empty gift all.png"
+import AvatarImage from "@/assets/images/logo.jpg";
 
 const ListVoucher = () => {
   const [open, setOpen] = React.useState(false);
@@ -128,19 +131,41 @@ const ListVoucher = () => {
           <h2 className="text-sm font-medium text-gray-800">Khuyến Mãi toàn sàn</h2>
           <span className="text-sm text-gray-500">Có thể chọn 1</span>
         </div>
-        {voucherChoose && (
+        {voucherChoose ? (
           <div
             className="flex items-center justify-between border border-blue-300 rounded-lg p-3 mb-3"
           >
-            <div className="">
-              <div className="text-lg font-medium text-gray-800">
-                Giảm {voucherChoose.voucherType == 1 ? voucherChoose.discountPercentage + "%" : formatCurrency(voucherChoose.discountAmount)}
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-blue-500 flex items-center justify-center rounded-lg ">
+                <Image src={AvatarImage} alt="icon"
+                  width={40}
+                  height={40}
+                  className="rounded"
+                />
               </div>
-              <div className="text-sm font-light text-gray-400">
-                Cho đơn hàng từ {formatCurrency(voucherChoose.minValue)}
+              <div>
+                <div className="text-lg font-medium text-gray-800">
+                  Giảm {voucherChoose.voucherType == 1 ? voucherChoose.discountPercentage + "%" : formatCurrency(voucherChoose.discountAmount)}
+                </div>
+                <div className="text-sm font-light text-gray-400">
+                  Cho đơn hàng từ {formatCurrency(voucherChoose.minValue)}
+                </div>
               </div>
             </div>
             <Button size="small" variant="outlined" onClick={() => chooseVoucher(undefined)}>Bỏ Chọn</Button>
+          </div>
+        ) : (
+          <div
+            className="flex items-center justify-between border border-blue-300 rounded-lg p-3 mb-3"
+          >
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => setOpen(true)}>
+              <div className="w-10 h-10 bg-blue-500 flex items-center justify-center rounded-lg ">
+                <Image src={EmptyGift} alt="icon" />
+              </div>
+              <div className="text-sm font-medium text-gray-800">
+                Bạn chưa chọn mã nào.
+              </div>
+            </div>
           </div>
         )}
 
