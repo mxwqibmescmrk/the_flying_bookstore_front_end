@@ -34,6 +34,7 @@ export type IOrderStatus =
   | "PAID_OWNER"
   | "DEPOSIT_RETURNED";
 export type IPaymentMethod = "COD" | "BANK_TRANSFER" | "VNPAY";
+
 export interface IBuyOrder {
   id?: number;
   listingId?: number;

@@ -12,7 +12,6 @@ export type IRow = {
   duration: number;
   price: number;
   total: number;
-
 };
 export function convertToRow(order: IRentOrder): IRow {
   const { listing, leaseOrder } = order;

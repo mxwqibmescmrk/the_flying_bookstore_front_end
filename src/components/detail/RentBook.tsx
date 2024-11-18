@@ -32,8 +32,6 @@ const RentBook = ({ book }: IPropsBook) => {
     router.push("/cart");
   }
   const renderRentAccordion = () => {
-
-    // if(!book?.allow_rent){ TODO: chờ thảo confirm
     if (book?.copy?.allow_rent == 0) {
       return <></>;
     }
@@ -54,7 +52,6 @@ const RentBook = ({ book }: IPropsBook) => {
     </Accordion>);
   }
   const renderPriceAccordion = () => {
-    // if(!book?.allow_purchase){ TODO: chờ thảo confirm
     if (book?.copy?.allow_purchase == 0) {
       return <></>;
     }

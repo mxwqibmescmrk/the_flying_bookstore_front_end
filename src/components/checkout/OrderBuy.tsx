@@ -49,7 +49,7 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
     },
     {
       title: `Ngày đặt mua`,
-      description: dayjs().format("DD/MM/YYYY"),//TODO: nhớ fix lại revert chỗ này
+      description: dayjs(orderDetail?.createdDate).format("DD/MM/YYYY"),
       children: <PiCalendarCheck className="total__icon" />
     },
     {

@@ -159,7 +159,7 @@ const ManagerPost = () => {
       </CustomTabPanel>
 
 
-      <DeletePostModal handleClose={handleClose} modalDelete={modalDelete} getListPost={getListPost} />
+      {/* <DeletePostModal handleClose={handleClose} modalDelete={modalDelete} getListPost={getListPost} /> */}
     </>
   );
 };
