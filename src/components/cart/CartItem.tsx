@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { IconButton } from "@mui/material";
 import { CiTrash } from "react-icons/ci";
 import { useEffect, useState } from "react";

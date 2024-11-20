@@ -47,7 +47,7 @@ const OrderFooter = ({
     open: false,
     order,
   });
-  const { token } = useAuthStore()
+  const { token, profile } = useAuthStore()
   const { callAlert } = useStoreAlert();
   const handleClickOpenRateModal = () => {
     setRateModal((state) => ({ ...state, open: true }));
@@ -194,6 +194,7 @@ const OrderFooter = ({
           </Stack>
         );
       case "RETURNED":
+        if(profile?.id != order?.lessee?.id) return <></> ;
         return (
           <>
             <Button variant="contained" sx={{textTransform:"capitalize"}} onClick={handleClickOpenRateModal}>

@@ -24,7 +24,7 @@ const RateModel = ({
   setRateModal: Dispatch<SetStateAction<IRateModal>>;
 }) => {
   const { open, order } = rateModal;
-  const {callAlert} = useStoreAlert()
+  const { callAlert } = useStoreAlert()
   const { profile } = useAuthStore();
   const handleClose = () => {
     setRateModal((state) => ({ ...state, open: false }));
@@ -32,7 +32,7 @@ const RateModel = ({
 
   const [rate, setRate] = useState<number | null>(5);
   const [description, setDescription] = useState<string>("");
-  const onSubmit =async () => {
+  const onSubmit = async () => {
     const formData = {
       score: rate,
       imageLink: null,
@@ -44,11 +44,11 @@ const RateModel = ({
     console.log(formData);
 
     const response = await SubmitReviewService(formData);
-    if (response) {      
-        console.log(JSON.stringify(response));
-        handleClose()
-        callAlert("Đánh giá thành công")
-    }
+    // if (response) {      // TODO: dept technical
+    console.log(JSON.stringify(response));
+    handleClose()
+    callAlert("Đánh giá thành công")
+    // }
   };
 
   return (

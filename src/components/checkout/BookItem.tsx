@@ -35,7 +35,7 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
     if (tabNum == 1) {
       makeRequest();
     }
-  }, [callErrorAlert, orderDetail?.id, tabNum]);
+  }, [callErrorAlert, orderDetail?.id, orderDetail?.listing?.id, orderDetail?.listingId, tabNum]);
   if(tabNum == 1){
     if(!orderDetail?.id) return <>Không có chi tiết đơn hàng</>
   } else if(tabNum == 0) {
