@@ -44,8 +44,7 @@ const dummyReview: IReview[] = [
   {
     "id": 1,
     "score": 5,
-    "description": "
-Người cho thuê cuốn sách này rất tận tâm và chu đáo, luôn đảm bảo sách được giữ gìn cẩn thận và giao đúng hẹn. Cuốn sách là một tác phẩm kinh điển, mang đến cho người đọc những cuộc phiêu lưu kỳ thú và hài hước. Cuốn sách không chỉ là một câu chuyện giải trí mà còn chứa đựng nhiều bài học sâu sắc về cuộc sống và con người. Đây là một cuốn sách không thể bỏ qua cho những ai yêu thích văn học cổ điển.",
+    "description": "Người cho thuê cuốn sách này rất tận tâm và chu đáo, luôn đảm bảo sách được giữ gìn cẩn thận và giao đúng hẹn. Cuốn sách là một tác phẩm kinh điển, mang đến cho người đọc những cuộc phiêu lưu kỳ thú và hài hước. Cuốn sách không chỉ là một câu chuyện giải trí mà còn chứa đựng nhiều bài học sâu sắc về cuộc sống và con người. Đây là một cuốn sách không thể bỏ qua cho những ai yêu thích văn học cổ điển.",
     "imageLink": null,
     "leaseOrderId": 11,
     "userId": 2,
