@@ -25,7 +25,7 @@ const BookInfo = ({ book }: { book: IListing | undefined }) => {
   const listCategory = useGenreStore((state) => state.listGenre);
   const [sampleDialog, setSampleDialog] = useState<ISampleDialog>({
     open: false,
-    book: undefined,
+
   })
   const { updateCategoryParam } = useStoreSearch();
   const router = useRouter();
@@ -166,7 +166,7 @@ const BookInfo = ({ book }: { book: IListing | undefined }) => {
           )}
         </div>
       </div>
-      <ReadSampleDialog sampleDialog={sampleDialog} setSampleDialog={setSampleDialog} />
+      <ReadSampleDialog book={book} sampleDialog={sampleDialog} setSampleDialog={setSampleDialog} />
     </div>
   );
 };

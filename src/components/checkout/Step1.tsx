@@ -140,9 +140,10 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
           <div className="card">
             <h3 className="">Thông tin sản phẩm</h3>
             <CartItem isCheckout={true} />
-            <h3 className="mt-7">Mã giảm giá</h3>
-            <ListVoucherShop/>
-            <ListVoucher />
+            {tabNum == 1 ? (<>
+              <h3 className="mt-7">Mã giảm giá</h3>
+              <ListVoucherShop />
+              <ListVoucher /></>) : (<></>)}
             <h3 className="mt-7">Thanh toán</h3>
             <Pay payType={payType} setPayType={setPayType} />
           </div>

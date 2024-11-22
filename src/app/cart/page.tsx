@@ -32,10 +32,22 @@ const Cart = () => {
     </div>);
   }
   const cart = useStoreCart((state) => state.cart);
+  const renderInsideTabForRent = () => {
+    return (
+      <>
+        <div className="w-2/3 lg:w-3/4 md:w-full mx-auto flex flex-col gap-5 mt-10">
+          <CartItem />
+        </div>
+        <div className="mt-10 w-2/3 lg:w-3/4 md:w-full mx-auto">
+          <CartInfo />
+        </div>
+      </>
+    )
+  }
   const renderInsideTab = () => {
     return (
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mt-10">
-        <div className="md:col-span-9 flex flex-col gap-5 ">
+        <div className={`md:col-span-9 flex flex-col gap-5`}>
           <div className=" flex flex-col gap-5 ">
             <CartItem />
           </div>
@@ -44,9 +56,10 @@ const Cart = () => {
           </div>
         </div>
         <div className="md:col-span-3">
-          <ListVoucherShop/>
+          <ListVoucherShop />
           <ListVoucher />
         </div>
+
       </div>)
   }
   return (
@@ -61,7 +74,7 @@ const Cart = () => {
         </Tabs>
       </Box>
       <CustomTabPanel value={tabNum} index={0}>
-        {!cart.rent?.bookId ? renderEmptyCard() : renderInsideTab()}
+        {!cart.rent?.bookId ? renderEmptyCard() : renderInsideTabForRent()}
       </CustomTabPanel>
       <CustomTabPanel value={tabNum} index={1}>
         {!cart.buy?.bookId ? renderEmptyCard() : renderInsideTab()}
