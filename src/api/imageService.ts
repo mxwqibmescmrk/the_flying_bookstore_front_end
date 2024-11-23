@@ -4,7 +4,7 @@ import { handleError } from './handleError';
 import { ICopy } from '../types/book';
 
 const getImagePreview = async (copyId: ICopy["id"] | undefined) => {
-  if(!copyId) return "Không lấy được sách";
+  if(!copyId) return;
   const config: AxiosRequestConfig = {
     url: `${port}/api/copy/imgLink/${copyId}`,
   };

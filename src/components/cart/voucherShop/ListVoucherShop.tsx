@@ -129,7 +129,7 @@ const ListVoucherShop = () => {
     <>
       <div className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white w-full">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-sm font-medium text-gray-800">Khuyến Mãi của Shop</h2>
+          <h2 className="text-sm font-medium text-gray-800">Khuyến Mãi từ người bán</h2>
           <span className="text-sm text-gray-500">Có thể chọn 1</span>
         </div>
         {voucherChoose ? (

@@ -80,7 +80,7 @@ export default function ListOrderBuy({
           Tải lại
         </Button>
       </Grid>
-      {/* {listOrder.map((order, index) => (
+      {listOrder.map((order, index) => (
         <Grid item xs={12} key={index}>
           <DetailOrderBuy
             order={order}
@@ -89,7 +89,7 @@ export default function ListOrderBuy({
             reloadButton={reloadButton}
           />
         </Grid>
-      ))} */}
+      ))}
     </Grid>
   );
 }

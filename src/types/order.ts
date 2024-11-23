@@ -63,7 +63,6 @@ export interface IRentOrder {
   totalPenaltyFee?: number;
 }
 
-
 interface ILeaseOrder {
   id: number;
   listingId: number;

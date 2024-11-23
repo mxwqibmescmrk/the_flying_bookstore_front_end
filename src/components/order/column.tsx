@@ -5,6 +5,14 @@ import { CiCircleInfo } from "react-icons/ci";
 import theme from "../../utils/theme";
 import { IRentOrder } from "../../types/order";
 
+export type IRowBuy = {
+  id: number;
+  title: string;
+  createdDate: string;
+  deposit: number;
+  price: number;
+  total: number;
+};
 export type IRow = {
   id: number;
   title: string;
@@ -34,7 +42,7 @@ export function convertToRow(order: IRentOrder): IRow {
   return row;
 }
 
-const actionColumn: GridActionsColDef<IRow> = {
+const actionColumn: GridActionsColDef<any> = {
   field: "actions",
   type: "actions",
   width: 50,
@@ -48,7 +56,7 @@ const actionColumn: GridActionsColDef<IRow> = {
     </Link>,],
 };
 // Example usage:
-const columnsSame: GridColDef<IRow>[] = [
+const columnsSame = [
   { field: "id", headerName: "Id bài đăng", width: 90, sortable: false },
   {
     field: "title",
@@ -91,14 +99,15 @@ export const columnsOrderRent: GridColDef<IRow>[] = [
   },
   actionColumn
 ];
-export const columnsOrderSellBuy: GridColDef<IRow>[] = [
+export const columnsOrderSellBuy: GridColDef<IRowBuy>[] = [
   ...columnsSame,
   {
-    field: "quantity",
-    headerName: "Số lượng",
+    field: "createdDate",
+    headerName: "Thời gian đặt",
     type: "number",
-    valueGetter: () => "1",
     sortable: false,
+    width: 150,
+    valueGetter: (value: number) => dayjs(value).format("DD/MM/YYYY"),
   },
   {
     field: "deposit",
@@ -111,6 +120,13 @@ export const columnsOrderSellBuy: GridColDef<IRow>[] = [
     headerName: "Giá bán",
     type: "number",
     sortable: false,
+  },
+  {
+    field: "total",
+    headerName: "Tổng cộng",
+    sortable: false,
+    type: "number",
+    width: 150,
   },
   actionColumn
 ];
