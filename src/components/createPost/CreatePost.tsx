@@ -185,15 +185,13 @@ const CreatePost = ({ copyId }: { copyId: IPostState["copyId"] }) => {
       data = {
         ...data,
         allow_rent: 0,
-        allow_purchase: 1,
-        leaseRate:0,//kí hiệu riêng, nếu depositFee == 0 thì chỉ cho mua hông cho bán
-        penaltyRate:0
+        leaseRate: 0,//kí hiệu riêng, nếu depositFee == 0 thì chỉ cho mua hông cho bán
+        penaltyRate: 0
       }
     } else if (allowType === EAllowType.AllowRent) {
       data = {
         ...data,
         allow_purchase: 0,
-        allow_rent: 1,
         price: 0, //kí hiệu riêng, price = 0 cho bán ko cho mua
       }
     }
@@ -202,7 +200,7 @@ const CreatePost = ({ copyId }: { copyId: IPostState["copyId"] }) => {
       const response = await onCreateListing(data, token);
       if (typeof response != "string") {
         callAlert(`Tạo sách #${response?.data?.id} thành công`)
-        router.push(`/detail/${response?.data?.id}`) 
+        router.push(`/detail/${response?.data?.id}`)
       }
       else {
         callErrorAlert(response);

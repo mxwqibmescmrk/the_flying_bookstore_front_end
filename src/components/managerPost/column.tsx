@@ -20,6 +20,7 @@ export interface IRowsPost2 {
   penaltyRate: number;
   allowRent: number;
   allowPurchase: number;
+  price: number;
 }
 interface IRowDraft {
   id: number;
@@ -35,6 +36,7 @@ interface IRowDraft {
   book: IBook;
   allowRent: number;
   allowPurchase: number;
+  price:number;
 }
 export const convertDataToIRow = (data: IRowDraft[]) => {
   if (!data) return [];
@@ -46,7 +48,8 @@ export const convertDataToIRow = (data: IRowDraft[]) => {
       penaltyRate,
       id,
       allowRent,
-      allowPurchase
+      allowPurchase,
+      price,
     } = item;
     const result: IRowsPost2 = {
       id,
@@ -56,7 +59,8 @@ export const convertDataToIRow = (data: IRowDraft[]) => {
       depositFee,
       penaltyRate,
       allowRent,
-      allowPurchase
+      allowPurchase,
+      price
     };
     return result;
   });
@@ -72,7 +76,7 @@ const columnForBuy: GridColDef<IRowsPost2>[] = [
   {
     headerName: "Giá bán",
     editable: false,
-    field: "leaseRate",
+    field: "price",
     width: 120,
     valueGetter: (value: number) => formatCurrency(value),
   },
@@ -140,20 +144,20 @@ export const columnsPost = (
     {
       field: "id",
       headerName: "Id",
-      width: 50,
+      width: 70,
       editable: false,
     },
     {
       field: "title",
       headerName: "Tên bài đăng",
-      width: 100,
+      width: 150,
       editable: false,
     },
     {
       headerName: "Tác giả",
       field: "authors",
       editable: false,
-      width: 150,
+      width: 100,
       sortable: false,
     },
     ...(tabPost == 2 ? columnForBuy : tabPost == 1 ? columnForRent : columnForRentAndBuy),
