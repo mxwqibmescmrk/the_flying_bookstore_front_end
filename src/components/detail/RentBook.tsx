@@ -22,6 +22,7 @@ const RentBook = ({ book }: IPropsBook) => {
   const { profile } = useAuthStore();
   const addToCart = useStoreCart((state) => state.addCartBuy);
   const { changeTabNum } = useStoreStep();
+
   const handleAddToCartBuy = () => {
     if (!book?.id) return;
     const submitCart: ICartBook = {
@@ -32,7 +33,7 @@ const RentBook = ({ book }: IPropsBook) => {
     router.push("/cart");
   }
   const renderRentAccordion = () => {
-    if (book?.copy?.allow_rent == 0) {
+    if (book?.penaltyRate == 0 && book?.leaseRate == 0) {
       return <></>;
     }
     return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
@@ -52,7 +53,7 @@ const RentBook = ({ book }: IPropsBook) => {
     </Accordion>);
   }
   const renderPriceAccordion = () => {
-    if (book?.copy?.allow_purchase == 0) {
+    if (book?.price == 0) {
       return <></>;
     }
     return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>

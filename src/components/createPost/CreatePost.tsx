@@ -202,7 +202,7 @@ const CreatePost = ({ copyId }: { copyId: IPostState["copyId"] }) => {
       const response = await onCreateListing(data, token);
       if (typeof response != "string") {
         callAlert(`Tạo sách #${response?.data?.id} thành công`)
-        // router.push(`/detail/${response?.data?.id}`) //TODO revert this
+        router.push(`/detail/${response?.data?.id}`) 
       }
       else {
         callErrorAlert(response);

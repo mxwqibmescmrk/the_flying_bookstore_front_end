@@ -140,7 +140,7 @@ export const columnsPost = (
     {
       field: "id",
       headerName: "Id",
-      width: 15,
+      width: 50,
       editable: false,
     },
     {
