@@ -32,7 +32,7 @@ const DocumentDetail = ({ book }: IPropsBook) => {
           </div>
         ))}
       </div>
-      {book?.copy?.allow_rent == 1 && (
+      {book?.leaseRate !==0 && (
         <>
           <h4 className="font-semibold mb-3">Thông tin về sách thuê</h4>
           <div className="border rounded-lg  mb-5">
@@ -45,7 +45,7 @@ const DocumentDetail = ({ book }: IPropsBook) => {
           </div>
         </>
       )}
-      {book?.copy?.allow_purchase == 1 && (
+      {book?.price !== 0 && (
         <>
           <h4 className="font-semibold mb-3">Thông tin về sách mua</h4>
           <div className="border rounded-lg  mb-5">
