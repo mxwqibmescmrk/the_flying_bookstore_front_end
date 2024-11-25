@@ -1,3 +1,4 @@
+import { IRowBuy } from "../components/order/column";
 import { IListing, IReview } from "./book";
 import { IUser } from "./user";
 export enum OrderType {
@@ -35,10 +36,30 @@ export type IOrderStatus =
   | "DEPOSIT_RETURNED";
 export type IPaymentMethod = "COD" | "BANK_TRANSFER" | "VNPAY";
 
+export interface IBuyOrderConvert {
+  id?: number;
+  listing?: IRowBuy[] | undefined;
+  status?: IOrderStatus;
+  seller?: IUser;
+  buyer?: IUser;
+  sellerAddress?: string;
+  buyerAddress?: string;
+  receiveDate?: string | null;
+  totalPrice?: number;
+  totalChange?: number;
+  totalCompensate?: number;
+  totalPenaltyRate?: number | null;
+  paymentMethod?: IPaymentMethod;
+  sellPaymentId?: number;
+  changePaymentId?: number;
+  compensatePaymentId?: number | null;
+  createdDate?: string;
+}
+
 export interface IBuyOrder {
   id?: number;
   listingId?: number;
-  status?: IOrderStatus; 
+  status?: IOrderStatus;
   sellerId?: number;
   buyerId?: number;
   sellerAddress?: string;
@@ -48,7 +69,7 @@ export interface IBuyOrder {
   totalChange?: number;
   totalCompensate?: number;
   totalPenaltyRate?: number | null;
-  paymentMethod?: IPaymentMethod; 
+  paymentMethod?: IPaymentMethod;
   sellPaymentId?: number;
   changePaymentId?: number;
   compensatePaymentId?: number | null;
@@ -89,3 +110,15 @@ interface ILeaseOrder {
   leaseOrderDetails: ILeaseOrderDetail[];
   reviews: IReview[];
 }
+export const orderUserTitles: Record<OrderType, string> = {
+  [OrderType.Buy]: "Người mua",
+  [OrderType.Sell]: "Người bán",
+  [OrderType.Leasee]: "Người thuê",
+  [OrderType.Leasor]: "Chủ sách",
+};
+export const orderStakeholderTitles: Record<OrderType, string> = {
+  [OrderType.Buy]: orderUserTitles[OrderType.Sell],
+  [OrderType.Sell]: orderUserTitles[OrderType.Buy],
+  [OrderType.Leasee]: orderUserTitles[OrderType.Leasor],
+  [OrderType.Leasor]: orderUserTitles[OrderType.Leasee],
+};

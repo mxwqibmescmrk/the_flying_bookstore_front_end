@@ -2,7 +2,7 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "../../hooks/user";
-import {  IBuyOrder, OrderType } from "../../types/order";
+import {  IBuyOrder, IBuyOrderConvert, OrderType } from "../../types/order";
 import DetailOrder from "../order/DetailOrder";
 import { RxReload } from "react-icons/rx";
 import { useRouter } from "next/navigation";
@@ -18,7 +18,7 @@ export default function ListOrderBuy({
 
 }: {
   orderType: OrderType;
-  listOrder: Array<IBuyOrder> | undefined;
+  listOrder: Array<IBuyOrderConvert> | undefined;
   reloadButton:()=> Promise<void>;
   reloadStatus: (_: any, newValue: number) => Promise<void>;
   loading: boolean;

@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import CustomTabPanel, { orderProps } from "../order/CustomTabPanel";
-import {  IBuyOrder, OrderType } from "../../types/order";
+import { IBuyOrderConvert, OrderType } from "../../types/order";
 import { useAuthStore } from "../../hooks/user";
 import { useStoreAlert } from "../../hooks/alert";
 import { useRouter } from "next/navigation";
@@ -30,35 +30,44 @@ const arrStatusBuySell: Array<{ label: string }> = [
 const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
   const [status, setStatus] = useState(0);
   const { profile } = useAuthStore();
-  const { callAlert,  } = useStoreAlert();
-  const [listOrder, setListOrder] = useState<Array<IBuyOrder>>();
-  const { handleApiCall, loading } = useApiCall<IBuyOrder[]>();  // Sử dụng hook
+  const { callAlert, callErrorAlert } = useStoreAlert();
+  const [listOrder, setListOrder] = useState<Array<IBuyOrderConvert>>();
+  const { handleApiCall, loading } = useApiCall<IBuyOrderConvert[]>();  // Sử dụng hook
   const router = useRouter();
 
   const handleChange = (_: any, newValue: number) => {
     setStatus(newValue);
   }
+
+
   const callApiGetAllOrder = useCallback(async () => {
     const isCustomer = orderType === OrderType.Buy;
     if (!profile?.id) {
-      callAlert("Mời bạn đăng nhập lại!");
+      callErrorAlert("Mời bạn đăng nhập lại!");
       return router.push("/");
     }
-    return await handleApiCall(
-      () => getSaleOrderBySeller(profile?.id, isCustomer),
-      (response) => {
-        setListOrder(response)
-      },
-      "Lấy đơn hàng thành công"
-    )
-  }, [orderType, profile?.id, handleApiCall, callAlert, router]);
+    try {
+      const response = await getSaleOrderBySeller(profile?.id, isCustomer);
+      if (typeof response !== "string") {
+        const newListOrder: IBuyOrderConvert[] = response;
+        console.log({newListOrder});
+        setListOrder(newListOrder);
+        
+        callAlert("Lấy đơn hàng thành công");
+      } else {
+        callErrorAlert(response);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [orderType, profile?.id, callErrorAlert, router, callAlert]);
 
   const getOrderWithStatus = useCallback(async (status: number) => {
     const isCustomer = orderType === OrderType.Leasee;
     return await handleApiCall(
       () => getOrderWithStatusService(status, profile, isCustomer),
       (response) => {
-        setListOrder(response); 
+        setListOrder(response);
       },
       "Lấy đơn hàng thành công"
     );
