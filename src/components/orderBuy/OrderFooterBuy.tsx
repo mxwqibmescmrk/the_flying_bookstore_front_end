@@ -48,7 +48,7 @@ const OrderFooterBuy = ({
   const renderAlert = () => {
     if (!order?.status) return <></>;
     const content = callContentAlertBuy(order);
-    if (orderType == OrderType.Leasor) {
+    if (orderType == OrderType.Buy) {
       if (
         !content?.isBuyer[order?.status] ||
         content?.isBuyer[order?.status] == ""
@@ -60,7 +60,7 @@ const OrderFooterBuy = ({
           {content?.isBuyer[order?.status]}
         </Alert>
       );
-    } else {
+    } else if (orderType == OrderType.Sell) {
       if (
         !content?.isSeller[order?.status] ||
         content?.isSeller[order?.status] == ""
@@ -100,6 +100,7 @@ const OrderFooterBuy = ({
     </IconButton>
   );
   const renderButton = () => {
+    if (orderType !== OrderType.Buy) return;
     let message = "";
     switch (order?.status) {
       case "PAYMENT_SUCCESS":
@@ -128,7 +129,7 @@ const OrderFooterBuy = ({
             {cancelButton}
           </Stack>
         );
-    
+
       default:
         break;
     }

@@ -66,7 +66,7 @@ export interface IBuyOrderConvert {
 export interface IBuyOrder {
   id?: number;
   listingId?: number;
-  status?: IOrderStatus;
+  status?: IOrderStatusBuy;
   sellerId?: number;
   buyerId?: number;
   sellerAddress?: string;

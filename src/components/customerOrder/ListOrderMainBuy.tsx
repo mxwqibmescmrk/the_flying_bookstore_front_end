@@ -54,8 +54,6 @@ const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
     const newListOrder = orderList?.filter(order => {
       if(status == 0) return true;
       if (order?.status !== undefined) {
-        console.log("orderStatus[order.status]", orderStatus[order.status]);
-        console.log("order.status", order.status);
         return orderStatus[order.status] === status;
       }
       return false;

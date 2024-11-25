@@ -8,26 +8,25 @@ export let callContentAlertBuy: (order: IBuyOrderConvert) => IOrderStatusBuyMess
 
   if (!order?.status) return null;
   return {
-    isBuyer: {
+    isSeller: {
       ORDERED_PAYMENT_PENDING: `Người mua mới đặt hàng, chờ người mua thanh toán`,
-      USER_PAID: "Người mua đã thanh toán, chờ admin xác nhận đã nhận tiền thành công",
       PAYMENT_SUCCESS: "Người mua đã thanh toán thành công, người bán cần chuẩn bị sách để người mua lấy sách",
-      DELIVERED: "Đã giao sách cho quý khách",
+      DELIVERED: "Đã giao sách cho người mua, chờ admin trả người bán tiền bán sách",
       CANCELED: "Bạn đã hủy",
       PAID_BUYER: "Admin đã trả tiền thừa cho người mua",
-      PAID_SELLER: "Admin đã trả tiền cho người bán"
+      PAID_SELLER: "Đơn hàng đã hoàn thành, Admin đã trả tiền cho người bán"
     },
-    isSeller: {
+    isBuyer: {
       ORDERED_PAYMENT_PENDING:
         order?.paymentMethod == "COD"
           ? "Vui lòng thanh toán đơn hàng trong 24 giờ"
           : "Vui lòng thanh toán đơn hàng trong 24 giờ, nếu chuyển khoản thành công, bạn hãy nhấn nút Đã trả tiền",
-      USER_PAID: "Vui lòng chờ admin xác nhận đã nhận tiền của bạn thành công",
       PAYMENT_SUCCESS:
         "Vui lòng chỉ nhấn “đã nhận được sách” khi đơn hàng đã được giao đến bạn và bạn đã kiểm tra xong hàng",
       CANCELED: "Khách đã hủy",
-      DELIVERED: "Đã giao sách cho người mua",
-      PAID_BUYER: "Admin đã trả tiền thừa cho người mua", PAID_SELLER: "Admin đã trả tiền cho người bán"
+      DELIVERED: "Đã giao sách cho người mua, chờ admin trả người bán tiền bán sách",
+      PAID_BUYER: "Admin đã trả tiền thừa cho người mua", 
+      PAID_SELLER: "Đơn hàng đã hoàn thành, Admin đã trả tiền cho người bán"
     },
   };
 };

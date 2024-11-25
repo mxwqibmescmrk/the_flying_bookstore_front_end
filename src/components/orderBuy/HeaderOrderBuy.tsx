@@ -55,7 +55,7 @@ export const HeaderOrderBuy = ({
       </Grid>
       <Grid item xs={2}>
         <Typography variant="body2" sx={{ color: theme.palette.grey[600] }}>
-          {orderStakeholderTitles[orderType] || orderStakeholderTitles[OrderType.Leasor]}
+          {orderStakeholderTitles[orderType] || orderStakeholderTitles[OrderType.Sell]}
         </Typography>
         <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
           {renderUserName(order, orderType)}
@@ -63,7 +63,7 @@ export const HeaderOrderBuy = ({
       </Grid>
       <Grid item xs={3}>
         <Typography variant="body2" sx={{ color: theme.palette.grey[600] }}>
-          Trạng thái {orderUserTitles[orderType] || orderUserTitles[OrderType.Leasor]}
+          Trạng thái {orderStakeholderTitles[orderType] || orderStakeholderTitles[OrderType.Sell]}
         </Typography>
         <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
           {renderStatusBuy(order?.status, orderType)}
