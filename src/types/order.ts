@@ -22,6 +22,13 @@ export interface IChangeToBuyOrder {
   buyerAddress: string;
   paymentMethod: IPaymentMethod;
 }
+export type IOrderStatusBuy =
+  "ORDERED_PAYMENT_PENDING" |
+  "CANCELED" |
+  "PAYMENT_SUCCESS" |
+  "DELIVERED" |
+  "PAID_BUYER" |
+  "PAID_SELLER";
 export type IOrderStatus =
   | "ORDERED_PAYMENT_PENDING"
   | "CANCELED"
@@ -39,7 +46,7 @@ export type IPaymentMethod = "COD" | "BANK_TRANSFER" | "VNPAY";
 export interface IBuyOrderConvert {
   id?: number;
   listing?: IRowBuy[] | undefined;
-  status?: IOrderStatus;
+  status?: IOrderStatusBuy;
   seller?: IUser;
   buyer?: IUser;
   sellerAddress?: string;

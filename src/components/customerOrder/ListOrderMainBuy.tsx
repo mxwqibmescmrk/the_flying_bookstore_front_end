@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import CustomTabPanel, { orderProps } from "../order/CustomTabPanel";
-import { IBuyOrderConvert, OrderType } from "../../types/order";
+import { IBuyOrderConvert, IOrderStatusBuy, OrderType } from "../../types/order";
 import { useAuthStore } from "../../hooks/user";
 import { useStoreAlert } from "../../hooks/alert";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ import { getOrderWithStatusService } from "../../api/order";
 import useApiCall from "../../hooks/useApiCall";
 import { getSaleOrderBySeller } from "../../api/orderBuy";
 import ListOrderBuy from "../orderBuy/ListOrderBuy";
+import { scrollToTop } from "../scrollButton/ScrollButton";
 
 const arrSame: Array<{ label: string }> = [
   { label: "Tất cả" },
@@ -26,19 +27,41 @@ const arrStatusBuySell: Array<{ label: string }> = [
   ...arrSame,
   { label: "Đã hủy" },
 ];
+const orderStatus: { [key in IOrderStatusBuy]?: number } = {
+  ORDERED_PAYMENT_PENDING: 1,
+  CANCELED: 3,
+  DELIVERED: 2,
+  PAID_BUYER: 2,
+  PAID_SELLER: 2,
+  PAYMENT_SUCCESS: 1
+}
+
 
 const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
   const [status, setStatus] = useState(0);
   const { profile } = useAuthStore();
   const { callAlert, callErrorAlert } = useStoreAlert();
   const [listOrder, setListOrder] = useState<Array<IBuyOrderConvert>>();
-  const { handleApiCall, loading } = useApiCall<IBuyOrderConvert[]>();  // Sử dụng hook
   const router = useRouter();
 
   const handleChange = (_: any, newValue: number) => {
     setStatus(newValue);
+    scrollToTop();
   }
-
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const filterOrder = (orderList:IBuyOrderConvert[]) => {
+    const newListOrder = orderList?.filter(order => {
+      if(status == 0) return true;
+      if (order?.status !== undefined) {
+        console.log("orderStatus[order.status]", orderStatus[order.status]);
+        console.log("order.status", order.status);
+        return orderStatus[order.status] === status;
+      }
+      return false;
+    })
+    return newListOrder
+  }
 
   const callApiGetAllOrder = useCallback(async () => {
     const isCustomer = orderType === OrderType.Buy;
@@ -50,9 +73,7 @@ const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
       const response = await getSaleOrderBySeller(profile?.id, isCustomer);
       if (typeof response !== "string") {
         const newListOrder: IBuyOrderConvert[] = response;
-        console.log({newListOrder});
-        setListOrder(newListOrder);
-        
+        setListOrder(filterOrder(newListOrder));
         callAlert("Lấy đơn hàng thành công");
       } else {
         callErrorAlert(response);
@@ -60,41 +81,19 @@ const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
     } catch (error) {
       console.error(error);
     }
-  }, [orderType, profile?.id, callErrorAlert, router, callAlert]);
+  }, [orderType, profile?.id, callErrorAlert, router, filterOrder, callAlert]);
 
-  const getOrderWithStatus = useCallback(async (status: number) => {
-    const isCustomer = orderType === OrderType.Leasee;
-    return await handleApiCall(
-      () => getOrderWithStatusService(status, profile, isCustomer),
-      (response) => {
-        setListOrder(response);
-      },
-      "Lấy đơn hàng thành công"
-    );
-  }, [handleApiCall, orderType, profile]);
-  const callWhichApi = useCallback(async () => {
-    switch (status) {
-      case 1:
-      case 2:
-      case 3:
-        return await getOrderWithStatus(status);
-      case 0:
-        return await callApiGetAllOrder();
-      default:
-        return callAlert("Cần thêm status mới");
-    }
-  }, [status, getOrderWithStatus, callApiGetAllOrder, callAlert]);
   const reloadButton = async () => {
-    return await callWhichApi().then(() => {
+    return await callApiGetAllOrder().then(() => {
       callAlert("Đã tải lại thành công");
     });
   };
   const reloadStatus = async (_: any, newValue: number) => {
     setStatus(newValue);
-    return await callWhichApi();
+    return await callApiGetAllOrder();
   };
   useEffect(() => {
-    callWhichApi();
+    callApiGetAllOrder();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
@@ -102,7 +101,7 @@ const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
     return arrStatusBuySell.map((_, index) => {
       return (
         <CustomTabPanel value={status} index={index} key={index}>
-          <ListOrderBuy orderType={orderType} listOrder={listOrder} loading={loading} reloadButton={reloadButton} reloadStatus={reloadStatus} />
+          <ListOrderBuy orderType={orderType} listOrder={listOrder} reloadButton={reloadButton} reloadStatus={reloadStatus} />
         </CustomTabPanel>
       );
     });

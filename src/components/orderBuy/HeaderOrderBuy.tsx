@@ -1,9 +1,9 @@
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 import { CiLocationArrow1 } from "react-icons/ci";
-import {  IBuyOrder, IBuyOrderConvert, IRentOrder, OrderType } from "../../types/order";
+import { IBuyOrder, IBuyOrderConvert, IRentOrder, OrderType } from "../../types/order";
 import dayjs from "dayjs";
-import { renderStatus } from "../checkout/PaymentStatus";
+import { renderStatus, renderStatusBuy } from "../checkout/PaymentStatus";
 import { useStoreStep } from "../../hooks/step";
 const renderUserName = (order: IBuyOrderConvert, orderType: OrderType): string => {
   switch (orderType) {
@@ -36,9 +36,6 @@ export const HeaderOrderBuy = ({
 }) => {
 
   const theme = useTheme();
-  const { tabNum } = useStoreStep()
-
-
   return (
     <Grid
       container
@@ -69,7 +66,7 @@ export const HeaderOrderBuy = ({
           Trạng thái {orderUserTitles[orderType] || orderUserTitles[OrderType.Leasor]}
         </Typography>
         <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-          {renderStatus(order?.status, orderType)}
+          {renderStatusBuy(order?.status, orderType)}
         </Typography>
       </Grid>
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {  IChangeToBuyOrder, IOrderStatus } from "../types/order";
+import {  IChangeToBuyOrder, IOrderStatus, IOrderStatusBuy } from "../types/order";
 import { useAuthStore } from "@/hooks/user";
 import { IUser } from "../types/user";
 import { port } from "../utils/env";
@@ -43,6 +43,20 @@ export const updateStatusOrder = async (status: IOrderStatus, id: number, token:
   return await axios
     .request({
       url: `${port}/api/leaseOrder/edit/status`,
+      params: { id, status },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => { })
+    .catch((error) => {
+      handleError(error)
+    });
+};
+export const updateStatusSaleOrder = async (status: IOrderStatusBuy, id: number, token: string) => {
+  return await axios
+    .request({
+      url: `${port}/api/SaleOrder/status`,
       params: { id, status },
       headers: {
         Authorization: `Bearer ${token}`,

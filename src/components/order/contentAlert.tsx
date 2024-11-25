@@ -1,35 +1,33 @@
 import dayjs from "dayjs";
-import {  IBuyOrderConvert, IOrderStatus, IRentOrder } from "../../types/order";
+import { IBuyOrderConvert, IOrderStatus, IRentOrder } from "../../types/order";
 import { formatCurrency } from "../../utils/helps";
-
-type IOrderStatusMessage = {
-  isCustomer: {
-    [key in IOrderStatus]?: string;
-  };
-  isManager: {
-    [key in IOrderStatus]?: string;
-  };
-};
+import { IOrderStatusBuyMessage, IOrderStatusMessage } from "../checkout/PaymentStatus";
 
 
-export let callContentAlertBuy: (order: IBuyOrderConvert) => IOrderStatusMessage | null = (order) => {
+export let callContentAlertBuy: (order: IBuyOrderConvert) => IOrderStatusBuyMessage | null = (order) => {
 
   if (!order?.status) return null;
   return {
-    isCustomer: {
+    isBuyer: {
       ORDERED_PAYMENT_PENDING: `Người mua mới đặt hàng, chờ người mua thanh toán`,
       USER_PAID: "Người mua đã thanh toán, chờ admin xác nhận đã nhận tiền thành công",
       PAYMENT_SUCCESS: "Người mua đã thanh toán thành công, người bán cần chuẩn bị sách để người mua lấy sách",
-      DELIVERED: "Đã giao sách cho người mua",
+      DELIVERED: "Đã giao sách cho quý khách",
+      CANCELED: "Bạn đã hủy",
+      PAID_BUYER: "Admin đã trả tiền thừa cho người mua",
+      PAID_SELLER: "Admin đã trả tiền cho người bán"
     },
-    isManager: {
+    isSeller: {
       ORDERED_PAYMENT_PENDING:
         order?.paymentMethod == "COD"
           ? "Vui lòng thanh toán đơn hàng trong 24 giờ"
           : "Vui lòng thanh toán đơn hàng trong 24 giờ, nếu chuyển khoản thành công, bạn hãy nhấn nút Đã trả tiền",
       USER_PAID: "Vui lòng chờ admin xác nhận đã nhận tiền của bạn thành công",
       PAYMENT_SUCCESS:
-        "Vui lòng chỉ nhấn “đã nhận được hàng” khi đơn hàng đã được giao đến bạn và bạn đã nhận được hàng",
+        "Vui lòng chỉ nhấn “đã nhận được sách” khi đơn hàng đã được giao đến bạn và bạn đã kiểm tra xong hàng",
+      CANCELED: "Khách đã hủy",
+      DELIVERED: "Đã giao sách cho người mua",
+      PAID_BUYER: "Admin đã trả tiền thừa cho người mua", PAID_SELLER: "Admin đã trả tiền cho người bán"
     },
   };
 };
@@ -49,7 +47,7 @@ export let callContentAlert: (order: IRentOrder) => IOrderStatusMessage | null =
       DELIVERED: "Đã giao sách cho người thuê",
       RETURNING: "Bạn đã được nhận lại sách chưa?",
       RETURNED: "Bạn chờ admin trả lại tiền thuê trong 3-5 ngày làm việc nhé",
-      LATE_RETURN:"Người thuê đang quá hạn trả sách, người thuê sẽ bị tính thêm tiền phạt trả sách"
+      LATE_RETURN: "Người thuê đang quá hạn trả sách, người thuê sẽ bị tính thêm tiền phạt trả sách"
     },
     isManager: {
       ORDERED_PAYMENT_PENDING:
@@ -58,7 +56,7 @@ export let callContentAlert: (order: IRentOrder) => IOrderStatusMessage | null =
           : "Vui lòng thanh toán đơn hàng trong 24 giờ, nếu chuyển khoản thành công, bạn hãy nhấn nút Đã trả tiền",
       USER_PAID: "Vui lòng chờ admin xác nhận đã nhận tiền của bạn thành công",
       PAYMENT_SUCCESS:
-        "Vui lòng chỉ nhấn “đã nhận được hàng” khi đơn hàng đã được giao đến bạn và bạn đã nhận được hàng",
+        "Vui lòng chỉ nhấn “đã nhận được sách” khi đơn hàng đã được giao đến bạn và bạn đã nhận được hàng",
       DELIVERED: dayjs().isSame(order?.leaseOrder?.toDate, "day")
         ? "Bạn đã đến hạn trả sách"
         : `Bạn còn ${duration} ngày nữa, bạn có muốn trả sách sớm?`,
