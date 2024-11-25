@@ -17,17 +17,19 @@ import { formatCurrency, formatPhoneNumber } from "../../utils/helps";
 import CartInfoItem, { CartInfoItemProps } from "../cart/CartInfoItem";
 import { PiMoney } from "react-icons/pi";
 import { GiMoneyStack } from "react-icons/gi";
-import { TbSum } from "react-icons/tb";
+import { TbSum, TbTicket } from "react-icons/tb";
 import { getUserInfo } from "../../api/profile";
 import { useStoreAlert } from "../../hooks/alert";
 import { IUser } from "../../types/user";
+import { MdAttachMoney, MdOutlineAttachMoney } from "react-icons/md";
+import { IoTicketOutline } from "react-icons/io5";
 
 const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
   const [sellUser, setSellUser] = useState<IUser>();
   const { callErrorAlert } = useStoreAlert()
   useEffect(() => {
     const callApiGetSellerInfo = async () => {
-      if (!orderDetail?.sellerId) return;
+      if (!orderDetail?.sellerId) return callErrorAlert("Không nhận diện được người bán!");
       const response = await getUserInfo(orderDetail?.sellerId);
       if (typeof response != "string") {
         console.log({ response });
@@ -77,7 +79,16 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
     {
       title: `Giá bán`,
       description: formatCurrency(orderDetail?.totalPrice),
-      children: <PiMoney className="total__icon" />
+      children: <MdAttachMoney className="total__icon" />
+    },
+    {
+      title: 'Khuyến mãi từ người bán',
+      description: formatCurrency(10000),
+      children: <IoTicketOutline className="total__icon" />
+    }, {
+      title: 'Khuyến mãi từ The Flying Bookstore',
+      description: formatCurrency(20000),
+      children: <TbTicket className="total__icon" />
     },
   ]
   return (
@@ -90,9 +101,13 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
       </h4>
       <div className="columns-2 gap-10 my-4">
         <div className="total">
-          {listOrderDetail.map(({ title, children, description }, index) => (<CartInfoItem key={index * 2} title={title} description={description} >{children}</CartInfoItem>))}
+          {listOrderDetail.map(({ title, children, description }, index) =>
+            (<CartInfoItem key={index * 2} title={title} description={description}>{children}</CartInfoItem>))
+          }
           <div className="border-t">
-            <CartInfoItem title={`Tổng cộng`} description={!!orderDetail?.totalPrice && formatCurrency(orderDetail?.totalPrice)} ><TbSum className="total__icon" /></CartInfoItem>
+            <CartInfoItem title={`Tổng tiền thanh toán`} description={!!orderDetail?.totalPrice && formatCurrency(orderDetail?.totalPrice)} >
+              <TbSum className="total__icon" />
+            </CartInfoItem>
           </div>
         </div>
       </div >

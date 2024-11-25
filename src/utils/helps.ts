@@ -15,7 +15,8 @@ const chunkArray = (array: Array<any>, chunkSize: number) => {
 const formatCurrency = (amount: number | undefined) => {
   if (!amount) return 0 + "đ";
   // Chuyển số tiền thành chuỗi và thêm dấu chấm phẩy giữa các hàng nghìn
-  const formattedAmount = amount
+  const roundedAmount = Math.round(amount);
+  const formattedAmount = roundedAmount
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
@@ -44,9 +45,9 @@ function formatPhoneNumber(phoneNumber: string | undefined) {
   // Định dạng số điện thoại thành (0x) xxx-xxx-xxx hoặc (0x) xxxx-xxx-xxx
   return phoneNumber.replace(/(\d{1})(\d{3})(\d{3})(\d{3})/, "$1$2 $3 $4");
 }
-const calPercentPromotion = (book: IListing | undefined): number => {
-  if (!book || book.price === undefined) return 0;
-  return Math.round(100 - (book.price * 100) / book.depositFee);
+const calPercentPromotion = (book: IListing | undefined): string|number => {
+  if (!book || book.price === undefined || book.depositFee === undefined) return 0;
+  return formatCurrency(Math.round(book?.depositFee - book?.price));
 }
 function a11yProps(index: number) {
   return {

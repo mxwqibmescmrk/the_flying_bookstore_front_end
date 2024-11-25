@@ -27,14 +27,27 @@ const ManagerPost = () => {
   });
   const [tabPost, setTabPost] = useState(0)
   const { profile } = useAuthStore()
-  const [listPost, setListPost] = useState<IRowsPost2[]>([]);
+  const [listPost, setListPost] = useState<{
+    rentBuy: IRowsPost2[],
+    rent: IRowsPost2[],
+    buy: IRowsPost2[]
+  }>(
+    {
+      rentBuy: [],
+      rent: [],
+      buy: []
+    }
+  );
   const { callErrorAlert } = useStoreAlert()
+
   const handleClickOpen = (data: IRowsPost2) => {
     setModalDelete({ open: true, data });
   };
-  const handleChangeTabPost = (event: React.SyntheticEvent, newValue: number) => {
+
+  const handleChangeTabPost : (event: React.SyntheticEvent, newValue: number) => void = (event, newValue)  => {
     setTabPost(newValue);
   };
+
   const handleClose = () => {
     setModalDelete((state) => ({ ...state, open: false }));
   };
@@ -45,7 +58,11 @@ const ManagerPost = () => {
       const response = await getListPostService(profile);
       if (typeof response != "string") {
         const convertData = convertDataToIRow(response?.content);
-        setListPost(convertData);
+        setListPost({
+          rentBuy: convertData,
+          rent: convertData.filter(item => item.allowRent == 1 && item.allowPurchase == 0),
+          buy: convertData.filter(item => item.allowRent == 0 && item.allowPurchase == 1),
+        });
       } else {
         callErrorAlert(response);
       }
@@ -53,6 +70,7 @@ const ManagerPost = () => {
 
     }
   }, [callErrorAlert, profile]);
+
   useEffect(() => {
     getListPost();
   }, [getListPost]);
@@ -74,16 +92,16 @@ const ManagerPost = () => {
       </Stack>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tabPost} onChange={handleChangeTabPost} aria-label="manage post">
-          <Tab label="Bài đăng bán và thuê" {...a11yProps(0)} />
-          <Tab label="Bài đăng chỉ thuê" {...a11yProps(1)} />
-          <Tab label="Bài đăng chỉ bán" {...a11yProps(2)} />
+          <Tab value={0} label="Bài đăng bán và thuê" {...a11yProps(0)} sx={{textTransform:"none"}}  />
+          <Tab value={1} label="Bài đăng chỉ thuê" {...a11yProps(1)} sx={{textTransform:"none"}} />
+          <Tab value={2} label="Bài đăng chỉ bán" {...a11yProps(2)} sx={{textTransform:"none"}} />
         </Tabs>
       </Box>
       <CustomTabPanel value={tabPost} index={0}>
-        <Box sx={{ width: "100%", height: listPost[0]!! ? "auto" : "500px" }}>
+        <Box sx={{ width: "100%", height: listPost.rentBuy[0]!! ? "auto" : "500px" }}>
           <DataGrid
-            rows={listPost}
-            columns={columnsPost(handleClickOpen,tabPost)}
+            rows={listPost.rentBuy}
+            columns={columnsPost(handleClickOpen, tabPost)}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -100,10 +118,10 @@ const ManagerPost = () => {
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={tabPost} index={1}>
-        <Box sx={{ width: "100%", height: listPost[0]!! ? "auto" : "500px" }}>
+        <Box sx={{ width: "100%", height: listPost.rent[0]!! ? "auto" : "500px" }}>
           <DataGrid
-            rows={listPost}
-            columns={columnsPost(handleClickOpen,tabPost)}
+            rows={listPost.rent}
+            columns={columnsPost(handleClickOpen, tabPost)}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -120,10 +138,10 @@ const ManagerPost = () => {
         </Box>
       </CustomTabPanel>
       <CustomTabPanel value={tabPost} index={2}>
-        <Box sx={{ width: "100%", height: listPost[0]!! ? "auto" : "500px" }}>
+        <Box sx={{ width: "100%", height: listPost.buy[0]!! ? "auto" : "500px" }}>
           <DataGrid
-            rows={listPost}
-            columns={columnsPost(handleClickOpen,tabPost)}
+            rows={listPost.buy}
+            columns={columnsPost(handleClickOpen, tabPost)}
             initialState={{
               pagination: {
                 paginationModel: {
@@ -141,7 +159,7 @@ const ManagerPost = () => {
       </CustomTabPanel>
 
 
-      <DeletePostModal handleClose={handleClose} modalDelete={modalDelete} getListPost={getListPost} />
+      {/* <DeletePostModal handleClose={handleClose} modalDelete={modalDelete} getListPost={getListPost} /> */}
     </>
   );
 };

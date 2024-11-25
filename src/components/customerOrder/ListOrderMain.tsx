@@ -56,7 +56,7 @@ const ListOrderMain = ({ orderType }: { orderType: OrderType }) => {
       (response) => {
         setListOrder(response)
       },
-      "Lấy đơn hàng thành công"
+      "Tải đơn hàng thành công"
     )
   }, [orderType, profile?.id, handleApiCall, callAlert, router]);
 

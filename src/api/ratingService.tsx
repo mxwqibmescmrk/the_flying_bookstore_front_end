@@ -1,5 +1,6 @@
 import axios from "axios";
 import { port } from "../utils/env";
+import { handleError } from "./handleError";
 const SubmitReviewService = async ( formData: any) => {
     let config = {
         method: "post",
@@ -17,6 +18,7 @@ const SubmitReviewService = async ( formData: any) => {
         })
         .catch((error) => {
             console.log(error);
+            return handleError(error);
         });
 }
 export { SubmitReviewService }

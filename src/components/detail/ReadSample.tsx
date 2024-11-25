@@ -1,44 +1,59 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import { CiZoomOut } from "react-icons/ci";
-import Dialog, { DialogProps } from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
+import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { IListing } from '../../types/book';
 import Image from 'next/image';
 import { IconButton, Stack } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import { CiZoomIn } from "react-icons/ci";
 import { IoIosArrowBack } from "react-icons/io";
-import { ZoomOutSharp } from '@mui/icons-material';
+import { getImagePreview } from '../../api/imageService';
+import { useStoreAlert } from '../../hooks/alert';
 
 export interface ISampleDialog {
   open: boolean
-  book: IListing | undefined
 }
 
-const ReadSampleDialog = ({ sampleDialog, setSampleDialog }: { sampleDialog: ISampleDialog, setSampleDialog: React.Dispatch<React.SetStateAction<ISampleDialog>> }) => {
+const ReadSampleDialog = ({ book, sampleDialog, setSampleDialog }: { book: IListing | undefined, sampleDialog: ISampleDialog, setSampleDialog: React.Dispatch<React.SetStateAction<ISampleDialog>> }) => {
+  const [listImg, setListImg] = React.useState<Array<string>>([]);
   const [zoom, setZoom] = React.useState({
     width: 774,
     height: 1000,
     disableZoomIn: false,
     disableZoomOut: false,
   })
+  const { callErrorAlert } = useStoreAlert()
+  React.useEffect(() => {
+    const getImage = async () => {
+      return await getImagePreview(book?.copy.id)
+        .then(res => {
+          if (typeof res !== "string") {
+            return setListImg(res)
+          }
+          callErrorAlert(res)
+        })
+        .catch(err => {
+          callErrorAlert(err)
+        })
+    }
+    getImage();
+  }, [callErrorAlert, book?.copy?.id])
+
   const handleClose = () => {
     setSampleDialog(state => ({ ...state, open: false }))
   };
   const handleZoomIn = () => {
- if (zoom.width < 1000) {
-      setZoom(state => ({ ...state, width: state.width + 100, height: state.height + 200, disableZoomIn: false, disableZoomOut:false }));
+    if (zoom.width < 1000) {
+      setZoom(state => ({ ...state, width: state.width + 100, height: state.height + 200, disableZoomIn: false, disableZoomOut: false }));
     } else {
-      setZoom(state => ({ ...state, disableZoomIn: true , disableZoomOut: false}))
+      setZoom(state => ({ ...state, disableZoomIn: true, disableZoomOut: false }))
     }
   }
   const handleZoomOut = () => {
- if (zoom.width > 500) {
-      setZoom(state => ({ ...state, width: state.width - 100, height: state.height - 200, disableZoomOut: false, disableZoomIn:false }));
+    if (zoom.width > 500) {
+      setZoom(state => ({ ...state, width: state.width - 100, height: state.height - 200, disableZoomOut: false, disableZoomIn: false }));
     } else {
       setZoom(state => ({ ...state, disableZoomOut: true, disableZoomIn: false }))
     }
@@ -82,7 +97,7 @@ const ReadSampleDialog = ({ sampleDialog, setSampleDialog }: { sampleDialog: ISa
           >
             <IoIosArrowBack />
           </IconButton>
-          <DialogTitle id="scroll-dialog-title" sx={{ textAlign: 'center' }}>Xem trước cuốn sách {sampleDialog.book?.book?.title}</DialogTitle>
+          <DialogTitle id="scroll-dialog-title" sx={{ textAlign: 'center' }}>Xem trước cuốn sách {book?.book?.title}</DialogTitle>
           <div>
             <IconButton
               aria-label="zoom-out"
@@ -112,7 +127,9 @@ const ReadSampleDialog = ({ sampleDialog, setSampleDialog }: { sampleDialog: ISa
             tabIndex={-1}
           >
             <div className='flex flex-col items-center'>
-              {listImgPreview.map((src, key) => (<Image className="object-contain" alt={sampleDialog.book?.book.title || "sách"} src={src} key={key} width={zoom.width} height={zoom.height} />))}
+              {typeof listImg == "object" && listImg.length > 0 &&
+                listImg.map((src, key) =>
+                  (<Image className="object-contain" alt={book?.book.title || "sách"} src={src} key={key} width={zoom.width} height={zoom.height} />))}
             </div>
           </DialogContentText>
         </DialogContent>

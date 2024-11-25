@@ -20,11 +20,6 @@ const DetailOrder = ({
   orderType: OrderType;
   changeStatus: (e: any, newValue: number) => void;
 }) => {
-  const { tabNum } = useStoreStep()
-  const [listBook, setlistBook] = useState<IRow[]>(
-    order && order.listing ? [convertToRow(order)] : []
-  );
-
   if (!order) return <>Hiện chưa có đơn hàng</>;
   return (
     <Box
@@ -35,13 +30,13 @@ const DetailOrder = ({
         borderColor: theme.palette.grey[400],
         px: 2,
         py: 1,
-        height: listBook.length != 0 ? "auto" : "500px",
+        height: order && order.listing ? "auto" : "500px",
       }}
     >
       <HeaderOrder order={order} orderType={orderType} />
       <DataGrid
-        rows={listBook}
-        columns={tabNum == 1 ? columnsOrderSellBuy : columnsOrderRent}
+        rows={order && order.listing ? [convertToRow(order)] : []}
+        columns={columnsOrderRent}
         disableRowSelectionOnClick
         slots={{ noRowsOverlay: NoData }}
         sx={{ border: "none" }}

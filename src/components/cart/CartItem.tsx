@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { IconButton } from "@mui/material";
 import { CiTrash } from "react-icons/ci";
 import { useEffect, useState } from "react";
@@ -40,10 +39,10 @@ const CartItem = ({ isCheckout = false }: { isCheckout?: boolean }) => {
       <BookDetailInfo book={book} />
       <div className="basis-3/12 flex-1  flex flex-col justify-center">
         {tabNum === 1 ? (
-          <div className="flex justify-between">
-            <p className="text-sm mr-8">Giá mua:</p>
-            <p className="text-sm text-gray-400">{formatCurrency(book?.price)}</p>
-          </div>
+           <div className="flex justify-between">
+             <p className="text-sm mr-8">{formatCurrency(book?.price)}</p>
+             <p className="text-sm text-gray-400 line-through">{formatCurrency(book?.depositFee)}</p>
+           </div>
         ) : (
           <>
             <div className="flex justify-between">

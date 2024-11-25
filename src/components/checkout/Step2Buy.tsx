@@ -60,7 +60,7 @@ const Step2Buy = ({
 
   useEffect(() => {
     const getOrderApi = async () => {
-      if (!orderId) return;
+      if (!orderId) return callErrorAlert("Không có chi tiết đơn hàng");
       const response = await getDetailBuyOrder(orderId);
       if (typeof response != "string") {
         setOrderDetail(response?.data);

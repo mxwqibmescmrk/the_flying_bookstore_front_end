@@ -32,8 +32,6 @@ const RentBook = ({ book }: IPropsBook) => {
     router.push("/cart");
   }
   const renderRentAccordion = () => {
-
-    // if(!book?.allow_rent){ TODO: chờ thảo confirm
     if (book?.copy?.allow_rent == 0) {
       return <></>;
     }
@@ -54,7 +52,6 @@ const RentBook = ({ book }: IPropsBook) => {
     </Accordion>);
   }
   const renderPriceAccordion = () => {
-    // if(!book?.allow_purchase){ TODO: chờ thảo confirm
     if (book?.copy?.allow_purchase == 0) {
       return <></>;
     }
@@ -72,7 +69,7 @@ const RentBook = ({ book }: IPropsBook) => {
       <AccordionDetails>
         <div className="flex flex-col gap-2 border-b pb-5">
           <div className="columns-2">
-            <Chip label={`Giảm đến ${calPercentPromotion(book)}%`} color="success" variant="outlined" />
+            <Chip label={`Giảm được ${calPercentPromotion(book)}`} color="success" variant="outlined" />
             <p className=" text-right line-through text-gray-400">
               {formatCurrency(book?.depositFee)}
             </p>

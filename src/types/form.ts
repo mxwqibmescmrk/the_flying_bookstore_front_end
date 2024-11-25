@@ -1,4 +1,4 @@
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 
 export type IFormCheckout = {
@@ -9,3 +9,14 @@ export type IFormCheckout = {
   address: string;
   birthDate: Dayjs|null;
 };
+export interface IFormVoucher {
+  name: string;
+  createdDate: dayjs.Dayjs;
+  startDate: dayjs.Dayjs;
+  endDate: dayjs.Dayjs;
+  minValue: number;
+  discountAmount: number | null;
+  discountPercentage: number | null;
+  voucherType: number;
+  code: string;
+}

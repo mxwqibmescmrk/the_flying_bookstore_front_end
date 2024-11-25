@@ -18,6 +18,8 @@ export interface IRowsPost2 {
   leaseRate: number;
   depositFee: number;
   penaltyRate: number;
+  allowRent: number;
+  allowPurchase: number;
 }
 interface IRowDraft {
   id: number;
@@ -31,6 +33,8 @@ interface IRowDraft {
   description: string;
   copy: ICopy;
   book: IBook;
+  allowRent: number;
+  allowPurchase: number;
 }
 export const convertDataToIRow = (data: IRowDraft[]) => {
   if (!data) return [];
@@ -41,6 +45,8 @@ export const convertDataToIRow = (data: IRowDraft[]) => {
       depositFee,
       penaltyRate,
       id,
+      allowRent,
+      allowPurchase
     } = item;
     const result: IRowsPost2 = {
       id,
@@ -49,6 +55,8 @@ export const convertDataToIRow = (data: IRowDraft[]) => {
       leaseRate,
       depositFee,
       penaltyRate,
+      allowRent,
+      allowPurchase
     };
     return result;
   });

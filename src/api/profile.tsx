@@ -5,6 +5,7 @@ import { IFormCheckout } from "../types/form";
 import dayjs from "dayjs";
 import { port } from "../utils/env";
 import { handleError } from "./handleError";
+
 export const getUserInfo = async (
   userId: number,
 ) => {
@@ -17,6 +18,7 @@ export const getUserInfo = async (
     return handleError(error)
   }
 };
+
 export const getProfile = async (
   token: string | null,
   setToken: (arg: string, profile: IUser) => void

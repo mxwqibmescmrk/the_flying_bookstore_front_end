@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import {  IOrderStatus, IRentOrder } from "../../types/order";
+import {  IBuyOrderConvert, IOrderStatus, IRentOrder } from "../../types/order";
 import { formatCurrency } from "../../utils/helps";
 
 type IOrderStatusMessage = {
@@ -10,6 +10,31 @@ type IOrderStatusMessage = {
     [key in IOrderStatus]?: string;
   };
 };
+
+
+export let callContentAlertBuy: (order: IBuyOrderConvert) => IOrderStatusMessage | null = (order) => {
+
+  if (!order?.status) return null;
+  return {
+    isCustomer: {
+      ORDERED_PAYMENT_PENDING: `Người mua mới đặt hàng, chờ người mua thanh toán`,
+      USER_PAID: "Người mua đã thanh toán, chờ admin xác nhận đã nhận tiền thành công",
+      PAYMENT_SUCCESS: "Người mua đã thanh toán thành công, người bán cần chuẩn bị sách để người mua lấy sách",
+      DELIVERED: "Đã giao sách cho người mua",
+    },
+    isManager: {
+      ORDERED_PAYMENT_PENDING:
+        order?.paymentMethod == "COD"
+          ? "Vui lòng thanh toán đơn hàng trong 24 giờ"
+          : "Vui lòng thanh toán đơn hàng trong 24 giờ, nếu chuyển khoản thành công, bạn hãy nhấn nút Đã trả tiền",
+      USER_PAID: "Vui lòng chờ admin xác nhận đã nhận tiền của bạn thành công",
+      PAYMENT_SUCCESS:
+        "Vui lòng chỉ nhấn “đã nhận được hàng” khi đơn hàng đã được giao đến bạn và bạn đã nhận được hàng",
+    },
+  };
+};
+
+
 export let callContentAlert: (order: IRentOrder) => IOrderStatusMessage | null = (order: IRentOrder) => {
   const dateEnd = dayjs(order?.leaseOrder?.toDate);
 

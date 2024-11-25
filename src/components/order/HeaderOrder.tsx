@@ -1,7 +1,7 @@
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 import { CiLocationArrow1 } from "react-icons/ci";
-import {  IRentOrder, OrderType } from "../../types/order";
+import {  IRentOrder, orderStakeholderTitles, OrderType, orderUserTitles } from "../../types/order";
 import dayjs from "dayjs";
 import { renderStatus } from "../checkout/PaymentStatus";
 import { useStoreStep } from "../../hooks/step";
@@ -15,18 +15,7 @@ const renderUserName = (order: IRentOrder, orderType: OrderType): string => {
       return "Không có tên"; // Trả về giá trị mặc định nếu không có tên
   }
 };
-const orderUserTitles: Record<OrderType, string> = {
-  [OrderType.Buy]: "Người mua",
-  [OrderType.Sell]: "Người bán",
-  [OrderType.Leasee]: "Người thuê",
-  [OrderType.Leasor]: "Chủ sách",
-};
-const orderStakeholderTitles: Record<OrderType, string> = {
-  [OrderType.Buy]: orderUserTitles[OrderType.Sell],
-  [OrderType.Sell]: orderUserTitles[OrderType.Buy],
-  [OrderType.Leasee]: orderUserTitles[OrderType.Leasor],
-  [OrderType.Leasor]: orderUserTitles[OrderType.Leasee],
-};
+
 export const HeaderOrder = ({
   order,
   orderType,

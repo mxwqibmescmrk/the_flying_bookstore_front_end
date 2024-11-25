@@ -8,9 +8,9 @@ import dayjs from "dayjs";
 
 const RateComment = ({ review }: { review: IReview }) => {
   return (
-    <div className=" flex border rounded-lg p-5 w-full items-center">
-      <div className="relative w-24 h-24">
-        <Image src={review?.imageLink||Avatar} alt="ava" fill className="rounded-full" />
+    <div className=" flex border rounded-lg p-5 items-center">
+      <div className="flex-none relative w-24 h-24">
+        <Image src={Avatar} alt="ava" fill className="rounded-full object-cover" />
       </div>
       <div className="border-l pl-5 ml-5">
         <h4 className="text-lg font-semibold">Ẩn danh</h4>

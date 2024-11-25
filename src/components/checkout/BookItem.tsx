@@ -17,8 +17,15 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
 
   useEffect(() => {
     const makeRequest = async () => {
-      if (!orderDetail?.id) return;
-      const response = await getBookDetailService(orderDetail?.id?.toString());
+      if (!orderDetail?.id) return callErrorAlert("Không có chi tiết đơn hàng");
+      let response;
+      if (tabNum == 0) {
+        if(!orderDetail?.listing?.id) return callErrorAlert("Không có chi tiết sản phẩm mua")
+        response = await getBookDetailService(orderDetail?.listing?.id.toString());
+      } else{
+        if(!orderDetail?.listingId) return callErrorAlert("Không có chi tiết sản phẩm mua")
+        response = await getBookDetailService(orderDetail?.listingId?.toString());
+      }
       if (typeof response !== 'string') {
         setListing(response)
       } else {
@@ -28,7 +35,7 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
     if (tabNum == 1) {
       makeRequest();
     }
-  }, [callErrorAlert, orderDetail?.id, tabNum]);
+  }, [callErrorAlert, orderDetail?.id, orderDetail?.listing?.id, orderDetail?.listingId, tabNum]);
   if(tabNum == 1){
     if(!orderDetail?.id) return <>Không có chi tiết đơn hàng</>
   } else if(tabNum == 0) {
