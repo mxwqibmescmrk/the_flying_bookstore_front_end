@@ -11,11 +11,8 @@ import { IBuyOrderConvert, IOrderStatusBuy, OrderType } from "../../types/order"
 import { useAuthStore } from "../../hooks/user";
 import { useStoreAlert } from "../../hooks/alert";
 import { useRouter } from "next/navigation";
-import { getOrderWithStatusService } from "../../api/order";
-import useApiCall from "../../hooks/useApiCall";
 import { getSaleOrderBySeller } from "../../api/orderBuy";
 import ListOrderBuy from "../orderBuy/ListOrderBuy";
-import { scrollToTop } from "../scrollButton/ScrollButton";
 
 const arrSame: Array<{ label: string }> = [
   { label: "Tất cả" },
@@ -46,7 +43,7 @@ const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
 
   const handleChange = (_: any, newValue: number) => {
     setStatus(newValue);
-    scrollToTop();
+    // scrollToTop();
   }
   
   // eslint-disable-next-line react-hooks/exhaustive-deps

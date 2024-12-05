@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Open_Sans } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/nav/Navbar";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
@@ -8,7 +8,6 @@ import theme from "../utils/theme";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from "@/components/footer/Footer";
-import ScrollButton from "@/components/scrollButton/ScrollButton";
 import { SITE_NAME } from "@/utils/env";
 import CommonAlert from "../components/common/CommonAlert";
 import dayjs from "dayjs";

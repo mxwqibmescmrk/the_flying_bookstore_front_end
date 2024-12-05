@@ -10,7 +10,7 @@ const Footer = () => {
       <Mail />
       {/* <BookCategoryList /> */}
       <Info />
-      <ScrollButton /> 
+      {/* <ScrollButton />  */}
 
     </>
   );
