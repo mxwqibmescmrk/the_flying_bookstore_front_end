@@ -1,9 +1,9 @@
 import { Button, Grid, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 import { CiLocationArrow1 } from "react-icons/ci";
-import {  IBuyOrder, IBuyOrderConvert, IRentOrder, OrderType } from "../../types/order";
+import { IBuyOrder, IBuyOrderConvert, IRentOrder, OrderType } from "../../types/order";
 import dayjs from "dayjs";
-import { renderStatus } from "../checkout/PaymentStatus";
+import { renderStatus, renderStatusBuy } from "../checkout/PaymentStatus";
 import { useStoreStep } from "../../hooks/step";
 const renderUserName = (order: IBuyOrderConvert, orderType: OrderType): string => {
   switch (orderType) {
@@ -36,9 +36,6 @@ export const HeaderOrderBuy = ({
 }) => {
 
   const theme = useTheme();
-  const { tabNum } = useStoreStep()
-
-
   return (
     <Grid
       container
@@ -58,7 +55,7 @@ export const HeaderOrderBuy = ({
       </Grid>
       <Grid item xs={2}>
         <Typography variant="body2" sx={{ color: theme.palette.grey[600] }}>
-          {orderStakeholderTitles[orderType] || orderStakeholderTitles[OrderType.Leasor]}
+          {orderStakeholderTitles[orderType] || orderStakeholderTitles[OrderType.Sell]}
         </Typography>
         <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
           {renderUserName(order, orderType)}
@@ -66,10 +63,10 @@ export const HeaderOrderBuy = ({
       </Grid>
       <Grid item xs={3}>
         <Typography variant="body2" sx={{ color: theme.palette.grey[600] }}>
-          Trạng thái {orderUserTitles[orderType] || orderUserTitles[OrderType.Leasor]}
+          Trạng thái {orderStakeholderTitles[orderType] || orderStakeholderTitles[OrderType.Sell]}
         </Typography>
         <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-          {renderStatus(order?.status, orderType)}
+          {renderStatusBuy(order?.status, orderType)}
         </Typography>
       </Grid>
 

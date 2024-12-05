@@ -1,26 +1,25 @@
 "use client";
 import {
   Alert,
-  Box,
   Button,
   Grid,
   IconButton,
   Stack,
   Typography,
 } from "@mui/material";
-import RateModel from "../order/RateModel";
 import { useState } from "react";
 import { formatCurrency } from "../../utils/helps";
-import { IBuyOrderConvert, IChangeToBuyOrder, IOrderStatus, IRentOrder, OrderType } from "../../types/order";
-import { changeToBuyOrder, updateStatusOrder } from "../../api/order";
+import { IBuyOrderConvert, IOrderStatusBuy, OrderType } from "../../types/order";
 import { useStoreAlert } from "../../hooks/alert";
 import { CiTrash } from "react-icons/ci";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import localizedFormat from "dayjs/plugin/localizedFormat";
-import CancelModal from "../order/CancelModal";
-import { callContentAlert, callContentAlertBuy } from "../order/contentAlert";
+import { callContentAlertBuy } from "../order/contentAlert";
 import { useAuthStore } from "../../hooks/user";
+import { updateStatusSaleOrder } from "../../api/order";
+import CancelModal from "../order/CancelModal";
+import CancelModalBuy from "./CancelModalBuy";
 dayjs.extend(localizedFormat);
 //tiếng việt
 require("dayjs/locale/vi");
@@ -49,40 +48,40 @@ const OrderFooterBuy = ({
   const renderAlert = () => {
     if (!order?.status) return <></>;
     const content = callContentAlertBuy(order);
-    if (orderType == OrderType.Leasor) {
+    if (orderType == OrderType.Buy) {
       if (
-        !content?.isCustomer[order?.status] ||
-        content?.isCustomer[order?.status] == ""
+        !content?.isBuyer[order?.status] ||
+        content?.isBuyer[order?.status] == ""
       ) {
         return <></>;
       }
       return (
         <Alert variant="standard" color="info">
-          {content?.isCustomer[order?.status]}
+          {content?.isBuyer[order?.status]}
         </Alert>
       );
-    } else {
+    } else if (orderType == OrderType.Sell) {
       if (
-        !content?.isManager[order?.status] ||
-        content?.isManager[order?.status] == ""
+        !content?.isSeller[order?.status] ||
+        content?.isSeller[order?.status] == ""
       ) {
         return <></>;
       }
       return (
         <Alert variant="standard" color="info">
-          {content?.isManager[order?.status]}
+          {content?.isSeller[order?.status]}
         </Alert>
       );
     }
   };
 
   const callUpdateStatus = async (
-    statusMessage: IOrderStatus,
+    statusMessage: IOrderStatusBuy,
     status: number,
     alertMessage: string
   ): Promise<void> => {
     if (!order?.id || !token) return;
-    return await updateStatusOrder(statusMessage, order?.id, token).then(
+    return await updateStatusSaleOrder(statusMessage, order?.id, token).then(
       () => {
         callAlert(`${alertMessage} thành công`);
         changeStatus(null, status);
@@ -101,36 +100,19 @@ const OrderFooterBuy = ({
     </IconButton>
   );
   const renderButton = () => {
+    if (orderType !== OrderType.Buy) return;
     let message = "";
-    if (orderType == OrderType.Leasor) {
-      switch (order?.status) {
-        case "RETURNING":
-          message = `Đã nhận lại sách`;
-          return (
-            <Button
-              variant="contained" sx={{ textTransform: "capitalize" }}
-              onClick={() => callUpdateStatus("RETURNED", 4, message)}
-            >
-              {message}
-            </Button>
-          );
-        default:
-        // return <></>;
-      }
-    }
     switch (order?.status) {
       case "PAYMENT_SUCCESS":
         message = `Đã nhận được sách`;
         return (
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <Button
-              variant="contained"
-              sx={{ textTransform: "capitalize", mr: 1 }}
-              onClick={() => callUpdateStatus("DELIVERED", 2, message)}
-            >
-              {message}
-            </Button>
-          </Stack>
+          <Button
+            variant="contained"
+            sx={{ textTransform: "capitalize", mr: 1 }}
+            onClick={() => callUpdateStatus("DELIVERED", 2, message)}
+          >
+            {message}
+          </Button>
         );
       case "ORDERED_PAYMENT_PENDING":
         if (order?.paymentMethod == "COD") return cancelButton;
@@ -140,39 +122,14 @@ const OrderFooterBuy = ({
             <Button
               variant="contained"
               sx={{ textTransform: "capitalize", mr: 1 }}
-              onClick={() => callUpdateStatus("USER_PAID", 1, message)}
+              onClick={() => callUpdateStatus("PAYMENT_SUCCESS", 1, message)}
             >
               {message}
             </Button>
             {cancelButton}
           </Stack>
         );
-      case "DELIVERED":
-        message = `Đã trả sách`;
-        return (
-          <Stack direction={"row"} justifyContent={"space-between"}>
-            <Button
-              variant="contained"
-              sx={{ textTransform: "capitalize", mr: 1 }}
-              onClick={() => callUpdateStatus("RETURNING", 2, message)}
-            >
-              {message}
-            </Button>
-          </Stack>
-        );
 
-      case "LATE_RETURN":
-        message = `Đã trả sách`;
-        return (
-          <>
-            <Button
-              variant="contained" sx={{ textTransform: "capitalize" }}
-              onClick={() => callUpdateStatus("RETURNING", 2, message)}
-            >
-              {message}
-            </Button>
-          </>
-        );
       default:
         break;
     }
@@ -202,6 +159,11 @@ const OrderFooterBuy = ({
           </Typography>
         </Grid>
       </Grid>
+      <CancelModalBuy
+        cancelModal={cancelModal}
+        setCancelModal={setCancelModal}
+        callUpdateStatus={callUpdateStatus}
+      />
     </>
   );
 };

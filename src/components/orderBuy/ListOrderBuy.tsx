@@ -14,14 +14,12 @@ export default function ListOrderBuy({
   listOrder,
   reloadButton,
   reloadStatus,
-  loading,
 
 }: {
   orderType: OrderType;
   listOrder: Array<IBuyOrderConvert> | undefined;
   reloadButton:()=> Promise<void>;
   reloadStatus: (_: any, newValue: number) => Promise<void>;
-  loading: boolean;
 }) {
   const router = useRouter();
   const { profile } = useAuthStore();
@@ -38,9 +36,7 @@ export default function ListOrderBuy({
     router.push("/login");
     return <>Mời bạn đăng nhập</>;
   }
-  if (loading) {
-    return <Loading />;
-  }
+
   if (!listOrder || !Array.isArray(listOrder) || listOrder?.length == 0)
     return (
       <Grid container spacing={3}>

@@ -26,9 +26,25 @@ import Link from "next/link";
 import { IPostState } from "../../types/params";
 enum EAllowType {
   AllowAll = "allowAll",
-  AllowRent = "allowRent",
-  AllowPurchase = "allowPurchase"
+  AllowRent = "allow_rent",
+  AllowPurchase = "allow_purchase"
 }
+interface IListingSubmit {
+  ownerId: number;
+  quantity: number;
+  address: string;
+  expiryDate: string;
+  leaseRate: number;
+  depositFee: number;
+  penaltyRate: number;
+  price: number;
+  description: string;
+  allow_rent: number;
+  allow_purchase: number;
+  copyId: string | number;
+  listingStatus: string;
+}
+
 export type TFieldPostValue = {
   address: string;
   leaseRate: string; // must be number
@@ -36,6 +52,7 @@ export type TFieldPostValue = {
   penaltyRate: string; // must be number
   description: string;
   allowType: EAllowType;
+  price: string; // must be number
 };
 const listForRent = (<><Grid item xs={4}>
   <InputListing
@@ -146,25 +163,44 @@ const CreatePost = ({ copyId }: { copyId: IPostState["copyId"] }) => {
   const router = useRouter()
   const { callAlert, callErrorAlert } = useStoreAlert()
   const onSubmit: SubmitHandler<TFieldPostValue> = async (value) => {
-    if(!token) return callErrorAlert("Vui lòng đăng nhập lại");
-    const { address, depositFee, description, leaseRate, penaltyRate } = value;
-    let data = {
+    if (!token || !profile?.id) return callErrorAlert("Vui lòng đăng nhập lại");
+    const { address, depositFee, description, leaseRate, penaltyRate, allowType, price } = value;
+    if (!copyId || typeof copyId === undefined) return callErrorAlert("Chọn tài liệu trước");
+    let data: IListingSubmit = {
       copyId,
       ownerId: profile?.id,
       quantity: 1,
       expiryDate: "",
       listingStatus: "AVAILABLE",
       address,
+      description,
+      allow_purchase: 1,
+      allow_rent: 1,
       leaseRate: parseFloat(leaseRate),
       depositFee: parseFloat(depositFee),
       penaltyRate: parseFloat(penaltyRate),
-      description,
-    };
+      price: parseFloat(price),
+    }
+    if (allowType === EAllowType.AllowPurchase) {
+      data = {
+        ...data,
+        allow_rent: 0,
+        leaseRate: 0,//kí hiệu riêng, nếu depositFee == 0 thì chỉ cho mua hông cho bán
+        penaltyRate: 0
+      }
+    } else if (allowType === EAllowType.AllowRent) {
+      data = {
+        ...data,
+        allow_purchase: 0,
+        price: 0, //kí hiệu riêng, price = 0 cho bán ko cho mua
+      }
+    }
+
     try {
       const response = await onCreateListing(data, token);
       if (typeof response != "string") {
         callAlert(`Tạo sách #${response?.data?.id} thành công`)
-        router.push(`/detail/${response?.data?.id}`) //TODO test in this
+        router.push(`/detail/${response?.data?.id}`)
       }
       else {
         callErrorAlert(response);

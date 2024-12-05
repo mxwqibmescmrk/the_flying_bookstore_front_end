@@ -115,7 +115,7 @@ const OrderFooter = ({
   const buyButton = (
     <Button
     variant="outlined"
-    sx={{textTransform:"capitalize"}}
+    sx={{textTransform:"none"}}
     onClick={callChangeToBuy}
   >
     Mua sách
@@ -138,7 +138,7 @@ const OrderFooter = ({
           message = `Đã nhận lại sách`;
           return (
             <Button
-              variant="contained" sx={{textTransform:"capitalize"}}
+              variant="contained" sx={{textTransform:"none"}}
               onClick={() => callUpdateStatus("RETURNED", 4, message)}
             >
               {message}
@@ -155,7 +155,7 @@ const OrderFooter = ({
           <Stack direction={"row"} justifyContent={"space-between"}>
             <Button
               variant="contained"
-                      sx={{textTransform:"capitalize", mr:1}}
+                      sx={{textTransform:"none", mr:1}}
               onClick={() => callUpdateStatus("DELIVERED", 2, message)}
             >
               {message}
@@ -170,7 +170,7 @@ const OrderFooter = ({
           <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
             <Button
               variant="contained"
-              sx={{textTransform:"capitalize", mr:1}}
+              sx={{textTransform:"none", mr:1}}
               onClick={() => callUpdateStatus("USER_PAID", 1, message)}
             >
               {message}

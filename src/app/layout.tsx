@@ -12,6 +12,9 @@ import ScrollButton from "@/components/scrollButton/ScrollButton";
 import { SITE_NAME } from "@/utils/env";
 import CommonAlert from "../components/common/CommonAlert";
 import dayjs from "dayjs";
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+
 const main_font = Montserrat({ subsets: ["vietnamese"] });
 const sub_font = Montserrat({ subsets: ["vietnamese"] }); // don't know when to use it
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -42,11 +45,13 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen">
               <Navbar />
               <main className="flex-grow">{children}</main>
-              <CommonAlert/>
+              <CommonAlert />
               <Footer />
             </div>
           </ThemeProvider>
         </AppRouterCacheProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

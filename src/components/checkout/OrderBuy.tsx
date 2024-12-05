@@ -7,7 +7,7 @@ import { LuFlag } from "react-icons/lu";
 import { CgCreditCard } from "react-icons/cg";
 import { IBuyOrder } from "../../types/order";
 import dayjs from "dayjs";
-import { renderPayment, renderStatus } from "./PaymentStatus";
+import { renderPayment, renderStatus, renderStatusBuy } from "./PaymentStatus";
 import { useStoreStep } from "../../hooks/step";
 import { GrUserManager } from "react-icons/gr";
 import { RiCalendarTodoLine } from "react-icons/ri";
@@ -68,7 +68,7 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
     },
     {
       title: `Trạng thái`,
-      description: renderStatus(orderDetail?.status),
+      description: renderStatusBuy(orderDetail?.status),
       children: <LuFlag className="total__icon" />
     },
     {

@@ -6,7 +6,7 @@ import { IoCheckmarkCircleOutline } from "react-icons/io5";
 import Order from "./Order";
 import { useStoreOrder } from "../../hooks/order";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { IBuyOrder, IOrderStatus } from "../../types/order";
+import { IBuyOrder, IOrderStatus, IOrderStatusBuy } from "../../types/order";
 import { renderPayment } from "./PaymentStatus";
 import { useUrl } from "nextjs-current-url";
 import { parseUrlParams } from "./parseUrlParams";
@@ -72,7 +72,7 @@ const Step2Buy = ({
     getOrderApi();
   }, [callErrorAlert, orderId, tabNum]);
 
-  const renderAlert = (status?: IOrderStatus | undefined) => {
+  const renderAlert = (status?: IOrderStatusBuy | undefined) => {
     if (!status) return <></>;
     let contentAlert = <></>;
     switch (status) {
@@ -115,7 +115,7 @@ const Step2Buy = ({
           <>Không có đơn hàng</>
         )}
       </div>
-      {renderAlert(orderDetail?.status ?? undefined)}
+      {renderAlert(orderDetail?.status)}
 
       <div className=" mt-10 mb-20 w-2/3 mx-auto flex justify-between">
         <Link href="/">

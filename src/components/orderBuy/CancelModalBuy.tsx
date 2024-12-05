@@ -8,7 +8,7 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
-import {  IOrderStatus, IRentOrder } from "../../types/order";
+import {  IBuyOrder, IBuyOrderConvert, IOrderStatus, IOrderStatusBuy, IRentOrder } from "../../types/order";
 import { useStoreAlert } from "../../hooks/alert";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -21,9 +21,9 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 interface IModal {
   open: boolean;
-  order: IRentOrder;
+  order: IBuyOrderConvert;
 }
-export default function CancelModal({
+export default function CancelModalBuy({
   cancelModal,
   setCancelModal,
   callUpdateStatus,
@@ -31,7 +31,7 @@ export default function CancelModal({
   cancelModal: IModal;
   setCancelModal: React.Dispatch<React.SetStateAction<IModal>>;
   callUpdateStatus: (
-    statusMessage: IOrderStatus,
+    statusMessage: IOrderStatusBuy,
     status: number,
     alertMessage: string
   ) => Promise<void>;
@@ -53,7 +53,7 @@ export default function CancelModal({
         open={open}
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Bạn có muốn hủy đơn hàng #{order?.leaseOrder?.id}?
+          Bạn có muốn hủy đơn hàng #{order?.id}?
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -69,9 +69,9 @@ export default function CancelModal({
         </IconButton>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Bạn có chắc chắn muốn hủy đơn hàng {order?.leaseOrder?.id} của{" "}
-            {order?.lessor?.lastName} {order?.lessor?.firstName} với cuốn sách{" "}
-            {order?.listing?.book.title}?
+            Bạn có chắc chắn muốn hủy đơn hàng {order?.id} của{" "}
+            {order?.seller?.lastName} {order?.seller?.firstName} với cuốn sách{" "}
+            {order?.listing?.[0]?.title ?? "Không biết tên sách"}?
           </Typography>
           <Typography gutterBottom>
             Bạn sẽ không thể hoàn lại thao tác này được. Bạn có chắc chắn chứ?

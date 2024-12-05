@@ -22,6 +22,7 @@ const RentBook = ({ book }: IPropsBook) => {
   const { profile } = useAuthStore();
   const addToCart = useStoreCart((state) => state.addCartBuy);
   const { changeTabNum } = useStoreStep();
+
   const handleAddToCartBuy = () => {
     if (!book?.id) return;
     const submitCart: ICartBook = {
@@ -32,71 +33,81 @@ const RentBook = ({ book }: IPropsBook) => {
     router.push("/cart");
   }
   const renderRentAccordion = () => {
-    if (book?.copy?.allow_rent == 0) {
+    if (book?.penaltyRate == 0 && book?.leaseRate == 0) {
       return <></>;
     }
-    return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel2-content"
-        id="panel2-header"
-      >
-        <div className="flex justify-between items-center w-full mr-2">
-          <h5 className="font-semibold">Thuê theo ngày</h5>
-          <p className="text-sm">{formatCurrency(book?.leaseRate)}/ngày</p>
-        </div>
-      </AccordionSummary>
-      <AccordionDetails>
-        <RentDay book={book} />
-      </AccordionDetails>
-    </Accordion>);
+    return (
+      <>
+        <h3 className="text-xl font-bold text-primary mb-4">Đặt thuê</h3>
+        <Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2-content"
+            id="panel2-header"
+          >
+            <div className="flex justify-between items-center w-full mr-2">
+              <h5 className="font-semibold">Thuê theo ngày</h5>
+              <p className="text-sm">{formatCurrency(book?.leaseRate)}/ngày</p>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <RentDay book={book} />
+          </AccordionDetails>
+        </Accordion>
+      </>
+
+    );
   }
   const renderPriceAccordion = () => {
-    if (book?.copy?.allow_purchase == 0) {
+    if (book?.price == 0) {
       return <></>;
     }
-    return (<Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        aria-controls="panel2-content"
-        id="panel2-header"
-      >
-        <div className="flex justify-between items-center w-full mr-2">
-          <h5 className="font-semibold">Mua sách với giá</h5>
-          <p className="text-sm font-semibold ">{formatCurrency(book?.price)}</p>
-        </div>
-      </AccordionSummary>
-      <AccordionDetails>
-        <div className="flex flex-col gap-2 border-b pb-5">
-          <div className="columns-2">
-            <Chip label={`Giảm được ${calPercentPromotion(book)}`} color="success" variant="outlined" />
-            <p className=" text-right line-through text-gray-400">
-              {formatCurrency(book?.depositFee)}
-            </p>
-          </div>
-        </div>
-        {profile?.id == book?.user.id ? (
-          <Alert severity="info">
-            Đây là sách của bạn, bạn không thể thêm vào giỏ hàng
-          </Alert>
-        ) : (<Button
-          variant="contained"
-          color="secondary"
-          size="large"
-          type="submit"
-          sx={{ width: "100%", color: "white" }}
-          startIcon={<CiShoppingCart />}
-          onClick={handleAddToCartBuy}
-        >
-          Mua ngay
-        </Button>)}
+    return (
+      <>
+        <h3 className="text-xl font-bold text-primary mb-4">Đặt mua</h3>
+        <Accordion sx={{ backgroundColor: "white", borderRadius: 2 }} defaultExpanded>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel2-content"
+            id="panel2-header"
+          >
+            <div className="flex justify-between items-center w-full mr-2">
+              <h5 className="font-semibold">Mua sách với giá</h5>
+              <p className="text-sm font-semibold ">{formatCurrency(book?.price)}</p>
+            </div>
+          </AccordionSummary>
+          <AccordionDetails>
+            <div className="flex flex-col gap-2 border-b pb-5">
+              <div className="columns-2">
+                <Chip label={`Giảm được ${calPercentPromotion(book)}`} color="success" variant="outlined" />
+                <p className=" text-right line-through text-gray-400">
+                  {formatCurrency(book?.depositFee)}
+                </p>
+              </div>
+            </div>
+            {profile?.id == book?.user.id ? (
+              <Alert severity="info">
+                Đây là sách của bạn, bạn không thể thêm vào giỏ hàng
+              </Alert>
+            ) : (<Button
+              variant="contained"
+              color="secondary"
+              size="large"
+              type="submit"
+              sx={{ width: "100%", color: "white" }}
+              startIcon={<CiShoppingCart />}
+              onClick={handleAddToCartBuy}
+            >
+              Mua ngay
+            </Button>)}
 
-      </AccordionDetails>
-    </Accordion>);
+          </AccordionDetails>
+        </Accordion>
+      </>);
   }
   return (
     <div className="">
-      <h3 className="text-xl font-bold text-primary mb-4">Đặt thuê</h3>
+
       {renderRentAccordion()}
       {renderPriceAccordion()}
       <Owner book={book} />
