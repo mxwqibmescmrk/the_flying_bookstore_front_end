@@ -46,7 +46,6 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
   const { profile, token, setToken } = useAuthStore();
   const { updateRentOrder, updateBuyOrder } = useStoreOrder();
   const { cart } = useStoreCart();
-  const router = useRouter();
   const [payType, setPayType] = useState<number>(0);
   const methods = useForm<IFormCheckout>();
   const { voucherShop,voucher } = useStoreVoucher();
