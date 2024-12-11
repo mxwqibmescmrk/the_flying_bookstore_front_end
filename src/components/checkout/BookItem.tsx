@@ -10,46 +10,23 @@ import { useStoreAlert } from "../../hooks/alert";
 import { getBookDetailService } from "../../api/bookListService";
 
 const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
-  const [listing, setListing] = useState<IListing | undefined>(orderDetail?.listing)
   const { leaseOrder = null } = orderDetail;
-  const { callErrorAlert } = useStoreAlert()
   const { tabNum } = useStoreStep();
 
-  useEffect(() => {
-    const makeRequest = async () => {
-      if (!orderDetail?.id) return callErrorAlert("Không có chi tiết đơn hàng");
-      let response;
-      if (tabNum == 0) {
-        if(!orderDetail?.listing?.id) return callErrorAlert("Không có chi tiết sản phẩm mua")
-        response = await getBookDetailService(orderDetail?.listing?.id.toString());
-      } else{
-        if(!orderDetail?.listingId) return callErrorAlert("Không có chi tiết sản phẩm mua")
-        response = await getBookDetailService(orderDetail?.listingId?.toString());
-      }
-      if (typeof response !== 'string') {
-        setListing(response)
-      } else {
-        callErrorAlert(response);
-      }
-    }
-    if (tabNum == 1) {
-      makeRequest();
-    }
-  }, [callErrorAlert, orderDetail?.id, orderDetail?.listing?.id, orderDetail?.listingId, tabNum]);
   if(tabNum == 1){
     if(!orderDetail?.id) return <>Không có chi tiết đơn hàng</>
   } else if(tabNum == 0) {
-    if(!listing?.id) return <>Không có chi tiết đơn hàng</>
+    if(!orderDetail?.listing?.id) return <>Không có chi tiết đơn hàng</>
   }
   return (
     <div className="hover:shadow-lg hover:shadow-indigo-500/50 ease-in-out duration-200 p-3 rounded-lg book flex justify-between align-center  mt-5 gap-5">
       <div className="flex">
         <div className="relative w-32 h-48 mr-6">
-          <Link href={`/detail/${listing?.id || orderDetail?.id}`}>
+          <Link href={`/detail/${orderDetail?.listing?.id || orderDetail?.id}`}>
             <Image
               src={
-                listing?.copy.imageLink
-                  ? listing?.copy.imageLink
+                orderDetail?.listing?.copy.imageLink
+                  ? orderDetail?.listing?.copy.imageLink
                   : BookImage
               }
               alt="book"
@@ -60,10 +37,10 @@ const BookItem = ({ orderDetail }: { orderDetail: IBuyOrder & IRentOrder }) => {
           </Link>
         </div>
         <div className="flex flex-col  justify-center">
-          <Link href={`/detail/${listing?.id}`}>
-            <h5 className="text-lg font-semibold">{listing?.book.title}</h5>
+          <Link href={`/detail/${orderDetail?.listing?.id}`}>
+            <h5 className="text-lg font-semibold">{orderDetail?.listing?.book.title}</h5>
           </Link>
-          <p className="text-sm text-gray-400">{arrayToString(listing?.book?.authors)}</p>
+          <p className="text-sm text-gray-400">{arrayToString(orderDetail?.listing?.book?.authors)}</p>
         </div>
       </div>
       <div className="flex items-center ">

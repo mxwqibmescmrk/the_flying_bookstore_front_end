@@ -76,7 +76,7 @@ const ListVoucherShop = () => {
         });
     }
     getSearchVoucher();
-  }, [book, keyword, chooseVoucher])
+  }, [book, keyword, chooseVoucher, callErrorAlert])
 
   useEffect(() => {
     if (open) {
@@ -217,7 +217,7 @@ const ListVoucherShop = () => {
             <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
               Hiện tại bạn đang có {voucherChoosen ? 1 : 0} voucher. Bạn có thể chọn 1 voucher
             </Typography>
-            {listVoucher.map((item, index) => (
+            {(!listVoucher || !Array.isArray(listVoucher) || listVoucher.length == 0) ? <></> :listVoucher.map((item, index) => (
               <Card variant="elevation" key={index} raised={item.id == voucherChoosen?.id} sx={{ my: 1 }} >{renderCard(item)}</Card>
             ))}
           </DialogContentText>

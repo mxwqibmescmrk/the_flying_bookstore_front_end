@@ -7,7 +7,7 @@ import { handleError } from "./handleError";
 
 export const getDetailBuyOrder = async (orderId: number) => {
   return await axios
-    .request({ url: `${port}/api/SaleOrder/` + orderId })
+    .request({ url: `${port}/api/SaleOrder/` + orderId , headers:headerAxios}, )
     .then((res) => res)
     .catch((error) => {
       return handleError(error);
@@ -15,7 +15,7 @@ export const getDetailBuyOrder = async (orderId: number) => {
 };
 export const getDetailRentOrder = async (orderId: number) => {
   return await axios
-    .request({ url: `${port}/api/leaseOrder/` + orderId })
+    .request({ url: `${port}/api/leaseOrder/` + orderId, headers: headerAxios })
     .then((res) => res)
     .catch((error) => {
       return handleError(error);
@@ -26,7 +26,7 @@ export const getAllOrder = async (userId: number, isCustomer?: boolean) => {
   return await axios
     .request({
       url: `${port}/api/leaseOrder/search/${isCustomer ? `lessee` : `lessor`
-        }/${userId}`,
+        }/${userId}`,headers: headerAxios
     })
     .then((response) => {
       const resultListOrder = response.data;
@@ -45,6 +45,7 @@ export const updateStatusOrder = async (status: IOrderStatus, id: number, token:
       url: `${port}/api/leaseOrder/edit/status`,
       params: { id, status },
       headers: {
+        ...headerAxios,
         Authorization: `Bearer ${token}`,
       },
     })
@@ -59,6 +60,7 @@ export const updateStatusSaleOrder = async (status: IOrderStatusBuy, id: number,
       url: `${port}/api/SaleOrder/status`,
       params: { id, status },
       headers: {
+        ...headerAxios,
         Authorization: `Bearer ${token}`,
       },
     })
@@ -72,8 +74,8 @@ export const changeToBuyOrder = async ( token: string, data: IChangeToBuyOrder) 
     .request({
       url: `${port}/api/SaleOrder/createSaleOrderFromLease`,
       headers: {
+        ...headerAxios,
         Authorization: `Bearer ${token}`,
-        ...headerAxios
       },
       method:"POST",
       data

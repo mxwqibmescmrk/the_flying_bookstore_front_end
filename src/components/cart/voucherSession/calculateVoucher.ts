@@ -60,5 +60,16 @@ const isValidVoucher = (voucher: IVoucherSession, price?: number) => {
   }
   return today.isAfter(startDate) && today.isBefore(endDate.add(1, "day"));
 }
+const calculateTotalPriceAfterVoucher = (book: IListing | undefined, voucher: IVoucherSession | undefined, voucherShop: IVoucherSession | undefined): number => {
+  if (book == undefined) return 0;
 
-export { countDiscount,sortVouchersByPriority,isValidVoucher }
+  let price = (book?.price || 1)
+  let discount = countDiscount(book, voucher);
+  let discountShop = countDiscount(book, voucherShop);
+
+  // Tính tổng tiền sau khi áp dụng voucher, đảm bảo không âm
+  const totalPrice = Math.max(price - discount - discountShop, 0);
+
+  return totalPrice;
+}
+export { countDiscount,sortVouchersByPriority,isValidVoucher,calculateTotalPriceAfterVoucher }

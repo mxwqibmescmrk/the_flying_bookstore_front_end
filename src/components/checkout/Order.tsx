@@ -61,7 +61,6 @@ const Order = ({ orderDetail }: { orderDetail: IRentOrder }) => {
       children: <PiPhone className="total__icon" />
     }
     ,
-
     {
       title: `Số điện thoại người cho thuê`,
       description: formatPhoneNumber(lessor?.phoneNumber),
