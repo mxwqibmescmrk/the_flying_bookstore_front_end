@@ -20,7 +20,7 @@ const BookCategory = () => {
 
   const renderCategory = useCallback(
     () => {
-      if (!listCategory) return <p className="text-center"> </p>;
+      if (!listCategory || !Array.isArray(listCategory) || listCategory.length == 0) return <p className="text-center"> </p>;
       return (
         <Slider {...settings}>
           {listCategory.map((category, index) => (

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IUser } from "@/types/user";
-import { port } from "../../utils/env";
+import { headerAxios, port } from "../../utils/env";
 import { handleError } from "../handleError";
 
 const onRegisterService = async (data: IUser) => {
@@ -8,6 +8,7 @@ const onRegisterService = async (data: IUser) => {
     const response = await axios.request({
       method: "POST",
       headers: {
+        ...headerAxios,
         "Content-Type": "application/json",
         "Referrer-Policy": "unsafe-url" ,
       },

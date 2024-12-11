@@ -14,22 +14,11 @@ import { useStoreAlert } from '../../hooks/alert'
 import { useStoreStep } from '../../hooks/step'
 import { useStoreVoucher } from '../../hooks/voucher'
 import { IVoucherSession } from '../../types/voucher'
-import { countDiscount } from './voucherSession/calculateVoucher'
+import { calculateTotalPriceAfterVoucher, countDiscount } from './voucherSession/calculateVoucher'
 import { IoPricetagsOutline, IoTicketOutline } from 'react-icons/io5'
 import { MdAttachMoney } from 'react-icons/md'
 
-const calculateTotalPriceAfterVoucher = (book: IListing | undefined, voucher: IVoucherSession | undefined, voucherShop: IVoucherSession | undefined): number => {
-  if (book == undefined) return 0;
 
-  let price = (book?.price || 1)
-  let discount = countDiscount(book, voucher);
-  let discountShop = countDiscount(book, voucherShop);
-
-  // Tính tổng tiền sau khi áp dụng voucher, đảm bảo không âm
-  const totalPrice = Math.max(price - discount - discountShop, 0);
-
-  return totalPrice;
-}
 
 const InfoCheckout = () => {
   const { tabNum } = useStoreStep();

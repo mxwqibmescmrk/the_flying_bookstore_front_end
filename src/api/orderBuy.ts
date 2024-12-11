@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { port } from '../utils/env';
+import { headerAxios, port } from '../utils/env';
 import { handleError } from './handleError';
 import { IBuyOrder, IBuyOrderConvert } from '../types/order';
 import { IListing } from '../types/book';
@@ -81,6 +81,7 @@ const getSaleOrderBySeller = async (sellerId: number, isBuyer: boolean): Promise
   const config: AxiosRequestConfig = {
     method: 'get',
     url: `${port}/api/SaleOrder/${isBuyer ? "buyer" : "seller"}/${sellerId}`,
+    headers: headerAxios
   };
   try {
     const response = await axios.request(config);

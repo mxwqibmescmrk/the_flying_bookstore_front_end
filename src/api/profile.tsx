@@ -3,7 +3,7 @@ import { useAuthStore } from "../hooks/user";
 import { IUser } from "../types/user";
 import { IFormCheckout } from "../types/form";
 import dayjs from "dayjs";
-import { port } from "../utils/env";
+import { headerAxios, port } from "../utils/env";
 import { handleError } from "./handleError";
 
 export const getUserInfo = async (
@@ -12,6 +12,7 @@ export const getUserInfo = async (
   try {
     const response = await axios.request({
       url: `${port}/api/user/${userId}`,
+      headers:headerAxios
     });
     return response
   } catch (error) {
@@ -27,6 +28,7 @@ export const getProfile = async (
     const response = await axios.request({
       url: `${port}/api/user/myInfo`,
       headers: {
+        ...headerAxios,
         Authorization: `Bearer ${token}`,
       },
     });
@@ -60,6 +62,7 @@ export const onSubmitProfile = async (data: IFormCheckout, profile: IUser | null
     maxBodyLength: Infinity,
     url: `${port}/api/user/${profile?.id}`,
     headers: {
+      ...headerAxios,
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },

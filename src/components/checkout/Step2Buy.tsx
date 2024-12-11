@@ -16,10 +16,11 @@ import { useAuthStore } from "../../hooks/user";
 import { useStoreAlert } from "../../hooks/alert";
 import { useStoreStep } from "../../hooks/step";
 import OrderBuy from "./OrderBuy";
+import { useStoreVoucher } from "../../hooks/voucher";
 
 const Step2Buy = ({
 }: {
-}) => {
+  }) => {
   const { rentOrderId, buyOrderId } = useStoreOrder();
   const [orderDetail, setOrderDetail] = useState<IBuyOrder>();
   const { href: currentUrl } = useUrl() ?? {};
@@ -116,7 +117,6 @@ const Step2Buy = ({
         )}
       </div>
       {renderAlert(orderDetail?.status)}
-
       <div className=" mt-10 mb-20 w-2/3 mx-auto flex justify-between">
         <Link href="/">
           <Button

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { port } from "../utils/env";
+import { headerAxios, port } from "../utils/env";
 import { handleError } from "./handleError";
 
 const onSubmitOrderBuyService = async (convertValue: any,  token: string | null) => {
@@ -9,6 +9,7 @@ const onSubmitOrderBuyService = async (convertValue: any,  token: string | null)
       maxBodyLength: Infinity,
       url: `${port}/api/SaleOrder/createSaleOrder`,
       headers: {
+        ...headerAxios,
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
@@ -27,6 +28,7 @@ const onSubmitOrderService = async (convertValue: any,  token: string | null) =>
       maxBodyLength: Infinity,
       url: `${port}/api/leaseOrder`,
       headers: {
+        ...headerAxios,
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
@@ -43,6 +45,7 @@ const getDetailOrderService = async (orderId: number | null, token: string | nul
     const response = await axios.request({
       url: `${port}/api/leaseOrder/` + orderId,
       headers: {
+        ...headerAxios,
         Authorization: `Bearer ${token}`,
       },
     });

@@ -72,7 +72,7 @@ export default function BookMenus() {
     setAnchorEl(null);
   };
   const renderMenu = () => {
-    if (!listCategory) return <></>;
+    if (!listCategory || !Array.isArray(listCategory) || listCategory.length == 0) return <></>;
     return (
       <StyledMenu
         id="book-menu"

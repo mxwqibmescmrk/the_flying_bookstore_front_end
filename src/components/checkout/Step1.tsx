@@ -20,6 +20,7 @@ import CartItem from "../cart/CartItem";
 import { useStoreStep } from "../../hooks/step";
 import ListVoucherShop from "../cart/voucherShop/ListVoucherShop";
 import ListVoucher from "../cart/voucherSession/ListVoucher";
+import { useStoreVoucher } from "../../hooks/voucher";
 
 // const vnpay = new VNPay({
 //   tmnCode: process.env.TMN_CODE || "",
@@ -45,9 +46,10 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
   const { profile, token, setToken } = useAuthStore();
   const { updateRentOrder, updateBuyOrder } = useStoreOrder();
   const { cart } = useStoreCart();
-  const router = useRouter();
   const [payType, setPayType] = useState<number>(0);
   const methods = useForm<IFormCheckout>();
+  const { voucherShop,voucher } = useStoreVoucher();
+
   const {
     handleSubmit,
     getValues,
@@ -77,11 +79,15 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
       listingId: cart?.buy?.bookId,
       buyerAddress: data.address,
       paymentMethod: convertPaymentType(payType),
+      VoucherShopId: voucherShop?.id,
+      VoucherSessionId: voucher?.id
     };
+    console.log({convertValue});
+    
     const response = await onSubmitOrderBuyService(convertValue, token);
     if (typeof response != "string") {
       callAlert("Tạo đơn hàng mua thành công");
-      updateBuyOrder(response?.id);
+      updateBuyOrder(response?.saleOrder?.id);
       handleNext();
     } else {
       callErrorAlert(response)
@@ -158,7 +164,6 @@ const Step1 = ({ handleNext }: { handleNext: () => void }) => {
 
           <Button
             size="large"
-
             variant="contained"
             onClick={onSubmitOrder}
           >

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { port } from "../utils/env";
+import { headerAxios, port } from "../utils/env";
 import { handleError } from "./handleError";
 const SubmitReviewService = async ( formData: any) => {
     let config = {
@@ -7,6 +7,7 @@ const SubmitReviewService = async ( formData: any) => {
         maxBodyLength: Infinity,
         url: `${port}/api/review`,
         headers: {
+            ...headerAxios,
             "Content-Type": "application/json",
         },
         data: formData,

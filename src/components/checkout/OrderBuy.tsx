@@ -23,10 +23,39 @@ import { useStoreAlert } from "../../hooks/alert";
 import { IUser } from "../../types/user";
 import { MdAttachMoney, MdOutlineAttachMoney } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
+import { useStoreVoucher } from "../../hooks/voucher";
+import { calculateTotalPriceAfterVoucher, countDiscount } from "../cart/voucherSession/calculateVoucher";
+import { IListing } from "../../types/book";
+import { getBookDetailService } from "../../api/bookListService";
 
 const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
   const [sellUser, setSellUser] = useState<IUser>();
+  const { voucherShop, voucher } = useStoreVoucher();
+  const [listing, setListing] = useState<IListing | undefined>()
   const { callErrorAlert } = useStoreAlert()
+  const { tabNum } = useStoreStep();
+
+  useEffect(() => {
+    const makeRequest = async () => {
+      if (!orderDetail?.id) return callErrorAlert("Không có chi tiết đơn hàng");
+      let response;
+      if (tabNum == 0) {
+        if (!listing?.id) return callErrorAlert("Không có chi tiết sản phẩm mua")
+        response = await getBookDetailService(listing?.id.toString());
+      } else {
+        if (!orderDetail?.listingId) return callErrorAlert("Không có chi tiết sản phẩm mua")
+        response = await getBookDetailService(orderDetail?.listingId?.toString());
+      }
+      if (typeof response !== 'string') {
+        setListing(response)
+      } else {
+        callErrorAlert(response);
+      }
+    }
+    if (tabNum == 1) {
+      makeRequest();
+    }
+  }, [callErrorAlert, orderDetail?.id, listing?.id, orderDetail?.listingId, tabNum]);
   useEffect(() => {
     const callApiGetSellerInfo = async () => {
       if (!orderDetail?.sellerId) return callErrorAlert("Không nhận diện được người bán!");
@@ -40,6 +69,7 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
     }
     callApiGetSellerInfo()
   }, [callErrorAlert, orderDetail?.sellerId])
+
   if (!orderDetail?.id) return <>Không có đơn hàng</>
   const listOrderDetail: Array<CartInfoItemProps> = [
     {
@@ -83,18 +113,18 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
     },
     {
       title: 'Khuyến mãi từ người bán',
-      description: formatCurrency(10000),
+      description: formatCurrency(countDiscount(listing, voucherShop)),
       children: <IoTicketOutline className="total__icon" />
     }, {
       title: 'Khuyến mãi từ The Flying Bookstore',
-      description: formatCurrency(20000),
+      description: formatCurrency(countDiscount(listing, voucher)),
       children: <TbTicket className="total__icon" />
     },
   ]
   return (
     <>
       <Divider>Bài đăng</Divider>
-      <BookItem orderDetail={orderDetail} />
+      <BookItem orderDetail={{...orderDetail, listing}} />
       <Divider sx={{ mt: 3 }} />
       <h4 className="text-lg font-medium text-center mt-5 my-3">
         Thông tin đặt hàng
@@ -105,7 +135,7 @@ const OrderBuy = ({ orderDetail }: { orderDetail: IBuyOrder }) => {
             (<CartInfoItem key={index * 2} title={title} description={description}>{children}</CartInfoItem>))
           }
           <div className="border-t">
-            <CartInfoItem title={`Tổng tiền thanh toán`} description={!!orderDetail?.totalPrice && formatCurrency(orderDetail?.totalPrice)} >
+            <CartInfoItem title={`Tổng tiền thanh toán`} description={!!orderDetail?.totalPrice && formatCurrency(calculateTotalPriceAfterVoucher(listing, voucher, voucherShop))} >
               <TbSum className="total__icon" />
             </CartInfoItem>
           </div>

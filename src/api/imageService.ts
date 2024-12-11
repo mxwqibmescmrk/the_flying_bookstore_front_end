@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { port } from '../utils/env';
+import { headerAxios, port } from '../utils/env';
 import { handleError } from './handleError';
 import { ICopy } from '../types/book';
 
@@ -7,6 +7,8 @@ const getImagePreview = async (copyId: ICopy["id"] | undefined) => {
   if(!copyId) return;
   const config: AxiosRequestConfig = {
     url: `${port}/api/copy/imgLink/${copyId}`,
+    headers:headerAxios
+
   };
   try {
     const response = await axios.request(config);
