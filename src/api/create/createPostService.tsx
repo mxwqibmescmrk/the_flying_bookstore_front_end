@@ -1,5 +1,5 @@
 import axios from "axios";
-import { port } from "../../utils/env";
+import { headerAxios, port } from "../../utils/env";
 import { handleError } from "../handleError";
 
 const onCreateListing = async (data: any, token: string) => {
@@ -9,6 +9,7 @@ const onCreateListing = async (data: any, token: string) => {
             maxBodyLength: Infinity,
             url: `${port}/api/listing`,
             headers: {
+                ...headerAxios,
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
             },

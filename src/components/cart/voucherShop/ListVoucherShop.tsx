@@ -18,6 +18,7 @@ import { IoTicketOutline } from "react-icons/io5";
 import Image from "next/image";
 import EmptyGift from "@/assets/images/empty gift.png"
 import AvatarImage from "@/assets/images/no avatar.jpeg";
+import { getSearchVoucherShop } from "../../../api/voucher/voucherShop";
 
 const ListVoucherShop = () => {
   const [open, setOpen] = React.useState(false);
@@ -27,7 +28,7 @@ const ListVoucherShop = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const voucherChoose = listVoucher.find(voucher => voucher.id == voucherChoosen?.id)
+  const voucherChoose = (!listVoucher || !Array.isArray(listVoucher) || listVoucher.length == 0) ? null : listVoucher.find(voucher => voucher.id == voucherChoosen?.id)
 
   const { tabNum } = useStoreStep();
   const cart = useStoreCart(state => state.cart);
@@ -50,22 +51,24 @@ const ListVoucherShop = () => {
         console.log({ error });
       }
     }
-    callApiGetBookDetail();
+    // callApiGetBookDetail();
   }, [callErrorAlert, cart.buy?.bookId, cart.rent?.bookId, tabNum])
 
   const descriptionElementRef = React.useRef<HTMLElement>(null);
   useEffect(() => {
     const getSearchVoucher = async () => {
-      return await axios.get(`${port}/api/voucher-shop/search?keyword=${keyword}`)
+      return await getSearchVoucherShop(keyword)
         .then((response) => {
-          if (response.status == 200) {
-            setListVoucher(response.data);
-            const listSortVoucher = sortVouchersByPriority(response.data, book);
+          if (typeof response !== "string") {
+            setListVoucher(response?.data);
+            const listSortVoucher = sortVouchersByPriority(response?.data, book);
             const firstVoucher = listSortVoucher[0];
             if (firstVoucher && !isValidVoucher(firstVoucher)) {
               return;
             }
             chooseVoucher(firstVoucher);
+          } else {
+            callErrorAlert(response);
           }
         })
         .catch((error) => {
@@ -164,7 +167,7 @@ const ListVoucherShop = () => {
                 <Image src={EmptyGift} alt="icon" />
               </div>
               <div className="text-sm font-medium text-gray-800">
-                Bạn chưa chọn mã nào. 
+                Bạn chưa chọn mã nào.
               </div>
             </div>
           </div>

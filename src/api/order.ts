@@ -2,7 +2,7 @@ import axios from "axios";
 import {  IChangeToBuyOrder, IOrderStatus, IOrderStatusBuy } from "../types/order";
 import { useAuthStore } from "@/hooks/user";
 import { IUser } from "../types/user";
-import { port } from "../utils/env";
+import { headerAxios, port } from "../utils/env";
 import { handleError } from "./handleError";
 
 export const getDetailBuyOrder = async (orderId: number) => {
@@ -73,6 +73,7 @@ export const changeToBuyOrder = async ( token: string, data: IChangeToBuyOrder) 
       url: `${port}/api/SaleOrder/createSaleOrderFromLease`,
       headers: {
         Authorization: `Bearer ${token}`,
+        ...headerAxios
       },
       method:"POST",
       data
@@ -93,6 +94,8 @@ export const getOrderWithStatusService = async (status: number, profile: IUser |
       params: {
         status,
       },
+      headers:headerAxios
+
     });
     return response.data;
   }

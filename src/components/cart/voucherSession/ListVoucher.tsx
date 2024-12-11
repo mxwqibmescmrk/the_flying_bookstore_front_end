@@ -27,7 +27,8 @@ const ListVoucher = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const voucherChoose = listVoucher.find(voucher => voucher.id == voucherChoosen?.id)
+  const voucherChoose = (!listVoucher || !Array.isArray(listVoucher) || listVoucher.length == 0) ? null : listVoucher.find(voucher => voucher.id == voucherChoosen?.id)
+
 
   const { tabNum } = useStoreStep();
   const cart = useStoreCart(state => state.cart);

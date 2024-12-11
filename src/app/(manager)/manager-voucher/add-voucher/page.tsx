@@ -35,10 +35,10 @@ const CreateNewVoucher = () => {
     };
 
     try {
-      const response = await axios.request(config);
+      // const response = await axios.request(config);
       setSuccessMessage("Voucher created successfully!");
       setErrorMessage(null);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       setErrorMessage("Failed to create voucher.");
       setSuccessMessage(null);

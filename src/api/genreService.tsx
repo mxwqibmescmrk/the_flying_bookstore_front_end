@@ -1,5 +1,5 @@
 import axios from "axios";
-import { port } from "../utils/env";
+import { headerAxios, port } from "../utils/env";
 
 const genreSliceService = async () => {
     console.log({ port });
@@ -7,6 +7,7 @@ const genreSliceService = async () => {
     return await axios.request({
         url: `${port}/api/genre`, 
         headers: {
+            ...headerAxios,
             "Referrer-Policy": "unsafe-url",
         },
     }).then(response => response.data)

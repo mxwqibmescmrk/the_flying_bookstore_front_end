@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { IListing } from "@/types/book";
 import { PageResponse } from "@/types/page";
-import { port } from "../utils/env";
+import { headerAxios, port } from "../utils/env";
 import { handleError } from "./handleError";
 
 
@@ -9,6 +9,9 @@ const getBookDetailService = async (detailId: string) => {
   try {
     const response: AxiosResponse<IListing> = await axios.request({
       url: `${port}/api/listing/detailListing/${detailId}`,
+      headers: {
+        ...headerAxios
+      }
     });
     return response.data;
   } catch (error: unknown) {
@@ -22,6 +25,10 @@ const getManyBookService = async (paramsAxios: any) => {
         maxBodyLength: Infinity,
         url: `${port}/api/listing/search`,
         params: paramsAxios,
+        headers: {
+          ...headerAxios
+
+        }
       });
     return response.data;
   } catch (error) {
@@ -33,10 +40,12 @@ const getAllBookService = async () => {
     const response: AxiosResponse<PageResponse<IListing>> = await axios.request({
       url: `${port}/api/listing/search`,
       method: "GET",
-      headers:{
-        "Referrer-Policy": "unsafe-url" 
+      headers: {
+        ...headerAxios,
+        "Referrer-Policy": "unsafe-url",
+
       },
-      params:{
+      params: {
         allowRent: 1,
         allowPurchase: 1
       }

@@ -1,5 +1,5 @@
 import axios, { AxiosProgressEvent } from "axios";
-import { port } from "../../utils/env";
+import { headerAxios, port } from "../../utils/env";
 import { handleError } from "../handleError";
 
 const onCreateCopy = async (data: any) => {
@@ -9,7 +9,9 @@ const onCreateCopy = async (data: any) => {
             maxBodyLength: Infinity,
             url: `${port}/api/copy`,
             headers: {
+                ...headerAxios,
                 "Content-Type": "application/json",
+
             },
             data,
         })
