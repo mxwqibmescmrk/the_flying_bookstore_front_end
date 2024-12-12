@@ -27,7 +27,7 @@ const columnForMoney = [
   },
 ]
 
-const columnForAll = [
+const columnForAll: GridColDef<IVoucherSession>[] = [
 
   {
     field: "voucherType",
@@ -36,8 +36,13 @@ const columnForAll = [
     editable: false,
     valueFormatter: (value: number) => value === 0 ? 'Giảm theo số tiền' : 'Giảm theo phần trăm',
   },
-  ...columnForMoney,
-  ...columnForPercent
+  {
+    field: "discountValue",
+    headerName: "Giá trị giảm",
+    width: 150,
+    editable: false,
+    valueGetter: (_, row) => row.voucherType == 0 ? formatCurrency(row.discountAmount) : row.discountPercentage + "%",
+  },
 ]
 
 export const columnsVoucher = (
@@ -81,14 +86,14 @@ export const columnsVoucher = (
       editable: false,
       valueGetter: (value: number) => formatCurrency(value),
     },
-    ...(voucherType == 2 ? columnForPercent  : voucherType == 1 ? columnForMoney : columnForAll),
+    ...(voucherType == 2 ? columnForPercent : voucherType == 1 ? columnForMoney : columnForAll),
 
     {
       field: "actions",
       type: "actions",
       width: 150,
       getActions: (params: GridRowParams<IVoucherSession>) => [
-        <Link href={`/voucher/edit/${params?.row?.id}`} key="2">
+        <Link href={`/manager-voucher/edit-voucher/${params?.row?.id}`} key="2">
           <GridActionsCellItem
             icon={<CiEdit size={20} />}
             label="Sửa"

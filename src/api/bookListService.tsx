@@ -55,4 +55,18 @@ const getAllBookService = async () => {
     return handleError(error);
   }
 }
-export { getBookDetailService, getAllBookService, getManyBookService }
+const deletePostService = async ( modalDeleteId: number | undefined) => {
+  return await axios.request({
+      method: "DELETE",
+      url: `${port}/api/listing/${modalDeleteId}`,
+      headers:headerAxios
+
+  })
+  .then((response) => {
+      return response.data;
+  })
+  .catch((error) => {
+      console.log(error);
+  });
+};
+export { getBookDetailService, getAllBookService, getManyBookService , deletePostService}

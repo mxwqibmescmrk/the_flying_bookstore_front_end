@@ -7,34 +7,37 @@ import {
   DialogTitle,
   Slide,
 } from "@mui/material";
-import { TransitionProps } from "@mui/material/transitions";
 import React from "react";
-import { IRowsPost2 } from "./column";
 import { useStoreAlert } from "../../hooks/alert";
-import { deletePostService } from "../../api/bookListService";
+import { IVoucherSession } from "../../types/voucher";
+import { deleteVoucherShop } from "../../api/voucher/voucherShop";
+import { Transition } from "../managerPost/DeletePostModal";
 
-const DeletePostModal = ({
+const DeleteVoucherModal = ({
   modalDelete,
   handleClose,
-  getListPost
+  getVoucherList
 }: {
   modalDelete: {
     open: boolean;
-    data: IRowsPost2 | null;
+    data: IVoucherSession | null;
   };
-  getListPost: () => Promise<void>;
+  getVoucherList: () => Promise<void>;
   handleClose: () => void;
 }) => {
-  const { callAlert } = useStoreAlert();
+  const { callAlert, callErrorAlert } = useStoreAlert();
   const onDelete = async () => {
-    const data = await deletePostService(modalDelete.data?.id);
-    if (data) {
+    const data = await deleteVoucherShop(modalDelete.data?.id);
+    if (data?.status == 204) {
       console.log(JSON.stringify(data));
-      callAlert(`Xóa bài đăng #${modalDelete.data?.id} thành công`);
+      callAlert(`Xóa voucher #${modalDelete.data?.id} thành công`);
       handleClose();
-      getListPost();
+      getVoucherList();
+    } else if (typeof data == "string") {
+      callErrorAlert(data)
     } else {
-      console.log(data?.error);
+      callErrorAlert("Không xóa được")
+
     }
   };
   return (
@@ -46,7 +49,7 @@ const DeletePostModal = ({
       aria-describedby="alert-dialog-slide-description"
     >
       <DialogTitle>
-        Bạn có muốn xóa bài đăng {modalDelete.data?.title} không?
+        Bạn có muốn xóa voucher {modalDelete.data?.name} không?
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-slide-description">
@@ -60,12 +63,5 @@ const DeletePostModal = ({
     </Dialog>
   );
 };
-export const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement<any, any>;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
-export default DeletePostModal;
+
+export default DeleteVoucherModal;
