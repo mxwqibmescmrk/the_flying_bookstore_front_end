@@ -8,11 +8,11 @@ import { Controller, useFormContext } from "react-hook-form";
 import { FormInputText } from "./FormInputText";
 
 const InfoRent = ({ isProfile }: { isProfile?: boolean }) => {
-  const [cleared, setCleared] = useState<boolean>(false);
   const {
     control,
     formState: { isValid, isSubmitSuccessful },
   } = useFormContext();
+  const [cleared, setCleared] = useState<boolean>(false);
 
   useEffect(() => {
     if (cleared) {

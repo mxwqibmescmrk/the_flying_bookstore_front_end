@@ -5,16 +5,14 @@ import { Box, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import NoData from "@/components/order/NoData";
 
-import DeletePostModal from "@/components/managerPost/DeletePostModal";
 import { useAuthStore } from "@/hooks/user";
-import { getListPostService } from "@/api/managerPostService";
 import CustomTabPanel from "../../../components/order/CustomTabPanel";
 import { a11yProps } from "../../../utils/helps";
-import { useStoreStep } from "../../../hooks/step";
 import { useStoreAlert } from "../../../hooks/alert";
 import { getVoucherShop } from "../../../api/voucher/voucherShop";
 import { IVoucherSession } from "../../../types/voucher";
 import { columnsVoucher } from "../../../components/voucher/column";
+import DeleteVoucherModal from "../../../components/voucher/DeleteVoucherModal";
 
 const ManagerVoucher = () => {
   const [modalDelete, setModalDelete] = useState<{
@@ -49,7 +47,7 @@ const ManagerVoucher = () => {
     setModalDelete((state) => ({ ...state, open: false }));
   };
 
-  const getListPost = useCallback(async (): Promise<void> => {
+  const getVoucherList = useCallback(async (): Promise<void> => {
     return await getVoucherShop()
       .then((response) => {
         if (typeof response != "string") {
@@ -67,8 +65,8 @@ const ManagerVoucher = () => {
   }, [callErrorAlert]);
 
   useEffect(() => {
-    getListPost();
-  }, [getListPost]);
+    getVoucherList();
+  }, [getVoucherList]);
 
   return (
     <>
@@ -120,7 +118,7 @@ const ManagerVoucher = () => {
           />
         </Box>
       </CustomTabPanel>
-      {/* <DeletePostModal handleClose={handleClose} modalDelete={modalDelete} getListPost={getListPost} /> */}
+      <DeleteVoucherModal handleClose={handleClose} modalDelete={modalDelete} getVoucherList={getVoucherList} />
     </>
   );
 };
@@ -131,11 +129,11 @@ const dataGridProps = {
   initialState: {
     pagination: {
       paginationModel: {
-        pageSize: 5,
+        pageSize: 10,
       },
     },
   },
-  pageSizeOptions: [5],
+  pageSizeOptions: [10],
   disableRowSelectionOnClick: true,
   slots: { toolbar: GridToolbar, noRowsOverlay: NoData },
   slotProps: { toolbar: { showQuickFilter: true } },

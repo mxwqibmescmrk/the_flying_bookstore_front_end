@@ -8,5 +8,5 @@ export interface IVoucherSession {
   minValue?: number;
   discountAmount?: number;
   discountPercentage?: number;
-  voucherType: number; // 0 for discountAmount value, 1 for discountPercentage
+  voucherType: 0 | 1; // 0 for discountAmount value, 1 for discountPercentage
 }
