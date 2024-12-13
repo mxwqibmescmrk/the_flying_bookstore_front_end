@@ -13,6 +13,7 @@ import CommonAlert from "../components/common/CommonAlert";
 import dayjs from "dayjs";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Script from 'next/script';
 
 const main_font = Montserrat({ subsets: ["vietnamese"] });
 const sub_font = Montserrat({ subsets: ["vietnamese"] }); // don't know when to use it
@@ -39,6 +40,20 @@ export default function RootLayout({
     <html lang="en">
       <link rel="icon" href="/favicon.ico" sizes="any" />
       <body className={main_font.className}>
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=G-3CSLHKB5HE`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-3CSLHKB5HE');
+        `}
+        </Script>
         <AppRouterCacheProvider options={{ key: "css" }}>
           <ThemeProvider theme={theme}>
             <div className="flex flex-col min-h-screen">
