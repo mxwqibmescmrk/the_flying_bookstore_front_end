@@ -37,3 +37,28 @@ java -jar base-api-0.0.1-SNAPSHOT.jar
 ```
 cài ngrok vào máy
 
+## Voucher mẫu
+Green Recycle
+GREEN40
+
+## thông tin cá nhân mẫu
+Nguyễn Lê Xuân
+Hòa
+hoa.nguyen_bk@hcmut.edu.vn
+14/04/1999
+0905907362 
+12 Lý Tự Trọng, p.1, q.1, tp.HCM
+12 Cao Thắng, p.1, q.1, tp.HCM
+
+## thông tin sách mẫu
+Đôn Kihôtê - Nhà quý tộc tài ba xứ Mantra
+Kinh điển
+Miguel de Cervantes Saavedra
+NXB Văn học
+2.4 x 13.5
+603
+8935095607914
+2010-12-12
+en
+
+Từ khi ra đời, cuốn tiểu thuyết Đôn Kihôtê - Nhà quý tộc tài ba xứ Mantra đã chinh phục dư luận người đọc trong nước cũng như ngoài nước. Sách bìa mới cóng đẹp giá tốt

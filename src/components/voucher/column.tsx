@@ -41,6 +41,7 @@ const columnForAll: GridColDef<IVoucherSession>[] = [
     headerName: "Giá trị giảm",
     width: 150,
     editable: false,
+    sortable:false,
     valueGetter: (_, row) => row.voucherType == 0 ? formatCurrency(row.discountAmount) : row.discountPercentage + "%",
   },
 ]

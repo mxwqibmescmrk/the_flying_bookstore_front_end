@@ -17,7 +17,7 @@ export interface ISampleDialog {
 }
 
 const ReadSampleDialog = ({ book, sampleDialog, setSampleDialog }: { book: IListing | undefined, sampleDialog: ISampleDialog, setSampleDialog: React.Dispatch<React.SetStateAction<ISampleDialog>> }) => {
-  const [listImg, setListImg] = React.useState<Array<string>>([]);
+  const [listImg, setListImg] = React.useState<Array<string>>(listImgPreview);
   const [zoom, setZoom] = React.useState({
     width: 774,
     height: 1000,
@@ -38,7 +38,7 @@ const ReadSampleDialog = ({ book, sampleDialog, setSampleDialog }: { book: IList
           callErrorAlert(err)
         })
     }
-    getImage();
+    // getImage();
   }, [callErrorAlert, book?.copy?.id])
 
   const handleClose = () => {

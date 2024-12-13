@@ -36,7 +36,7 @@ interface IRowDraft {
   book: IBook;
   allowRent: number;
   allowPurchase: number;
-  price:number;
+  price: number;
 }
 export const convertDataToIRow = (data: IRowDraft[]) => {
   if (!data) return [];
@@ -111,27 +111,27 @@ const columnForRentAndBuy: GridColDef<IRowsPost2>[] = [
     editable: false,
     field: "leaseRate",
     width: 120,
-    valueGetter: (value: number) => `${formatCurrency(value)}/ngày`,
+    valueGetter: (value: number) => (!value || value == 0) ? "Không có" : `${formatCurrency(value)}/ngày`,
   },
   {
     headerName: "Tiền cọc",
     editable: false,
     field: "depositFee",
     width: 120,
-    valueGetter: (value: number) => formatCurrency(value),
+    valueGetter: (value: number) => (!value || value == 0) ? "Không có" : formatCurrency(value),
   },
   {
     headerName: "Tiền phạt",
     editable: false,
     field: "penaltyRate",
     width: 120,
-    valueGetter: (value: number) => `${formatCurrency(value)}/ngày`,
+    valueGetter: (value: number) => (!value || value == 0) ? "Không có" : `${formatCurrency(value)}/ngày`,
   }, {
     headerName: "Giá bán",
     editable: false,
     field: "price",
     width: 120,
-    valueGetter: (value: number) => formatCurrency(value),
+    valueGetter: (value: number) => (!value || value == 0) ? "Không có" : formatCurrency(value),
   },
 
 ]
