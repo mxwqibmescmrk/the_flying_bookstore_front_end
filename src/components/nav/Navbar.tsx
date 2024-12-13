@@ -30,10 +30,8 @@ import { ICommonAlert } from "../../types/common";
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const theme = useTheme();
   const cart = useStoreCart((state) => state.cart);
   const { removeOrder } = useStoreOrder();
@@ -59,18 +57,10 @@ export default function Navbar() {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
-  };
   const logout = () => {
     removeToken();
     removeOrder();
@@ -122,47 +112,6 @@ export default function Navbar() {
       <MenuItem onClick={logout}>Đăng xuất</MenuItem>
     </Menu>
   );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={cart ? 1 : 0} color="error">
-            <CiShoppingCart />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
   const renderOrderMenu = (
     <Menu
       id="order-menu"
@@ -187,6 +136,7 @@ export default function Navbar() {
   );
 
   const renderIsAuth = React.useCallback(() => {
+    // return <></>; //TODO: Del this
     if (!isLogin) {
       return (
         <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
@@ -293,20 +243,8 @@ export default function Navbar() {
           <SearchBar />
           <Box sx={{ flexGrow: 1 }} />
           {renderIsAuth()}
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
       {renderMenu}
       {renderOrderMenu}
       <AlertSignOut alert={alert} setAlert={setAlert} />
