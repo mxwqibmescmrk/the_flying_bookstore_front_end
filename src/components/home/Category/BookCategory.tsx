@@ -33,7 +33,7 @@ const BookCategory = () => {
   );
 
   return (
-    <div className="container mx-auto mt-10 mb-24">
+    <div className="container mx-auto mt-10 mb-24 overflow-hidden">
       <h3 className="text-3xl pt-8 pb-10 font-semibold text-center">
         Danh mục sản phẩm
       </h3>
