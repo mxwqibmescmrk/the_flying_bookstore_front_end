@@ -40,7 +40,7 @@ export default function HeroSection() {
                 href="#"
                 className="text-sm font-semibold leading-6 text-gray-900"
               >
-                Xem chi tiết <span aria-hidden="true">→</span>
+                Xem chi tiết
               </a>
             </div>
             <div className="flex items-center">
@@ -55,10 +55,11 @@ export default function HeroSection() {
             src={TeenGirlImage}
             alt="Picture of the author"
             className="absolute bottom-0 w-10/12"
+            priority
           />
         </div>
         <div className="absolute top-0 -z-10  w-10/12 overflow-hidden" aria-hidden="true">
-          <Image src={BackgroundBanner} alt="Picture of the author" />
+          <Image src={BackgroundBanner} alt="Picture of the author" priority />
         </div>
       </div>
 

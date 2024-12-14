@@ -1,5 +1,6 @@
 import React from "react";
 import LogoImage from "./../../assets/images/logo.jpg";
+import MapImage from "./../../assets/images/google-map.png";
 import Image from "next/image";
 import { FaYoutube } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa6";
@@ -65,13 +66,7 @@ const Info = () => {
           </div>
         </div>
         <div>
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.6323414803715!2d106.6130175!3d10.7627924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317529b4ca5b1fdb%3A0xcbd652595f6a3998!2zVGnhu4dtIEfGsMahbmcgSHV54buFbiBD4bqjbmggLSBjaG8gdGh1w6ogw6FvIEhhcnJ5IFBvdHRlcg!5e0!3m2!1svi!2s!4v1708952198334!5m2!1svi!2s"
-            width="400"
-            height="200"
-            title="map"
-            className="border-lg"
-          ></iframe>
+          <Image src={MapImage} alt="logo"  className="mx-3" />
         </div>
       </div>
     </div>

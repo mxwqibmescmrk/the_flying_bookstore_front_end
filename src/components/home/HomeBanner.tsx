@@ -21,15 +21,6 @@ export default function HomeBanner() {
         <div className="banner" id="banner3">
           <HeroSection />
         </div>
-        <div className="banner" id="banner4">
-          <HeroSection />
-        </div>
-        <div className="banner" id="banner5">
-          <HeroSection />
-        </div>
-        <div className="banner" id="banner6">
-          <HeroSection />
-        </div>
       </Slider>
     </div>
   );

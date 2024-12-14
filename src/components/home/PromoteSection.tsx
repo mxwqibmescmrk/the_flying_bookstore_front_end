@@ -7,7 +7,6 @@ import BookCardCarousel from "./Statistic/BookCardCarousel";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { IListing } from "@/types/book";
 import { useListNewBookStore } from "@/hooks/listNewBook";
 
 const settings = {
@@ -23,7 +22,34 @@ const settings = {
 dayjs.extend(customParseFormat);
 
 const PromoteSection = () => {
+  const fetchListBook = useListNewBookStore((state) => state.fetch);
   const listContent = useListNewBookStore((state) => state.listNewBook);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Intersection Observer để phát hiện khi PromoteSection hiển thị
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // Ngừng theo dõi sau khi phần tử xuất hiện
+        }
+      },
+      { threshold: 0.1 } // 10% PromoteSection xuất hiện
+    );
+
+    const section = document.querySelector(".promote");
+    if (section) {
+      observer.observe(section);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    if (isVisible) {
+      fetchListBook(); // Chỉ fetch dữ liệu khi phần tử hiển thị
+    }
+  }, [isVisible, fetchListBook]);
   const renderBooks = useCallback(() => {
     const listBook = listContent?.content
     if (!listBook) {

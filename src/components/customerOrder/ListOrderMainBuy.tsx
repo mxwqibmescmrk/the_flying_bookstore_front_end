@@ -33,7 +33,6 @@ const orderStatus: { [key in IOrderStatusBuy]?: number } = {
   PAYMENT_SUCCESS: 1
 }
 
-
 const ListOrderMainBuy = ({ orderType }: { orderType: OrderType }) => {
   const [status, setStatus] = useState(0);
   const { profile } = useAuthStore();
