@@ -46,7 +46,7 @@ Nguyễn Lê Xuân
 Hòa
 hoa.nguyen_bk@hcmut.edu.vn
 14/04/1999
-0905907362 
+0905909909
 12 Lý Tự Trọng, p.1, q.1, tp.HCM
 12 Cao Thắng, p.1, q.1, tp.HCM
 
