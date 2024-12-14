@@ -20,6 +20,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.14",
     "@mui/x-data-grid": "^7.0.0",
     "@mui/x-date-pickers": "^6.19.5",
+    "@next/bundle-analyzer": "^15.1.0",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",
     "axios": "^1.6.8",
