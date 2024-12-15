@@ -60,6 +60,7 @@ export default function BookMenus() {
   const listCategory = useGenreStore((state) => state.listGenre);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    console.log("---------", { event }, "event.currentTarget", event.currentTarget)
     setAnchorEl(event.currentTarget);
   };
   const { updateCategoryParam } = useStoreSearch();
