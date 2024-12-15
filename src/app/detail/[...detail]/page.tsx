@@ -25,7 +25,7 @@ export default function Page({ params }: IParamsDetail) {
   }, [callErrorAlert, params.detail]);
 
   return (
-    <div className="container mx-auto mt-10 mb-20">
+    <div className="container mx-auto mt-10 mb-20 lg:px-5 xxl:px-0">
       <BookInfo book={listing} />
       <div className="flex mt-5 gap-5">
         <div className="basis-9/12">

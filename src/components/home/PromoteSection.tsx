@@ -8,6 +8,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useListNewBookStore } from "@/hooks/listNewBook";
+import { responsiveSlick } from "./Category/BookCategory";
 
 const settings = {
   dots: true,
@@ -18,6 +19,7 @@ const settings = {
   autoplaySpeed: 2000,
   centerMode: true,
   centerPadding: "60px",
+  responsive: responsiveSlick
 };
 dayjs.extend(customParseFormat);
 
@@ -77,7 +79,7 @@ const PromoteSection = () => {
         {/* background  */}
         <div
           className="absolute top-0 -z-10 overflow-hidden"
-          aria-hidden="true"
+ 
         >
           <Image src={PromoteBanner} alt="Picture of the author" />
         </div>

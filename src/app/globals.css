@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+body{
+}
+
+@media only screen and (max-width: 600px) {
+  body {
+    width: 1280px;
+    transform: scale(0.3); /* Thu nhỏ để vừa màn hình mobile */
+    transform-origin: top left;
+    height: calc(100vh / 0.8); /* Tính toán chiều cao phù hợp với tỷ lệ scale */
+  }
+}
+
 /* Todo: delete this  */
 nextjs-portal {
   /* display: none; */

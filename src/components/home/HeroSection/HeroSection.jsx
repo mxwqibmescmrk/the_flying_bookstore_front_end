@@ -58,7 +58,7 @@ export default function HeroSection() {
             priority
           />
         </div>
-        <div className="absolute top-0 -z-10  w-10/12 overflow-hidden" aria-hidden="true">
+        <div className="absolute top-0 -z-10  w-10/12 overflow-hidden">
           <Image src={BackgroundBanner} alt="Picture of the author" priority />
         </div>
       </div>
