@@ -1,9 +1,9 @@
 "use client";
 import Slider from "react-slick";
 import Category from "./Category";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useGenreStore } from "@/hooks/genre";
-
 export const responsiveSlick = [
   {
     breakpoint: 1024,
@@ -16,6 +16,7 @@ export const responsiveSlick = [
   },];
 
 const settings = {
+  dots: true,
   infinite: true,
   slidesToShow: 5,
   slidesToScroll: 1,
@@ -28,34 +29,10 @@ const settings = {
 };
 const BookCategory = () => {
   const { listGenre: listCategory } = useGenreStore();
-  const fetchGenre = useGenreStore((state) => state.fetch);
-  const [isVisible, setIsVisible] = useState(false);
-
-  // Intersection Observer để phát hiện khi BookCategory hiển thị
+  const fetchGenre = useGenreStore(state => state.fetch);
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect(); // Ngừng theo dõi sau khi phần tử xuất hiện
-        }
-      },
-      { threshold: 0.1 } // 10% BookCategory xuất hiện
-    );
-
-    const section = document.querySelector(".book-category");
-    if (section) {
-      observer.observe(section);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (isVisible) {
-      fetchGenre(); // Chỉ fetch dữ liệu khi phần tử hiển thị
-    }
-  }, [isVisible, fetchGenre]);
+    fetchGenre();
+  }, [fetchGenre])
 
   const renderCategory = useCallback(
     () => {

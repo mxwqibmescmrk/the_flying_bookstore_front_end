@@ -16,7 +16,11 @@ const genreSlice: StateCreator<IGenreStore, [["zustand/persist", unknown]]> = (
   fetch: async () => {
     try {
       const data = await genreSliceService();
-      set({ listGenre: data });
+      if (typeof data != "string") {
+        set({ listGenre: data });
+      } else {
+        throw new Error("Get Genre failed");
+      }
     } catch (error) {
       throw new Error("Get Genre failed");
     }
