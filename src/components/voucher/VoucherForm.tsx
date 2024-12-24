@@ -70,7 +70,7 @@ const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
     }
   }
   const editVoucher = async (voucherData: ICreateVoucher) => {
-    if(voucherId === undefined) {
+    if (voucherId === undefined) {
       return callErrorAlert("Không lấy được VoucherId")
     }
     try {
@@ -139,7 +139,7 @@ const VoucherForm = ({ voucherId }: { voucherId?: string }) => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="step mt-5 ">
           <div className="card">
-            <h3>{voucherId === undefined ? "Sửa" : "Tạo"} Voucher mới</h3>
+            <h3>{voucherId === undefined ? "Tạo" : "Sửa"} voucher mới</h3>
             <div className="row-2">
               <FormInputText name="name" label="Tên Voucher" required />
               <FormInputText name="code" label="Mã Voucher" required />
