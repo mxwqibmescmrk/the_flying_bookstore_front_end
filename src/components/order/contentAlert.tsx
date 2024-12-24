@@ -13,7 +13,7 @@ export let callContentAlertBuy: (order: IBuyOrderConvert) => IOrderStatusBuyMess
       PAYMENT_SUCCESS: "Người mua đã thanh toán thành công, người bán cần chuẩn bị sách để người mua lấy sách",
       DELIVERED: "Đã giao sách cho người mua, chờ admin trả người bán tiền bán sách",
       CANCELED: "Bạn đã hủy",
-      PAID_BUYER: "Admin đã trả tiền thừa cho người mua",
+      PAID_BUYER: "Đơn hàng đã hoàn thành, Admin đã trả tiền cho người bán",
       PAID_SELLER: "Đơn hàng đã hoàn thành, Admin đã trả tiền cho người bán"
     },
     isBuyer: {
@@ -25,7 +25,7 @@ export let callContentAlertBuy: (order: IBuyOrderConvert) => IOrderStatusBuyMess
         "Vui lòng chỉ nhấn “đã nhận được sách” khi đơn hàng đã được giao đến bạn và bạn đã kiểm tra xong hàng",
       CANCELED: "Khách đã hủy",
       DELIVERED: "Đã giao sách cho người mua, chờ admin trả người bán tiền bán sách",
-      PAID_BUYER: "Admin đã trả tiền thừa cho người mua", 
+      PAID_BUYER: "Đơn hàng đã hoàn thành, Admin đã trả tiền cho người bán", 
       PAID_SELLER: "Đơn hàng đã hoàn thành, Admin đã trả tiền cho người bán"
     },
   };

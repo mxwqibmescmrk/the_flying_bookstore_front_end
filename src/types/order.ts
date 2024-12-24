@@ -1,6 +1,8 @@
 import { IRowBuy } from "../components/order/column";
-import { IListing, IReview } from "./book";
+import { IBook, IListing, IReview } from "./book";
+import { IFormVoucher } from "./form";
 import { IUser } from "./user";
+import { IVoucherSession } from "./voucher";
 export enum OrderType {
   Buy = "mua",
   Sell = "bán",
@@ -42,6 +44,33 @@ export type IOrderStatus =
   | "PAID_OWNER"
   | "DEPOSIT_RETURNED";
 export type IPaymentMethod = "COD" | "BANK_TRANSFER" | "VNPAY";
+
+interface IVoucherOrder {
+  id: number;
+  saleOrderId: number;
+  voucherId: number;
+  discountAmount: number;
+}
+export interface IListingOrder {
+  id: number;
+  title: string;
+  deposit: number;
+  price: number;
+  description: string;
+  quantity: number;
+  address: string;
+  book: IBook;
+}
+
+export interface ISaleOrder {
+  saleOrder: IBuyOrder;
+  listing: IListingOrder;
+  Seller?: IUser;
+  Buyer?: IUser;
+  voucherShop: IVoucherOrder;
+  voucherSession: IVoucherOrder;
+  totalPrice?: number;
+}
 
 export interface IBuyOrderConvert {
   id?: number;
