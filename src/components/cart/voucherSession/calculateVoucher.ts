@@ -29,24 +29,20 @@ function sortVouchersByPriority(vouchers: IVoucherSession[], book: IListing | un
       const bEndDate = dayjs(b.endDate);
 
       const isAExpired = today.isAfter(aStartDate) && today.isBefore(aEndDate.add(1, "day"));
+      const isANotExpired = !isAExpired;
       const isBExpired = today.isAfter(bStartDate) && today.isBefore(bEndDate.add(1, "day"));
+      const isBNotExpired = !isBExpired;
 
-      // Ưu tiên voucher chưa hết hạn
-      if (isAExpired !== isBExpired) {
-        return isAExpired ? -1 : 1;
+      //  Ưu tiên voucher chưa hết hạn
+      if (isAExpired && isBNotExpired) {
+        return -1;
+      }
+      if (isANotExpired && isBExpired) {
+        return 1;
       }
 
       // Ưu tiên giảm giá cao hơn
-      if (discountA !== discountB) {
-        return discountB - discountA;
-      }
-
-      // Ưu tiên ngày kết thúc gần nhất
-      const endDateA = dayjs(a.endDate);
-      const endDateB = dayjs(b.endDate);
-      if (!endDateA.isSame(endDateB)) {
-        return endDateA.isBefore(endDateB) ? -1 : 1;
-      }
+      return discountB - discountA;
 
       return 0; // Giữ nguyên thứ tự nếu các tiêu chí đều giống nhau
     });
@@ -72,4 +68,4 @@ const calculateTotalPriceAfterVoucher = (book: IListing | undefined, voucher: IV
 
   return totalPrice;
 }
-export { countDiscount,sortVouchersByPriority,isValidVoucher,calculateTotalPriceAfterVoucher }
+export { countDiscount, sortVouchersByPriority, isValidVoucher, calculateTotalPriceAfterVoucher }

@@ -184,7 +184,7 @@ const ListVoucherShop = () => {
         aria-labelledby="scroll-voucher"
         aria-describedby="scroll-voucher-descript"
       >
-        <DialogTitle id="scroll-voucher">{book?.user?.firstName} {book?.user?.lastName} khuyến mãi</DialogTitle>
+        <DialogTitle id="scroll-voucher">Khuyến mãi từ người bán</DialogTitle>
         <Stack
           direction="row"
           spacing={1}
