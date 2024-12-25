@@ -1,5 +1,11 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Link demo hệ thống: 
+- Link người dùng
+[The Flying Bookstore demo](https://the-flying-bookstore.vercel.app/)
+- Link admin:
+[The Flying Bookstore Dashboard demo](https://the-flying-bookstore-dashboard-fe.vercel.app/)
+
 ## Video thuyết trình Bảo vệ luận văn tốt nghiệp:
 [Only 10 phút, click vào đây](https://youtu.be/u2odpuOnYXM?si=bDP40r_lyNHou5Vz)
 
