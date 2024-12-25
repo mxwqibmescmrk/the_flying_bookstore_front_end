@@ -15,6 +15,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Báo cáo luận văn
 [Báo cáo docx, pdf và phiếu chấm điểm luôn](https://github.com/hoa-nguyen-bk/report-final-project)
 
+## Tặng các bạn link các buổi phản biện và bảo vệ của các nhóm khác:
+[Danh sách record bảo vệ và phản biện](https://www.youtube.com/watch?v=mRBKgb8Xkqk&list=PL8cNucQ_sYRMHg8cbBJXI0oW_-90JdvAv)
+
 ## Data Test
 ```
 Ngân hàng	NCB
