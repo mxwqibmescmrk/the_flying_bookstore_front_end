@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Video thuyết trình Bảo vệ luận văn tốt nghiệp:
+[Only 10 phút, click vào đây](https://youtu.be/u2odpuOnYXM?si=bDP40r_lyNHou5Vz)
+
+## Slide bảo vệ luận văn
+[Slide](https://www.canva.com/design/DAGaTryMbeo/dhtiewJRc8LQIwYTFBWGKg/edit?utm_content=DAGaTryMbeo&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+## Báo cáo luận văn
+[Báo cáo docx, pdf và phiếu chấm điểm luôn](https://github.com/hoa-nguyen-bk/report-final-project)
+
 ## Data Test
 ```
 Ngân hàng	NCB
