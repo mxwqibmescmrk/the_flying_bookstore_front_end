@@ -18,20 +18,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Tặng các bạn link các buổi phản biện và bảo vệ của các nhóm khác:
 [Danh sách record bảo vệ và phản biện](https://www.youtube.com/watch?v=mRBKgb8Xkqk&list=PL8cNucQ_sYRMHg8cbBJXI0oW_-90JdvAv)
 
-## Data Test
-```
-Ngân hàng	NCB
-Số thẻ	9704198526191432198
-Tên chủ thẻ	NGUYEN VAN A
-Ngày phát hành	07/15
-Mật khẩu OTP	123456
-```
-xem thêm thông tin thẻ test tại
-[vnpay](https://sandbox.vnpayment.vn/apis/vnpay-demo/#th%C3%B4ng-tin-th%E1%BA%BB-test)
+
 
 ## Getting Started
 
-First, run the development server:
+Install
+```bash
+pnpm install
+```
+
+Then, run the development server:
 
 ```bash
 pnpm dev
@@ -54,6 +50,18 @@ vào thư mục build/libs chạy lệnh
 java -jar base-api-0.0.1-SNAPSHOT.jar
 ```
 cài ngrok vào máy
+
+## Data Test
+```
+Ngân hàng	NCB
+Số thẻ	9704198526191432198
+Tên chủ thẻ	NGUYEN VAN A
+Ngày phát hành	07/15
+Mật khẩu OTP	123456
+```
+xem thêm thông tin thẻ test tại
+[vnpay](https://sandbox.vnpayment.vn/apis/vnpay-demo/#th%C3%B4ng-tin-th%E1%BA%BB-test)
+
 
 ## Voucher mẫu
 Green Recycle
