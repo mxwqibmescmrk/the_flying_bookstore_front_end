@@ -3,6 +3,7 @@ import { PiCreditCardLight } from "react-icons/pi";
 import { PiHandshakeLight } from "react-icons/pi";
 import "./Step.scss";
 import MomoLogo from "./../../assets/images/vnpay.png";
+import MomoLogo from "./../../assets/images/MoMo_Logo.png";
 import Image from "next/image";
 import { Dispatch, SetStateAction } from "react";
 import { useStoreCart } from "@/hooks/cart";
@@ -18,6 +19,12 @@ const Pay = ({
 }) => {
   const { cart } = useStoreCart();
 
+  const handleSubmit = () => {
+     console.log({ urlString });
+ 
+     // redirect(urlString)
+   };
+  
   const renderPayType = () => {
     switch (payType) {
       case 0:
@@ -58,7 +65,7 @@ const Pay = ({
               &lt;Tên khách hàng&gt;_&lt;Tổng tiền&gt;_Thanh toán cọc sách
             </p>
             <h4 className="text-xl my-5 font-semibold">
-              Bước 3: Chờ quản trị xác nhận
+              Bước 3: Chờ quản trị xác nhận  
             </h4>
           </>
         );
@@ -101,6 +108,8 @@ const Pay = ({
           className={`pay-card ${payType == 2 && "choose"}`}
           onClick={() => setPayType(2)}
         >
+          <Image src={MomoLogo} alt="momo" className="icon" />
+           <p className="">Thanh toán Momo</p>
           <Image
             src={MomoLogo}
             alt="momo"
